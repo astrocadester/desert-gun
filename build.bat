@@ -1,11 +1,16 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-if not exist "src\desertgun.asm" (
-  echo RE incomplete: src\desertgun.asm has not yet been recovered from the original ROM. 1>&2
-  exit /b 2
-)
-if not exist build mkdir build
-tools\zmac.exe -o "build\desertgun.bin" "src\desertgun.asm"
+if not exist "src\zout" mkdir "src\zout"
+if not exist "roms\build" mkdir "roms\build"
+if not exist docs mkdir docs
+py -3 tools\recover_8080.py desertgun
 if errorlevel 1 exit /b 1
-echo Assembled build\desertgun.bin; chip-by-chip ROM identity is not yet verified.
+py -3 tools\interpreter_lineage.py
+if errorlevel 1 exit /b 1
+py -3 tools\memory_map.py
+if errorlevel 1 exit /b 1
+tools\zmac.exe -c -o roms\build\desertgun.bin -x src\zout\desertgun.lst src\desertgun.asm
+if errorlevel 1 exit /b 1
+py -3 tools\verify_rom.py
+if errorlevel 1 exit /b 1
