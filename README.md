@@ -1,14 +1,14 @@
 # Desert Gun
 
-![Desert Gun](images/gun-fight-15120-marquee.jpg)
+![Desert Gun](images/desert-gun-02584-01.jpg)
 
 Desert Gun (1977) is an Intel 8080 Midway/Dave Nutting Associates arcade game. This repository preserves the original ROM set, reconstructs native executable instructions, and documents an indexed-bytecode interpreter present in its program ROM.
 
-## Interpreter and DNA history
+## Interpreter and DNA 8080 history
 
-The native dispatcher at `$3A7` obtains game commands via the script pointer in RAM `$2000`, selects native handlers using the table at `$9AE`, and transfers control through an indirect jump. The table has **30 entries**. The first known program stream starts at `$821`.
+The native dispatcher at `$11D0` fetches indexed 8080 game commands through script pointer `$2000` and vector table `$0F61`; the initial script begins at `$1633`. Second-pass word decoding establishes **13 entries ($00–$0C), with $00 taking an explicit scheduler branch and 12 nonzero native words**. Opcode $00 hands off directly to the frame scheduler at $11EA, in contrast with Gun Fight's zero-command repeat/wait logic.
 
-See [recovered command vectors](docs/interpreter.md) and [machine-readable trace](docs/recovery.json). This is earlier than the 26-command Tornado Baseball interpreter and establishes an interpreter-based DNA arcade architecture in 1977. Do not confuse command-vector counts with a count of fully semantically decoded game words.
+See [per-word native effects and operand formats](docs/8080-WORD-SEMANTICS.md), [original recovered vectors](docs/interpreter.md), and [machine-readable trace](docs/recovery.json). Working names in the semantic catalog describe recovered machine behavior; they are not claimed as the original DNA source-language spellings.
 
 ## Project layout
 
