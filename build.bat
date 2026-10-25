@@ -6,6 +6,6 @@ if not exist "src\desertgun.asm" (
   exit /b 2
 )
 if not exist build mkdir build
-tools\zmac.exe --zmac -o "build\desertgun.bin" "src\desertgun.asm"
+tools\zmac.exe -o "build\desertgun.bin" "src\desertgun.asm"
 if errorlevel 1 exit /b 1
 echo Assembled build\desertgun.bin; chip-by-chip ROM identity is not yet verified.
