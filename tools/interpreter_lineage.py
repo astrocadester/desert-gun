@@ -7,7 +7,7 @@ with zipfile.ZipFile(R/"roms/original/desertgu.zip") as z:
     names=["9316.1h","9316.1g","9316.1f","desertgu.e"]
     parts=[z.read(n) for n in names]
 mem=b"".join(parts)
-base=0x9AE
+base=0xF61
 vectors=[mem[base+2*i]|(mem[base+2*i+1]<<8) for i in range(13)]
 assert all(v<len(mem) for v in vectors)
 lines=["# Desert Gun: 8080 indexed bytecode interpreter","","Source: original desertgu.zip, SHA256 "+hashlib.sha256(mem).hexdigest(),"",
