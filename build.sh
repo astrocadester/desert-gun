@@ -8,5 +8,5 @@ if [[ ! -f "$SRC" ]]; then
 fi
 mkdir -p build
 chmod +x tools/zmac
-./tools/zmac --zmac -o "build/desertgun.bin" "$SRC"
+./tools/zmac -o "build/desertgun.bin" "$SRC"
 echo "Assembled build/desertgun.bin; chip-by-chip ROM identity is not yet verified."
