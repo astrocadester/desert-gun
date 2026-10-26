@@ -159,7 +159,7 @@ def main():
                 # Preserve all unclassified bytes, never misidentify as native code.
                 stop=min(hi,pc+12)
                 for p in range(pc+1,stop):
-                    if p in code or p in entries or p in packet_begins or (packet_owner.get(p)!=packet_owner.get(pc)):stop=p;break
+                    if p in code or p in entries or p in packet_begins or p in typed_rom_vectors or (packet_owner.get(p)!=packet_owner.get(pc)):stop=p;break
                 raw=mem[pc:stop]
                 category=("bytecode word "+packet_begins[packet_owner[pc]]["opcode"] if pc in packet_owner else
                           "native command/event vectors" if game=="gunfight" and 0x09AE<=pc<0x09EA else
