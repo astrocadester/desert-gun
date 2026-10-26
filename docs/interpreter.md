@@ -5,12 +5,12 @@ Source: original desertgu.zip, SHA256 bcc3ea2125ba8a987923370c5a2545c771a7e04eef
 ## Runtime identity
 
 - Script-pointer RAM: `$2000`
-- Native command dispatcher: `$11D0`
-- Vector table: `$0F61`
-- Indexed native entries: 13 indexed positions ($00–$0C); opcode zero bypasses vector lookup
-- Initial ROM command stream: `$1633`
+- Native command dispatcher: `$3A7`
+- Vector table: `$9AE`
+- Indexed native entries: 30
+- Initial ROM command stream: `$821`
 
-The dispatcher fetches a bytecode from its saved program counter, advances the pointer, indexes 16-bit native handler entries, and transfers control indirectly. For recovered operand conventions and side-effects, see [the second semantic pass](8080-WORD-SEMANTICS.md). Opcode $00 is intercepted and sent to the frame scheduler at $11EA; its table address $0FAB is not invoked on the zero path.
+The dispatcher fetches a bytecode from its saved program counter, advances the pointer, indexes 16-bit native handler entries, and transfers control indirectly. Entry count does not imply each command has identical operands.
 
 | Index | Native handler | First 8 bytes at handler |
 |---:|---:|---|

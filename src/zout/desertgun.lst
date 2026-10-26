@@ -1490,10 +1490,10 @@
 1023:	0F5C  0700E0FF	        DB $07,$00,$E0,$FF,$00,$AB,$0F,$94,$0F,$A2,$0F,$AC ; ROM $0F5C unclassified
 	      00AB0F94
 	      0FA20FAC
-1024:	0F68  0FBE0FC7	        DB $0F,$BE,$0F,$C7,$0F,$D3,$0F,$0E,$10,$47,$10,$8E ; ROM $0F68 unclassified
+1024:	0F68  0FBE0FC7	        DB $0F,$BE,$0F,$C7,$0F,$D3,$0F,$0E,$10,$47,$10,$8E ; ROM $0F68 native command vectors
 	      0FD30F0E
 	      1047108E
-1025:	0F74  0F6D107A	        DB $0F,$6D,$10,$7A,$10,$7B,$0F ; ROM $0F74 unclassified
+1025:	0F74  0F6D107A	        DB $0F,$6D,$10,$7A,$10,$7B,$0F ; ROM $0F74 native command vectors
 	      107B0F
 1026:	0F7B          	NATIVE_0F7B:
 1027:	0F7B  EB      	        EX DE,HL  ; ROM $0F7B: EB
@@ -2474,1214 +2474,1272 @@
 1932:	1624  046F0706	        DB $04,$6F,$07,$06,$49,$07,$FF,$23,$07,$05,$E4,$06 ; ROM $1624 unclassified
 	      4907FF23
 	      0705E406
-1933:	1630  FF120706	        DB $FF,$12,$07,$06,$08,$06,$20,$A0,$3E,$01,$05,$08 ; ROM $1630 unclassified
-	      080620A0
-	      3E010508
-1934:	163C  0B200024	        DB $0B,$20,$00,$24,$01,$06,$01,$04,$08,$1C,$20,$1B ; ROM $163C unclassified
-	      01060104
-	      081C201B
-1935:	1648  24070501	        DB $24,$07,$05,$01,$81,$20,$05,$01,$B1,$20,$03,$10 ; ROM $1648 unclassified
-	      81200501
-	      B1200310
-1936:	1654  33160501	        DB $33,$16,$05,$01,$35,$20,$05,$01,$38,$20,$0C,$0B ; ROM $1654 unclassified
-	      35200501
-	      38200C0B
-1937:	1660  5E1A8A2F	        DB $5E,$1A,$8A,$2F,$0B,$01,$02,$02,$3C,$00,$0C,$0C ; ROM $1660 unclassified
-	      0B010202
-	      3C000C0C
-1938:	166C  4B1AB43E	        DB $4B,$1A,$B4,$3E,$02,$1E,$00,$04,$64,$16,$02,$1E ; ROM $166C unclassified
-	      021E0004
-	      6416021E
-1939:	1678  00060108	        DB $00,$06,$01,$08,$02,$78,$00,$01,$09,$02,$3C,$00 ; ROM $1678 unclassified
-	      02780001
-	      09023C00
-1940:	1684  0C0D4B1A	        DB $0C,$0D,$4B,$1A,$09,$30,$05,$06,$B9,$20,$05,$01 ; ROM $1684 unclassified
-	      09300506
-	      B9200501
-1941:	1690  0D200501	        DB $0D,$20,$05,$01,$81,$20,$05,$01,$35,$20,$00,$05 ; ROM $1690 unclassified
-	      81200501
-	      35200005
-1942:	169C  000D2005	        DB $00,$0D,$20,$05,$00,$37,$20,$05,$00,$38,$20,$0C ; ROM $169C unclassified
-	      00372005
-	      0038200C
-1943:	16A8  104B1A00	        DB $10,$4B,$1A,$00,$24,$0C,$10,$4B,$1A,$10,$24,$0C ; ROM $16A8 unclassified
-	      240C104B
-	      1A10240C
-1944:	16B4  104B1AA0	        DB $10,$4B,$1A,$A0,$3E,$0C,$10,$4B,$1A,$B0,$3E,$08 ; ROM $16B4 unclassified
-	      3E0C104B
-	      1AB03E08
-1945:	16C0  0620A03E	        DB $06,$20,$A0,$3E,$01,$05,$08,$0B,$20,$00,$24,$01 ; ROM $16C0 unclassified
-	      0105080B
-	      20002401
-1946:	16CC  06010408	        DB $06,$01,$04,$08,$1C,$20,$1B,$24,$02,$1E,$00,$0A ; ROM $16CC unclassified
-	      1C201B24
-	      021E000A
-1947:	16D8  40200A4F	        DB $40,$20,$0A,$4F,$20,$0A,$5E,$20,$0A,$6D,$20,$02 ; ROM $16D8 unclassified
-	      200A5E20
-	      0A6D2002
-1948:	16E4  0F000900	        DB $0F,$00,$09,$00,$09,$01,$02,$F0,$00,$04,$33,$16 ; ROM $16E4 unclassified
-	      090102F0
-	      00043316
-1949:	16F0          	NATIVE_16F0:
-1950:	16F0  21B220  	        LD HL,$20B2  ; ROM $16F0: 21 B2 20
-1951:	16F3  DB02    	        IN A,($02)  ; ROM $16F3: DB 02
-1952:	16F5  2F      	        CPL  ; ROM $16F5: 2F
-1953:	16F6  E680    	        AND $80  ; ROM $16F6: E6 80
-1954:	16F8  47      	        LD B,A  ; ROM $16F8: 47
-1955:	16F9  AE      	        XOR (HL)  ; ROM $16F9: AE
-1956:	16FA  C8      	        RET Z  ; ROM $16FA: C8
-1957:	16FB  70      	        LD (HL),B  ; ROM $16FB: 70
-1958:	16FC  78      	        LD A,B  ; ROM $16FC: 78
-1959:	16FD  A7      	        AND A  ; ROM $16FD: A7
-1960:	16FE  C8      	        RET Z  ; ROM $16FE: C8
-1961:	16FF  3AB520  	        LD A,($20B5)  ; ROM $16FF: 3A B5 20
-1962:	1702  A7      	        AND A  ; ROM $1702: A7
-1963:	1703  C0      	        RET NZ  ; ROM $1703: C0
-1964:	1704  21B920  	        LD HL,$20B9  ; ROM $1704: 21 B9 20
-1965:	1707  7E      	        LD A,(HL)  ; ROM $1707: 7E
-1966:	1708  A7      	        AND A  ; ROM $1708: A7
-1967:	1709  CA9F18  	        JP Z,$189F  ; ROM $1709: CA 9F 18
-1968:	170C  35      	        DEC (HL)  ; ROM $170C: 35
-1969:	170D  C21817  	        JP NZ,$1718  ; ROM $170D: C2 18 17
-1970:	1710  32BA20  	        LD ($20BA),A  ; ROM $1710: 32 BA 20
-1971:	1713  3E04    	        LD A,$04  ; ROM $1713: 3E 04
-1972:	1715  323620  	        LD ($2036),A  ; ROM $1715: 32 36 20
-1973:	1718          	NATIVE_1718:
-1974:	1718  0604    	        LD B,$04  ; ROM $1718: 06 04
-1975:	171A  CD2B12  	        CALL $122B  ; ROM $171A: CD 2B 12
-1976:	171D  3E18    	        LD A,$18  ; ROM $171D: 3E 18
-1977:	171F  D303    	        OUT ($03),A  ; ROM $171F: D3 03
-1978:	1721  3E02    	        LD A,$02  ; ROM $1721: 3E 02
-1979:	1723  323420  	        LD ($2034),A  ; ROM $1723: 32 34 20
-1980:	1726  214B1A  	        LD HL,$1A4B  ; ROM $1726: 21 4B 1A
-1981:	1729  11862F  	        LD DE,$2F86  ; ROM $1729: 11 86 2F
-1982:	172C  3E13    	        LD A,$13  ; ROM $172C: 3E 13
-1983:	172E  CD3201  	        CALL $0132  ; ROM $172E: CD 32 01
-1984:	1731  3A1520  	        LD A,($2015)  ; ROM $1731: 3A 15 20
-1985:	1734  FE0F    	        CP $0F  ; ROM $1734: FE 0F
-1986:	1736  DAD617  	        JP C,$17D6  ; ROM $1736: DA D6 17
-1987:	1739  FE59    	        CP $59  ; ROM $1739: FE 59
-1988:	173B  DA4817  	        JP C,$1748  ; ROM $173B: DA 48 17
-1989:	173E  FE69    	        CP $69  ; ROM $173E: FE 69
-1990:	1740  DAD617  	        JP C,$17D6  ; ROM $1740: DA D6 17
-1991:	1743  FED1    	        CP $D1  ; ROM $1743: FE D1
-1992:	1745  D2D617  	        JP NC,$17D6  ; ROM $1745: D2 D6 17
-1993:	1748          	NATIVE_1748:
-1994:	1748  D603    	        SUB $03  ; ROM $1748: D6 03
-1995:	174A  57      	        LD D,A  ; ROM $174A: 57
-1996:	174B  3A1420  	        LD A,($2014)  ; ROM $174B: 3A 14 20
-1997:	174E  FE03    	        CP $03  ; ROM $174E: FE 03
-1998:	1750  DAD617  	        JP C,$17D6  ; ROM $1750: DA D6 17
-1999:	1753  FEFC    	        CP $FC  ; ROM $1753: FE FC
-2000:	1755  D2D617  	        JP NC,$17D6  ; ROM $1755: D2 D6 17
-2001:	1758  D603    	        SUB $03  ; ROM $1758: D6 03
-2002:	175A  5F      	        LD E,A  ; ROM $175A: 5F
-2003:	175B  D5      	        PUSH DE  ; ROM $175B: D5
-2004:	175C  F5      	        PUSH AF  ; ROM $175C: F5
-2005:	175D  CDB101  	        CALL $01B1  ; ROM $175D: CD B1 01
-2006:	1760  EB      	        EX DE,HL  ; ROM $1760: EB
-2007:	1761  3E07    	        LD A,$07  ; ROM $1761: 3E 07
-2008:	1763  110000  	        LD DE,$0000  ; ROM $1763: 11 00 00
-2009:	1766  011F00  	        LD BC,$001F  ; ROM $1766: 01 1F 00
-2010:	1769          	NATIVE_1769:
-2011:	1769  F5      	        PUSH AF  ; ROM $1769: F5
-2012:	176A  7E      	        LD A,(HL)  ; ROM $176A: 7E
-2013:	176B  B2      	        OR D  ; ROM $176B: B2
-2014:	176C  57      	        LD D,A  ; ROM $176C: 57
-2015:	176D  7D      	        LD A,L  ; ROM $176D: 7D
-2016:	176E  23      	        INC HL  ; ROM $176E: 23
-2017:	176F  E61F    	        AND $1F  ; ROM $176F: E6 1F
-2018:	1771  78      	        LD A,B  ; ROM $1771: 78
-2019:	1772  CA7617  	        JP Z,$1776  ; ROM $1772: CA 76 17
-2020:	1775  7E      	        LD A,(HL)  ; ROM $1775: 7E
-2021:	1776          	NATIVE_1776:
-2022:	1776  B3      	        OR E  ; ROM $1776: B3
-2023:	1777  5F      	        LD E,A  ; ROM $1777: 5F
-2024:	1778  09      	        ADD HL,BC  ; ROM $1778: 09
-2025:	1779  F1      	        POP AF  ; ROM $1779: F1
-2026:	177A  3D      	        DEC A  ; ROM $177A: 3D
-2027:	177B  C26917  	        JP NZ,$1769  ; ROM $177B: C2 69 17
-2028:	177E  D5      	        PUSH DE  ; ROM $177E: D5
-2029:	177F  CDB618  	        CALL $18B6  ; ROM $177F: CD B6 18
-2030:	1782  E1      	        POP HL  ; ROM $1782: E1
-2031:	1783  F1      	        POP AF  ; ROM $1783: F1
-2032:	1784  E607    	        AND $07  ; ROM $1784: E6 07
-2033:	1786  3C      	        INC A  ; ROM $1786: 3C
-2034:	1787          	NATIVE_1787:
-2035:	1787  29      	        ADD HL,HL  ; ROM $1787: 29
-2036:	1788  3D      	        DEC A  ; ROM $1788: 3D
-2037:	1789  C28717  	        JP NZ,$1787  ; ROM $1789: C2 87 17
-2038:	178C  7C      	        LD A,H  ; ROM $178C: 7C
-2039:	178D  E67F    	        AND $7F  ; ROM $178D: E6 7F
-2040:	178F  D1      	        POP DE  ; ROM $178F: D1
-2041:	1790  21B320  	        LD HL,$20B3  ; ROM $1790: 21 B3 20
-2042:	1793  CADC17  	        JP Z,$17DC  ; ROM $1793: CA DC 17
-2043:	1796  3600    	        LD (HL),$00  ; ROM $1796: 36 00
-2044:	1798  7A      	        LD A,D  ; ROM $1798: 7A
-2045:	1799  FE59    	        CP $59  ; ROM $1799: FE 59
-2046:	179B  DA0218  	        JP C,$1802  ; ROM $179B: DA 02 18
-2047:	179E  FEB3    	        CP $B3  ; ROM $179E: FE B3
-2048:	17A0  DA1518  	        JP C,$1815  ; ROM $17A0: DA 15 18
-2049:	17A3  01FFFF  	        LD BC,$FFFF  ; ROM $17A3: 01 FF FF
-2050:	17A6  78      	        LD A,B  ; ROM $17A6: 78
-2051:	17A7          	NATIVE_17A7:
-2052:	17A7  C640    	        ADD A,$40  ; ROM $17A7: C6 40
-2053:	17A9  BB      	        CP E  ; ROM $17A9: BB
-2054:	17AA  03      	        INC BC  ; ROM $17AA: 03
-2055:	17AB  DAA717  	        JP C,$17A7  ; ROM $17AB: DA A7 17
-2056:	17AE  21AD20  	        LD HL,$20AD  ; ROM $17AE: 21 AD 20
-2057:	17B1  09      	        ADD HL,BC  ; ROM $17B1: 09
-2058:	17B2  7E      	        LD A,(HL)  ; ROM $17B2: 7E
-2059:	17B3  A7      	        AND A  ; ROM $17B3: A7
-2060:	17B4  C0      	        RET NZ  ; ROM $17B4: C0
-2061:	17B5  32B720  	        LD ($20B7),A  ; ROM $17B5: 32 B7 20
-2062:	17B8  3E10    	        LD A,$10  ; ROM $17B8: 3E 10
-2063:	17BA  77      	        LD (HL),A  ; ROM $17BA: 77
-2064:	17BB  CDA918  	        CALL $18A9  ; ROM $17BB: CD A9 18
-2065:	17BE  3E04    	        LD A,$04  ; ROM $17BE: 3E 04
-2066:	17C0  323320  	        LD ($2033),A  ; ROM $17C0: 32 33 20
-2067:	17C3  212219  	        LD HL,$1922  ; ROM $17C3: 21 22 19
-2068:	17C6  09      	        ADD HL,BC  ; ROM $17C6: 09
-2069:	17C7  09      	        ADD HL,BC  ; ROM $17C7: 09
-2070:	17C8  09      	        ADD HL,BC  ; ROM $17C8: 09
-2071:	17C9  5E      	        LD E,(HL)  ; ROM $17C9: 5E
-2072:	17CA  23      	        INC HL  ; ROM $17CA: 23
-2073:	17CB  56      	        LD D,(HL)  ; ROM $17CB: 56
-2074:	17CC  EB      	        EX DE,HL  ; ROM $17CC: EB
-2075:	17CD  11030D  	        LD DE,$0D03  ; ROM $17CD: 11 03 0D
-2076:	17D0  010210  	        LD BC,$1002  ; ROM $17D0: 01 02 10
-2077:	17D3  C3F90F  	        JP $0FF9  ; ROM $17D3: C3 F9 0F
-2078:	17D6          	NATIVE_17D6:
-2079:	17D6  CDB618  	        CALL $18B6  ; ROM $17D6: CD B6 18
-2080:	17D9  21B320  	        LD HL,$20B3  ; ROM $17D9: 21 B3 20
-2081:	17DC          	NATIVE_17DC:
-2082:	17DC  7E      	        LD A,(HL)  ; ROM $17DC: 7E
-2083:	17DD  34      	        INC (HL)  ; ROM $17DD: 34
-2084:	17DE  21A01A  	        LD HL,$1AA0  ; ROM $17DE: 21 A0 1A
-2085:	17E1  11862F  	        LD DE,$2F86  ; ROM $17E1: 11 86 2F
-2086:	17E4  A7      	        AND A  ; ROM $17E4: A7
-2087:	17E5  3E07    	        LD A,$07  ; ROM $17E5: 3E 07
-2088:	17E7  CAEC17  	        JP Z,$17EC  ; ROM $17E7: CA EC 17
-2089:	17EA  3E0D    	        LD A,$0D  ; ROM $17EA: 3E 0D
-2090:	17EC          	NATIVE_17EC:
-2091:	17EC  CD3201  	        CALL $0132  ; ROM $17EC: CD 32 01
-2092:	17EF  CD3212  	        CALL $1232  ; ROM $17EF: CD 32 12
-2093:	17F2  1F      	        RRA  ; ROM $17F2: 1F
-2094:	17F3  21AD1A  	        LD HL,$1AAD  ; ROM $17F3: 21 AD 1A
-2095:	17F6  3E05    	        LD A,$05  ; ROM $17F6: 3E 05
-2096:	17F8  DAFF17  	        JP C,$17FF  ; ROM $17F8: DA FF 17
-2097:	17FB  21B21A  	        LD HL,$1AB2  ; ROM $17FB: 21 B2 1A
-2098:	17FE  3C      	        INC A  ; ROM $17FE: 3C
-2099:	17FF          	NATIVE_17FF:
-2100:	17FF  C3      	        DB $C3 ; ROM $17FF unclassified
-2101:			
-2102:	1800          	        ORG $1800
-2103:			; Device desertgu.e, SHA1 202433dfb174901bd3b91e843d9d697a8333ef9e
-2104:	1800  3201    	        DB $32,$01 ; ROM $1800 unclassified
-2105:	1802          	NATIVE_1802:
-2106:	1802  214020  	        LD HL,$2040  ; ROM $1802: 21 40 20
-2107:	1805  CD8C18  	        CALL $188C  ; ROM $1805: CD 8C 18
-2108:	1808  DA2518  	        JP C,$1825  ; ROM $1808: DA 25 18
-2109:	180B  214F20  	        LD HL,$204F  ; ROM $180B: 21 4F 20
-2110:	180E  CD8C18  	        CALL $188C  ; ROM $180E: CD 8C 18
-2111:	1811  DA2518  	        JP C,$1825  ; ROM $1811: DA 25 18
-2112:	1814  C9      	        RET  ; ROM $1814: C9
-2113:	1815          	NATIVE_1815:
-2114:	1815  215E20  	        LD HL,$205E  ; ROM $1815: 21 5E 20
-2115:	1818  CD8C18  	        CALL $188C  ; ROM $1818: CD 8C 18
-2116:	181B  DA2518  	        JP C,$1825  ; ROM $181B: DA 25 18
-2117:	181E  216D20  	        LD HL,$206D  ; ROM $181E: 21 6D 20
-2118:	1821  CD8C18  	        CALL $188C  ; ROM $1821: CD 8C 18
-2119:	1824  D0      	        RET NC  ; ROM $1824: D0
-2120:	1825          	NATIVE_1825:
-2121:	1825  E5      	        PUSH HL  ; ROM $1825: E5
-2122:	1826  D5      	        PUSH DE  ; ROM $1826: D5
-2123:	1827  CD1A12  	        CALL $121A  ; ROM $1827: CD 1A 12
-2124:	182A  3E03    	        LD A,$03  ; ROM $182A: 3E 03
-2125:	182C  77      	        LD (HL),A  ; ROM $182C: 77
-2126:	182D  12      	        LD (DE),A  ; ROM $182D: 12
-2127:	182E  D1      	        POP DE  ; ROM $182E: D1
-2128:	182F  23      	        INC HL  ; ROM $182F: 23
-2129:	1830  E3      	        EX (SP),HL  ; ROM $1830: E3
-2130:	1831  2B      	        DEC HL  ; ROM $1831: 2B
-2131:	1832  2B      	        DEC HL  ; ROM $1832: 2B
-2132:	1833  4E      	        LD C,(HL)  ; ROM $1833: 4E
-2133:	1834  23      	        INC HL  ; ROM $1834: 23
-2134:	1835  5E      	        LD E,(HL)  ; ROM $1835: 5E
-2135:	1836  23      	        INC HL  ; ROM $1836: 23
-2136:	1837  7E      	        LD A,(HL)  ; ROM $1837: 7E
-2137:	1838  93      	        SUB E  ; ROM $1838: 93
-2138:	1839  5F      	        LD E,A  ; ROM $1839: 5F
-2139:	183A  23      	        INC HL  ; ROM $183A: 23
-2140:	183B  23      	        INC HL  ; ROM $183B: 23
-2141:	183C  23      	        INC HL  ; ROM $183C: 23
-2142:	183D  56      	        LD D,(HL)  ; ROM $183D: 56
-2143:	183E  23      	        INC HL  ; ROM $183E: 23
-2144:	183F  7E      	        LD A,(HL)  ; ROM $183F: 7E
-2145:	1840  92      	        SUB D  ; ROM $1840: 92
-2146:	1841  D668    	        SUB $68  ; ROM $1841: D6 68
-2147:	1843  D24818  	        JP NC,$1848  ; ROM $1843: D2 48 18
-2148:	1846  C65C    	        ADD A,$5C  ; ROM $1846: C6 5C
-2149:	1848          	NATIVE_1848:
-2150:	1848  FE20    	        CP $20  ; ROM $1848: FE 20
-2151:	184A  7E      	        LD A,(HL)  ; ROM $184A: 7E
-2152:	184B  DA5418  	        JP C,$1854  ; ROM $184B: DA 54 18
-2153:	184E  D610    	        SUB $10  ; ROM $184E: D6 10
-2154:	1850  57      	        LD D,A  ; ROM $1850: 57
-2155:	1851  C35818  	        JP $1858  ; ROM $1851: C3 58 18
-2156:	1854          	NATIVE_1854:
-2157:	1854  57      	        LD D,A  ; ROM $1854: 57
-2158:	1855  C610    	        ADD A,$10  ; ROM $1855: C6 10
-2159:	1857  77      	        LD (HL),A  ; ROM $1857: 77
-2160:	1858          	NATIVE_1858:
-2161:	1858  E3      	        EX (SP),HL  ; ROM $1858: E3
-2162:	1859  CDB101  	        CALL $01B1  ; ROM $1859: CD B1 01
-2163:	185C  71      	        LD (HL),C  ; ROM $185C: 71
-2164:	185D  23      	        INC HL  ; ROM $185D: 23
-2165:	185E  73      	        LD (HL),E  ; ROM $185E: 73
-2166:	185F  23      	        INC HL  ; ROM $185F: 23
-2167:	1860  72      	        LD (HL),D  ; ROM $1860: 72
-2168:	1861  23      	        INC HL  ; ROM $1861: 23
-2169:	1862  E5      	        PUSH HL  ; ROM $1862: E5
-2170:	1863  212E19  	        LD HL,$192E  ; ROM $1863: 21 2E 19
-2171:	1866  09      	        ADD HL,BC  ; ROM $1866: 09
-2172:	1867  EB      	        EX DE,HL  ; ROM $1867: EB
-2173:	1868  1A      	        LD A,(DE)  ; ROM $1868: 1A
-2174:	1869  CDA918  	        CALL $18A9  ; ROM $1869: CD A9 18
-2175:	186C  C1      	        POP BC  ; ROM $186C: C1
-2176:	186D  CD3310  	        CALL $1033  ; ROM $186D: CD 33 10
-2177:	1870  3E30    	        LD A,$30  ; ROM $1870: 3E 30
-2178:	1872  02      	        LD (BC),A  ; ROM $1872: 02
-2179:	1873  03      	        INC BC  ; ROM $1873: 03
-2180:	1874  3E40    	        LD A,$40  ; ROM $1874: 3E 40
-2181:	1876  02      	        LD (BC),A  ; ROM $1876: 02
-2182:	1877  E1      	        POP HL  ; ROM $1877: E1
-2183:	1878  23      	        INC HL  ; ROM $1878: 23
-2184:	1879  3600    	        LD (HL),$00  ; ROM $1879: 36 00
-2185:	187B  2B      	        DEC HL  ; ROM $187B: 2B
-2186:	187C  2B      	        DEC HL  ; ROM $187C: 2B
-2187:	187D  3601    	        LD (HL),$01  ; ROM $187D: 36 01
-2188:	187F  2B      	        DEC HL  ; ROM $187F: 2B
-2189:	1880  2B      	        DEC HL  ; ROM $1880: 2B
-2190:	1881  2B      	        DEC HL  ; ROM $1881: 2B
-2191:	1882  2B      	        DEC HL  ; ROM $1882: 2B
-2192:	1883  3600    	        LD (HL),$00  ; ROM $1883: 36 00
-2193:	1885  2B      	        DEC HL  ; ROM $1885: 2B
-2194:	1886  2B      	        DEC HL  ; ROM $1886: 2B
-2195:	1887  7E      	        LD A,(HL)  ; ROM $1887: 7E
-2196:	1888  F602    	        OR $02  ; ROM $1888: F6 02
-2197:	188A  77      	        LD (HL),A  ; ROM $188A: 77
-2198:	188B  C9      	        RET  ; ROM $188B: C9
-2199:	188C          	NATIVE_188C:
-2200:	188C  7E      	        LD A,(HL)  ; ROM $188C: 7E
-2201:	188D  A7      	        AND A  ; ROM $188D: A7
-2202:	188E  F0      	        RET P  ; ROM $188E: F0
-2203:	188F  E602    	        AND $02  ; ROM $188F: E6 02
-2204:	1891  C0      	        RET NZ  ; ROM $1891: C0
-2205:	1892  23      	        INC HL  ; ROM $1892: 23
-2206:	1893  23      	        INC HL  ; ROM $1893: 23
-2207:	1894  23      	        INC HL  ; ROM $1894: 23
-2208:	1895  7E      	        LD A,(HL)  ; ROM $1895: 7E
-2209:	1896  D608    	        SUB $08  ; ROM $1896: D6 08
-2210:	1898  BB      	        CP E  ; ROM $1898: BB
-2211:	1899  D0      	        RET NC  ; ROM $1899: D0
-2212:	189A  C628    	        ADD A,$28  ; ROM $189A: C6 28
-2213:	189C  BB      	        CP E  ; ROM $189C: BB
-2214:	189D  3F      	        CCF  ; ROM $189D: 3F
-2215:	189E  C9      	        RET  ; ROM $189E: C9
-2216:	189F          	NATIVE_189F:
-2217:	189F  3E03    	        LD A,$03  ; ROM $189F: 3E 03
-2218:	18A1  323420  	        LD ($2034),A  ; ROM $18A1: 32 34 20
-2219:	18A4  0602    	        LD B,$02  ; ROM $18A4: 06 02
-2220:	18A6  C32B12  	        JP $122B  ; ROM $18A6: C3 2B 12
-2221:	18A9          	NATIVE_18A9:
-2222:	18A9  210A20  	        LD HL,$200A  ; ROM $18A9: 21 0A 20
-2223:	18AC  86      	        ADD A,(HL)  ; ROM $18AC: 86
-2224:	18AD  27      	        DAA  ; ROM $18AD: 27
-2225:	18AE  77      	        LD (HL),A  ; ROM $18AE: 77
-2226:	18AF  2B      	        DEC HL  ; ROM $18AF: 2B
-2227:	18B0  3E00    	        LD A,$00  ; ROM $18B0: 3E 00
-2228:	18B2  8E      	        ADC A,(HL)  ; ROM $18B2: 8E
-2229:	18B3  27      	        DAA  ; ROM $18B3: 27
-2230:	18B4  77      	        LD (HL),A  ; ROM $18B4: 77
-2231:	18B5  C9      	        RET  ; ROM $18B5: C9
-2232:	18B6          	NATIVE_18B6:
-2233:	18B6  3A1420  	        LD A,($2014)  ; ROM $18B6: 3A 14 20
-2234:	18B9  FE03    	        CP $03  ; ROM $18B9: FE 03
-2235:	18BB  D2C018  	        JP NC,$18C0  ; ROM $18BB: D2 C0 18
-2236:	18BE  3E03    	        LD A,$03  ; ROM $18BE: 3E 03
-2237:	18C0          	NATIVE_18C0:
-2238:	18C0  FEFC    	        CP $FC  ; ROM $18C0: FE FC
-2239:	18C2  DAC718  	        JP C,$18C7  ; ROM $18C2: DA C7 18
-2240:	18C5  3EFC    	        LD A,$FC  ; ROM $18C5: 3E FC
-2241:	18C7          	NATIVE_18C7:
-2242:	18C7  D603    	        SUB $03  ; ROM $18C7: D6 03
-2243:	18C9  6F      	        LD L,A  ; ROM $18C9: 6F
-2244:	18CA  E607    	        AND $07  ; ROM $18CA: E6 07
-2245:	18CC  3C      	        INC A  ; ROM $18CC: 3C
-2246:	18CD  4F      	        LD C,A  ; ROM $18CD: 4F
-2247:	18CE  3A1520  	        LD A,($2015)  ; ROM $18CE: 3A 15 20
-2248:	18D1  D603    	        SUB $03  ; ROM $18D1: D6 03
-2249:	18D3  D2D818  	        JP NC,$18D8  ; ROM $18D3: D2 D8 18
-2250:	18D6  3E03    	        LD A,$03  ; ROM $18D6: 3E 03
-2251:	18D8          	NATIVE_18D8:
-2252:	18D8  67      	        LD H,A  ; ROM $18D8: 67
-2253:	18D9  22B420  	        LD ($20B4),HL  ; ROM $18D9: 22 B4 20
-2254:	18DC  EB      	        EX DE,HL  ; ROM $18DC: EB
-2255:	18DD  CDB101  	        CALL $01B1  ; ROM $18DD: CD B1 01
-2256:	18E0  3E0A    	        LD A,$0A  ; ROM $18E0: 3E 0A
-2257:	18E2  323920  	        LD ($2039),A  ; ROM $18E2: 32 39 20
-2258:	18E5  0680    	        LD B,$80  ; ROM $18E5: 06 80
-2259:	18E7          	NATIVE_18E7:
-2260:	18E7  211C19  	        LD HL,$191C  ; ROM $18E7: 21 1C 19
-2261:	18EA  3E06    	        LD A,$06  ; ROM $18EA: 3E 06
-2262:	18EC          	NATIVE_18EC:
-2263:	18EC  F5      	        PUSH AF  ; ROM $18EC: F5
-2264:	18ED  E5      	        PUSH HL  ; ROM $18ED: E5
-2265:	18EE  6E      	        LD L,(HL)  ; ROM $18EE: 6E
-2266:	18EF  2600    	        LD H,$00  ; ROM $18EF: 26 00
-2267:	18F1  79      	        LD A,C  ; ROM $18F1: 79
-2268:	18F2          	NATIVE_18F2:
-2269:	18F2  29      	        ADD HL,HL  ; ROM $18F2: 29
-2270:	18F3  3D      	        DEC A  ; ROM $18F3: 3D
-2271:	18F4  C2F218  	        JP NZ,$18F2  ; ROM $18F4: C2 F2 18
-2272:	18F7  EB      	        EX DE,HL  ; ROM $18F7: EB
-2273:	18F8  05      	        DEC B  ; ROM $18F8: 05
-2274:	18F9  FA0619  	        JP M,$1906  ; ROM $18F9: FA 06 19
-2275:	18FC  7B      	        LD A,E  ; ROM $18FC: 7B
-2276:	18FD  B6      	        OR (HL)  ; ROM $18FD: B6
-2277:	18FE  77      	        LD (HL),A  ; ROM $18FE: 77
-2278:	18FF  23      	        INC HL  ; ROM $18FF: 23
-2279:	1900  7A      	        LD A,D  ; ROM $1900: 7A
-2280:	1901  B6      	        OR (HL)  ; ROM $1901: B6
-2281:	1902  77      	        LD (HL),A  ; ROM $1902: 77
-2282:	1903  C30F19  	        JP $190F  ; ROM $1903: C3 0F 19
-2283:	1906          	NATIVE_1906:
-2284:	1906  7B      	        LD A,E  ; ROM $1906: 7B
-2285:	1907  2F      	        CPL  ; ROM $1907: 2F
-2286:	1908  A6      	        AND (HL)  ; ROM $1908: A6
-2287:	1909  77      	        LD (HL),A  ; ROM $1909: 77
-2288:	190A  23      	        INC HL  ; ROM $190A: 23
-2289:	190B  7A      	        LD A,D  ; ROM $190B: 7A
-2290:	190C  2F      	        CPL  ; ROM $190C: 2F
-2291:	190D  A6      	        AND (HL)  ; ROM $190D: A6
-2292:	190E  77      	        LD (HL),A  ; ROM $190E: 77
-2293:	190F          	NATIVE_190F:
-2294:	190F  111F00  	        LD DE,$001F  ; ROM $190F: 11 1F 00
-2295:	1912  19      	        ADD HL,DE  ; ROM $1912: 19
-2296:	1913  EB      	        EX DE,HL  ; ROM $1913: EB
-2297:	1914  E1      	        POP HL  ; ROM $1914: E1
-2298:	1915  23      	        INC HL  ; ROM $1915: 23
-2299:	1916  F1      	        POP AF  ; ROM $1916: F1
-2300:	1917  3D      	        DEC A  ; ROM $1917: 3D
-2301:	1918  C2EC18  	        JP NZ,$18EC  ; ROM $1918: C2 EC 18
-2302:	191B  C9      	        RET  ; ROM $191B: C9
-2303:	191C  44201A18	        DB $44,$20,$1A,$18,$20,$44,$24,$3B,$1B,$8C,$3C,$10 ; ROM $191C unclassified
+1933:	1630  FF1207  	        DB $FF,$12,$07 ; ROM $1630 unclassified
+1934:	1633          	CMD_1633_CLEAR_DISPLAY:
+1935:	1633  06      	        DB $06 ; CLEAR_DISPLAY
+1936:	1634          	CMD_1634_INIT_RENDER:
+1937:	1634  08      	        DB $08 ; INIT_RENDER
+1938:	1635  0620    	        DW $2006 ; inline W
+1939:	1637  A03E    	        DW $3EA0 ; inline W
+1940:	1639          	CMD_1639_RENDER_MODE_A:
+1941:	1639  01      	        DB $01 ; RENDER_MODE_A
+1942:	163A  05      	        DB $05 ; inline B
+1943:	163B          	CMD_163B_INIT_RENDER:
+1944:	163B  08      	        DB $08 ; INIT_RENDER
+1945:	163C  0B20    	        DW $200B ; inline W
+1946:	163E  0024    	        DW $2400 ; inline W
+1947:	1640          	CMD_1640_RENDER_MODE_A:
+1948:	1640  01      	        DB $01 ; RENDER_MODE_A
+1949:	1641  06      	        DB $06 ; inline B
+1950:	1642          	CMD_1642_RENDER_MODE_A:
+1951:	1642  01      	        DB $01 ; RENDER_MODE_A
+1952:	1643  04      	        DB $04 ; inline B
+1953:	1644          	CMD_1644_INIT_RENDER:
+1954:	1644  08      	        DB $08 ; INIT_RENDER
+1955:	1645  1C20    	        DW $201C ; inline W
+1956:	1647  1B24    	        DW $241B ; inline W
+1957:	1649          	CMD_1649_INIT_DESCRIPTOR:
+1958:	1649  07      	        DB $07 ; INIT_DESCRIPTOR
+1959:	164A          	CMD_164A_STORE_IMMEDIATE:
+1960:	164A  05      	        DB $05 ; STORE_IMMEDIATE
+1961:	164B  01      	        DB $01 ; inline B
+1962:	164C  8120    	        DW $2081 ; inline W
+1963:	164E          	CMD_164E_STORE_IMMEDIATE:
+1964:	164E  05      	        DB $05 ; STORE_IMMEDIATE
+1965:	164F  01      	        DB $01 ; inline B
+1966:	1650  B120    	        DW $20B1 ; inline W
+1967:	1652          	CMD_1652_SET_RENDER_POINTER:
+1968:	1652  03      	        DB $03 ; SET_RENDER_POINTER
+1969:	1653  10      	        DB $10 ; inline B
+1970:	1654  3316    	        DW $1633 ; inline W
+1971:	1656          	CMD_1656_STORE_IMMEDIATE:
+1972:	1656  05      	        DB $05 ; STORE_IMMEDIATE
+1973:	1657  01      	        DB $01 ; inline B
+1974:	1658  3520    	        DW $2035 ; inline W
+1975:	165A          	CMD_165A_STORE_IMMEDIATE:
+1976:	165A  05      	        DB $05 ; STORE_IMMEDIATE
+1977:	165B  01      	        DB $01 ; inline B
+1978:	165C  3820    	        DW $2038 ; inline W
+1979:	165E          	CMD_165E_RENDER_PACKET:
+1980:	165E  0C      	        DB $0C ; RENDER_PACKET
+1981:	165F  0B      	        DB $0B ; inline B
+1982:	1660  5E1A    	        DW $1A5E ; inline W
+1983:	1662  8A2F    	        DW $2F8A ; inline W
+1984:	1664          	CMD_1664_RESET_ROUND:
+1985:	1664  0B      	        DB $0B ; RESET_ROUND
+1986:	1665          	CMD_1665_RENDER_MODE_A:
+1987:	1665  01      	        DB $01 ; RENDER_MODE_A
+1988:	1666  02      	        DB $02 ; inline B
+1989:	1667          	CMD_1667_SET_MODE:
+1990:	1667  02      	        DB $02 ; SET_MODE
+1991:	1668  3C      	        DB $3C ; inline B
+1992:	1669          	CMD_1669_FRAME_SCHEDULER:
+1993:	1669  00      	        DB $00 ; FRAME_SCHEDULER
+1994:	166A  0C0C4B1A	        DB $0C,$0C,$4B,$1A,$B4,$3E,$02,$1E,$00,$04,$64,$16 ; ROM $166A unclassified
+	      B43E021E
+	      00046416
+1995:	1676          	CMD_1676_SET_MODE:
+1996:	1676  02      	        DB $02 ; SET_MODE
+1997:	1677  1E      	        DB $1E ; inline B
+1998:	1678          	CMD_1678_FRAME_SCHEDULER:
+1999:	1678  00      	        DB $00 ; FRAME_SCHEDULER
+2000:	1679  06010802	        DB $06,$01,$08,$02,$78,$00,$01,$09,$02,$3C,$00,$0C ; ROM $1679 unclassified
+	      78000109
+	      023C000C
+2001:	1685  0D4B1A09	        DB $0D,$4B,$1A,$09,$30,$05,$06,$B9,$20,$05,$01,$0D ; ROM $1685 unclassified
+	      300506B9
+	      2005010D
+2002:	1691  20050181	        DB $20,$05,$01,$81,$20,$05,$01,$35,$20,$00,$05,$00 ; ROM $1691 unclassified
+	      20050135
+	      20000500
+2003:	169D  0D200500	        DB $0D,$20,$05,$00,$37,$20,$05,$00,$38,$20,$0C,$10 ; ROM $169D unclassified
+	      37200500
+	      38200C10
+2004:	16A9  4B1A0024	        DB $4B,$1A,$00,$24,$0C,$10,$4B,$1A,$10,$24,$0C,$10 ; ROM $16A9 unclassified
+	      0C104B1A
+	      10240C10
+2005:	16B5  4B1AA03E	        DB $4B,$1A,$A0,$3E,$0C,$10,$4B,$1A,$B0,$3E,$08,$06 ; ROM $16B5 unclassified
+	      0C104B1A
+	      B03E0806
+2006:	16C1  20A03E01	        DB $20,$A0,$3E,$01,$05,$08,$0B,$20,$00,$24,$01,$06 ; ROM $16C1 unclassified
+	      05080B20
+	      00240106
+2007:	16CD  0104081C	        DB $01,$04,$08,$1C,$20,$1B,$24,$02,$1E,$00,$0A,$40 ; ROM $16CD unclassified
+	      201B2402
+	      1E000A40
+2008:	16D9  200A4F20	        DB $20,$0A,$4F,$20,$0A,$5E,$20,$0A,$6D,$20,$02,$0F ; ROM $16D9 unclassified
+	      0A5E200A
+	      6D20020F
+2009:	16E5  00090009	        DB $00,$09,$00,$09,$01,$02,$F0,$00,$04,$33,$16 ; ROM $16E5 unclassified
+	      0102F000
+	      043316
+2010:	16F0          	NATIVE_16F0:
+2011:	16F0  21B220  	        LD HL,$20B2  ; ROM $16F0: 21 B2 20
+2012:	16F3  DB02    	        IN A,($02)  ; ROM $16F3: DB 02
+2013:	16F5  2F      	        CPL  ; ROM $16F5: 2F
+2014:	16F6  E680    	        AND $80  ; ROM $16F6: E6 80
+2015:	16F8  47      	        LD B,A  ; ROM $16F8: 47
+2016:	16F9  AE      	        XOR (HL)  ; ROM $16F9: AE
+2017:	16FA  C8      	        RET Z  ; ROM $16FA: C8
+2018:	16FB  70      	        LD (HL),B  ; ROM $16FB: 70
+2019:	16FC  78      	        LD A,B  ; ROM $16FC: 78
+2020:	16FD  A7      	        AND A  ; ROM $16FD: A7
+2021:	16FE  C8      	        RET Z  ; ROM $16FE: C8
+2022:	16FF  3AB520  	        LD A,($20B5)  ; ROM $16FF: 3A B5 20
+2023:	1702  A7      	        AND A  ; ROM $1702: A7
+2024:	1703  C0      	        RET NZ  ; ROM $1703: C0
+2025:	1704  21B920  	        LD HL,$20B9  ; ROM $1704: 21 B9 20
+2026:	1707  7E      	        LD A,(HL)  ; ROM $1707: 7E
+2027:	1708  A7      	        AND A  ; ROM $1708: A7
+2028:	1709  CA9F18  	        JP Z,$189F  ; ROM $1709: CA 9F 18
+2029:	170C  35      	        DEC (HL)  ; ROM $170C: 35
+2030:	170D  C21817  	        JP NZ,$1718  ; ROM $170D: C2 18 17
+2031:	1710  32BA20  	        LD ($20BA),A  ; ROM $1710: 32 BA 20
+2032:	1713  3E04    	        LD A,$04  ; ROM $1713: 3E 04
+2033:	1715  323620  	        LD ($2036),A  ; ROM $1715: 32 36 20
+2034:	1718          	NATIVE_1718:
+2035:	1718  0604    	        LD B,$04  ; ROM $1718: 06 04
+2036:	171A  CD2B12  	        CALL $122B  ; ROM $171A: CD 2B 12
+2037:	171D  3E18    	        LD A,$18  ; ROM $171D: 3E 18
+2038:	171F  D303    	        OUT ($03),A  ; ROM $171F: D3 03
+2039:	1721  3E02    	        LD A,$02  ; ROM $1721: 3E 02
+2040:	1723  323420  	        LD ($2034),A  ; ROM $1723: 32 34 20
+2041:	1726  214B1A  	        LD HL,$1A4B  ; ROM $1726: 21 4B 1A
+2042:	1729  11862F  	        LD DE,$2F86  ; ROM $1729: 11 86 2F
+2043:	172C  3E13    	        LD A,$13  ; ROM $172C: 3E 13
+2044:	172E  CD3201  	        CALL $0132  ; ROM $172E: CD 32 01
+2045:	1731  3A1520  	        LD A,($2015)  ; ROM $1731: 3A 15 20
+2046:	1734  FE0F    	        CP $0F  ; ROM $1734: FE 0F
+2047:	1736  DAD617  	        JP C,$17D6  ; ROM $1736: DA D6 17
+2048:	1739  FE59    	        CP $59  ; ROM $1739: FE 59
+2049:	173B  DA4817  	        JP C,$1748  ; ROM $173B: DA 48 17
+2050:	173E  FE69    	        CP $69  ; ROM $173E: FE 69
+2051:	1740  DAD617  	        JP C,$17D6  ; ROM $1740: DA D6 17
+2052:	1743  FED1    	        CP $D1  ; ROM $1743: FE D1
+2053:	1745  D2D617  	        JP NC,$17D6  ; ROM $1745: D2 D6 17
+2054:	1748          	NATIVE_1748:
+2055:	1748  D603    	        SUB $03  ; ROM $1748: D6 03
+2056:	174A  57      	        LD D,A  ; ROM $174A: 57
+2057:	174B  3A1420  	        LD A,($2014)  ; ROM $174B: 3A 14 20
+2058:	174E  FE03    	        CP $03  ; ROM $174E: FE 03
+2059:	1750  DAD617  	        JP C,$17D6  ; ROM $1750: DA D6 17
+2060:	1753  FEFC    	        CP $FC  ; ROM $1753: FE FC
+2061:	1755  D2D617  	        JP NC,$17D6  ; ROM $1755: D2 D6 17
+2062:	1758  D603    	        SUB $03  ; ROM $1758: D6 03
+2063:	175A  5F      	        LD E,A  ; ROM $175A: 5F
+2064:	175B  D5      	        PUSH DE  ; ROM $175B: D5
+2065:	175C  F5      	        PUSH AF  ; ROM $175C: F5
+2066:	175D  CDB101  	        CALL $01B1  ; ROM $175D: CD B1 01
+2067:	1760  EB      	        EX DE,HL  ; ROM $1760: EB
+2068:	1761  3E07    	        LD A,$07  ; ROM $1761: 3E 07
+2069:	1763  110000  	        LD DE,$0000  ; ROM $1763: 11 00 00
+2070:	1766  011F00  	        LD BC,$001F  ; ROM $1766: 01 1F 00
+2071:	1769          	NATIVE_1769:
+2072:	1769  F5      	        PUSH AF  ; ROM $1769: F5
+2073:	176A  7E      	        LD A,(HL)  ; ROM $176A: 7E
+2074:	176B  B2      	        OR D  ; ROM $176B: B2
+2075:	176C  57      	        LD D,A  ; ROM $176C: 57
+2076:	176D  7D      	        LD A,L  ; ROM $176D: 7D
+2077:	176E  23      	        INC HL  ; ROM $176E: 23
+2078:	176F  E61F    	        AND $1F  ; ROM $176F: E6 1F
+2079:	1771  78      	        LD A,B  ; ROM $1771: 78
+2080:	1772  CA7617  	        JP Z,$1776  ; ROM $1772: CA 76 17
+2081:	1775  7E      	        LD A,(HL)  ; ROM $1775: 7E
+2082:	1776          	NATIVE_1776:
+2083:	1776  B3      	        OR E  ; ROM $1776: B3
+2084:	1777  5F      	        LD E,A  ; ROM $1777: 5F
+2085:	1778  09      	        ADD HL,BC  ; ROM $1778: 09
+2086:	1779  F1      	        POP AF  ; ROM $1779: F1
+2087:	177A  3D      	        DEC A  ; ROM $177A: 3D
+2088:	177B  C26917  	        JP NZ,$1769  ; ROM $177B: C2 69 17
+2089:	177E  D5      	        PUSH DE  ; ROM $177E: D5
+2090:	177F  CDB618  	        CALL $18B6  ; ROM $177F: CD B6 18
+2091:	1782  E1      	        POP HL  ; ROM $1782: E1
+2092:	1783  F1      	        POP AF  ; ROM $1783: F1
+2093:	1784  E607    	        AND $07  ; ROM $1784: E6 07
+2094:	1786  3C      	        INC A  ; ROM $1786: 3C
+2095:	1787          	NATIVE_1787:
+2096:	1787  29      	        ADD HL,HL  ; ROM $1787: 29
+2097:	1788  3D      	        DEC A  ; ROM $1788: 3D
+2098:	1789  C28717  	        JP NZ,$1787  ; ROM $1789: C2 87 17
+2099:	178C  7C      	        LD A,H  ; ROM $178C: 7C
+2100:	178D  E67F    	        AND $7F  ; ROM $178D: E6 7F
+2101:	178F  D1      	        POP DE  ; ROM $178F: D1
+2102:	1790  21B320  	        LD HL,$20B3  ; ROM $1790: 21 B3 20
+2103:	1793  CADC17  	        JP Z,$17DC  ; ROM $1793: CA DC 17
+2104:	1796  3600    	        LD (HL),$00  ; ROM $1796: 36 00
+2105:	1798  7A      	        LD A,D  ; ROM $1798: 7A
+2106:	1799  FE59    	        CP $59  ; ROM $1799: FE 59
+2107:	179B  DA0218  	        JP C,$1802  ; ROM $179B: DA 02 18
+2108:	179E  FEB3    	        CP $B3  ; ROM $179E: FE B3
+2109:	17A0  DA1518  	        JP C,$1815  ; ROM $17A0: DA 15 18
+2110:	17A3  01FFFF  	        LD BC,$FFFF  ; ROM $17A3: 01 FF FF
+2111:	17A6  78      	        LD A,B  ; ROM $17A6: 78
+2112:	17A7          	NATIVE_17A7:
+2113:	17A7  C640    	        ADD A,$40  ; ROM $17A7: C6 40
+2114:	17A9  BB      	        CP E  ; ROM $17A9: BB
+2115:	17AA  03      	        INC BC  ; ROM $17AA: 03
+2116:	17AB  DAA717  	        JP C,$17A7  ; ROM $17AB: DA A7 17
+2117:	17AE  21AD20  	        LD HL,$20AD  ; ROM $17AE: 21 AD 20
+2118:	17B1  09      	        ADD HL,BC  ; ROM $17B1: 09
+2119:	17B2  7E      	        LD A,(HL)  ; ROM $17B2: 7E
+2120:	17B3  A7      	        AND A  ; ROM $17B3: A7
+2121:	17B4  C0      	        RET NZ  ; ROM $17B4: C0
+2122:	17B5  32B720  	        LD ($20B7),A  ; ROM $17B5: 32 B7 20
+2123:	17B8  3E10    	        LD A,$10  ; ROM $17B8: 3E 10
+2124:	17BA  77      	        LD (HL),A  ; ROM $17BA: 77
+2125:	17BB  CDA918  	        CALL $18A9  ; ROM $17BB: CD A9 18
+2126:	17BE  3E04    	        LD A,$04  ; ROM $17BE: 3E 04
+2127:	17C0  323320  	        LD ($2033),A  ; ROM $17C0: 32 33 20
+2128:	17C3  212219  	        LD HL,$1922  ; ROM $17C3: 21 22 19
+2129:	17C6  09      	        ADD HL,BC  ; ROM $17C6: 09
+2130:	17C7  09      	        ADD HL,BC  ; ROM $17C7: 09
+2131:	17C8  09      	        ADD HL,BC  ; ROM $17C8: 09
+2132:	17C9  5E      	        LD E,(HL)  ; ROM $17C9: 5E
+2133:	17CA  23      	        INC HL  ; ROM $17CA: 23
+2134:	17CB  56      	        LD D,(HL)  ; ROM $17CB: 56
+2135:	17CC  EB      	        EX DE,HL  ; ROM $17CC: EB
+2136:	17CD  11030D  	        LD DE,$0D03  ; ROM $17CD: 11 03 0D
+2137:	17D0  010210  	        LD BC,$1002  ; ROM $17D0: 01 02 10
+2138:	17D3  C3F90F  	        JP $0FF9  ; ROM $17D3: C3 F9 0F
+2139:	17D6          	NATIVE_17D6:
+2140:	17D6  CDB618  	        CALL $18B6  ; ROM $17D6: CD B6 18
+2141:	17D9  21B320  	        LD HL,$20B3  ; ROM $17D9: 21 B3 20
+2142:	17DC          	NATIVE_17DC:
+2143:	17DC  7E      	        LD A,(HL)  ; ROM $17DC: 7E
+2144:	17DD  34      	        INC (HL)  ; ROM $17DD: 34
+2145:	17DE  21A01A  	        LD HL,$1AA0  ; ROM $17DE: 21 A0 1A
+2146:	17E1  11862F  	        LD DE,$2F86  ; ROM $17E1: 11 86 2F
+2147:	17E4  A7      	        AND A  ; ROM $17E4: A7
+2148:	17E5  3E07    	        LD A,$07  ; ROM $17E5: 3E 07
+2149:	17E7  CAEC17  	        JP Z,$17EC  ; ROM $17E7: CA EC 17
+2150:	17EA  3E0D    	        LD A,$0D  ; ROM $17EA: 3E 0D
+2151:	17EC          	NATIVE_17EC:
+2152:	17EC  CD3201  	        CALL $0132  ; ROM $17EC: CD 32 01
+2153:	17EF  CD3212  	        CALL $1232  ; ROM $17EF: CD 32 12
+2154:	17F2  1F      	        RRA  ; ROM $17F2: 1F
+2155:	17F3  21AD1A  	        LD HL,$1AAD  ; ROM $17F3: 21 AD 1A
+2156:	17F6  3E05    	        LD A,$05  ; ROM $17F6: 3E 05
+2157:	17F8  DAFF17  	        JP C,$17FF  ; ROM $17F8: DA FF 17
+2158:	17FB  21B21A  	        LD HL,$1AB2  ; ROM $17FB: 21 B2 1A
+2159:	17FE  3C      	        INC A  ; ROM $17FE: 3C
+2160:	17FF          	NATIVE_17FF:
+2161:	17FF  C3      	        DB $C3 ; ROM $17FF unclassified
+2162:			
+2163:	1800          	        ORG $1800
+2164:			; Device desertgu.e, SHA1 202433dfb174901bd3b91e843d9d697a8333ef9e
+2165:	1800  3201    	        DB $32,$01 ; ROM $1800 unclassified
+2166:	1802          	NATIVE_1802:
+2167:	1802  214020  	        LD HL,$2040  ; ROM $1802: 21 40 20
+2168:	1805  CD8C18  	        CALL $188C  ; ROM $1805: CD 8C 18
+2169:	1808  DA2518  	        JP C,$1825  ; ROM $1808: DA 25 18
+2170:	180B  214F20  	        LD HL,$204F  ; ROM $180B: 21 4F 20
+2171:	180E  CD8C18  	        CALL $188C  ; ROM $180E: CD 8C 18
+2172:	1811  DA2518  	        JP C,$1825  ; ROM $1811: DA 25 18
+2173:	1814  C9      	        RET  ; ROM $1814: C9
+2174:	1815          	NATIVE_1815:
+2175:	1815  215E20  	        LD HL,$205E  ; ROM $1815: 21 5E 20
+2176:	1818  CD8C18  	        CALL $188C  ; ROM $1818: CD 8C 18
+2177:	181B  DA2518  	        JP C,$1825  ; ROM $181B: DA 25 18
+2178:	181E  216D20  	        LD HL,$206D  ; ROM $181E: 21 6D 20
+2179:	1821  CD8C18  	        CALL $188C  ; ROM $1821: CD 8C 18
+2180:	1824  D0      	        RET NC  ; ROM $1824: D0
+2181:	1825          	NATIVE_1825:
+2182:	1825  E5      	        PUSH HL  ; ROM $1825: E5
+2183:	1826  D5      	        PUSH DE  ; ROM $1826: D5
+2184:	1827  CD1A12  	        CALL $121A  ; ROM $1827: CD 1A 12
+2185:	182A  3E03    	        LD A,$03  ; ROM $182A: 3E 03
+2186:	182C  77      	        LD (HL),A  ; ROM $182C: 77
+2187:	182D  12      	        LD (DE),A  ; ROM $182D: 12
+2188:	182E  D1      	        POP DE  ; ROM $182E: D1
+2189:	182F  23      	        INC HL  ; ROM $182F: 23
+2190:	1830  E3      	        EX (SP),HL  ; ROM $1830: E3
+2191:	1831  2B      	        DEC HL  ; ROM $1831: 2B
+2192:	1832  2B      	        DEC HL  ; ROM $1832: 2B
+2193:	1833  4E      	        LD C,(HL)  ; ROM $1833: 4E
+2194:	1834  23      	        INC HL  ; ROM $1834: 23
+2195:	1835  5E      	        LD E,(HL)  ; ROM $1835: 5E
+2196:	1836  23      	        INC HL  ; ROM $1836: 23
+2197:	1837  7E      	        LD A,(HL)  ; ROM $1837: 7E
+2198:	1838  93      	        SUB E  ; ROM $1838: 93
+2199:	1839  5F      	        LD E,A  ; ROM $1839: 5F
+2200:	183A  23      	        INC HL  ; ROM $183A: 23
+2201:	183B  23      	        INC HL  ; ROM $183B: 23
+2202:	183C  23      	        INC HL  ; ROM $183C: 23
+2203:	183D  56      	        LD D,(HL)  ; ROM $183D: 56
+2204:	183E  23      	        INC HL  ; ROM $183E: 23
+2205:	183F  7E      	        LD A,(HL)  ; ROM $183F: 7E
+2206:	1840  92      	        SUB D  ; ROM $1840: 92
+2207:	1841  D668    	        SUB $68  ; ROM $1841: D6 68
+2208:	1843  D24818  	        JP NC,$1848  ; ROM $1843: D2 48 18
+2209:	1846  C65C    	        ADD A,$5C  ; ROM $1846: C6 5C
+2210:	1848          	NATIVE_1848:
+2211:	1848  FE20    	        CP $20  ; ROM $1848: FE 20
+2212:	184A  7E      	        LD A,(HL)  ; ROM $184A: 7E
+2213:	184B  DA5418  	        JP C,$1854  ; ROM $184B: DA 54 18
+2214:	184E  D610    	        SUB $10  ; ROM $184E: D6 10
+2215:	1850  57      	        LD D,A  ; ROM $1850: 57
+2216:	1851  C35818  	        JP $1858  ; ROM $1851: C3 58 18
+2217:	1854          	NATIVE_1854:
+2218:	1854  57      	        LD D,A  ; ROM $1854: 57
+2219:	1855  C610    	        ADD A,$10  ; ROM $1855: C6 10
+2220:	1857  77      	        LD (HL),A  ; ROM $1857: 77
+2221:	1858          	NATIVE_1858:
+2222:	1858  E3      	        EX (SP),HL  ; ROM $1858: E3
+2223:	1859  CDB101  	        CALL $01B1  ; ROM $1859: CD B1 01
+2224:	185C  71      	        LD (HL),C  ; ROM $185C: 71
+2225:	185D  23      	        INC HL  ; ROM $185D: 23
+2226:	185E  73      	        LD (HL),E  ; ROM $185E: 73
+2227:	185F  23      	        INC HL  ; ROM $185F: 23
+2228:	1860  72      	        LD (HL),D  ; ROM $1860: 72
+2229:	1861  23      	        INC HL  ; ROM $1861: 23
+2230:	1862  E5      	        PUSH HL  ; ROM $1862: E5
+2231:	1863  212E19  	        LD HL,$192E  ; ROM $1863: 21 2E 19
+2232:	1866  09      	        ADD HL,BC  ; ROM $1866: 09
+2233:	1867  EB      	        EX DE,HL  ; ROM $1867: EB
+2234:	1868  1A      	        LD A,(DE)  ; ROM $1868: 1A
+2235:	1869  CDA918  	        CALL $18A9  ; ROM $1869: CD A9 18
+2236:	186C  C1      	        POP BC  ; ROM $186C: C1
+2237:	186D  CD3310  	        CALL $1033  ; ROM $186D: CD 33 10
+2238:	1870  3E30    	        LD A,$30  ; ROM $1870: 3E 30
+2239:	1872  02      	        LD (BC),A  ; ROM $1872: 02
+2240:	1873  03      	        INC BC  ; ROM $1873: 03
+2241:	1874  3E40    	        LD A,$40  ; ROM $1874: 3E 40
+2242:	1876  02      	        LD (BC),A  ; ROM $1876: 02
+2243:	1877  E1      	        POP HL  ; ROM $1877: E1
+2244:	1878  23      	        INC HL  ; ROM $1878: 23
+2245:	1879  3600    	        LD (HL),$00  ; ROM $1879: 36 00
+2246:	187B  2B      	        DEC HL  ; ROM $187B: 2B
+2247:	187C  2B      	        DEC HL  ; ROM $187C: 2B
+2248:	187D  3601    	        LD (HL),$01  ; ROM $187D: 36 01
+2249:	187F  2B      	        DEC HL  ; ROM $187F: 2B
+2250:	1880  2B      	        DEC HL  ; ROM $1880: 2B
+2251:	1881  2B      	        DEC HL  ; ROM $1881: 2B
+2252:	1882  2B      	        DEC HL  ; ROM $1882: 2B
+2253:	1883  3600    	        LD (HL),$00  ; ROM $1883: 36 00
+2254:	1885  2B      	        DEC HL  ; ROM $1885: 2B
+2255:	1886  2B      	        DEC HL  ; ROM $1886: 2B
+2256:	1887  7E      	        LD A,(HL)  ; ROM $1887: 7E
+2257:	1888  F602    	        OR $02  ; ROM $1888: F6 02
+2258:	188A  77      	        LD (HL),A  ; ROM $188A: 77
+2259:	188B  C9      	        RET  ; ROM $188B: C9
+2260:	188C          	NATIVE_188C:
+2261:	188C  7E      	        LD A,(HL)  ; ROM $188C: 7E
+2262:	188D  A7      	        AND A  ; ROM $188D: A7
+2263:	188E  F0      	        RET P  ; ROM $188E: F0
+2264:	188F  E602    	        AND $02  ; ROM $188F: E6 02
+2265:	1891  C0      	        RET NZ  ; ROM $1891: C0
+2266:	1892  23      	        INC HL  ; ROM $1892: 23
+2267:	1893  23      	        INC HL  ; ROM $1893: 23
+2268:	1894  23      	        INC HL  ; ROM $1894: 23
+2269:	1895  7E      	        LD A,(HL)  ; ROM $1895: 7E
+2270:	1896  D608    	        SUB $08  ; ROM $1896: D6 08
+2271:	1898  BB      	        CP E  ; ROM $1898: BB
+2272:	1899  D0      	        RET NC  ; ROM $1899: D0
+2273:	189A  C628    	        ADD A,$28  ; ROM $189A: C6 28
+2274:	189C  BB      	        CP E  ; ROM $189C: BB
+2275:	189D  3F      	        CCF  ; ROM $189D: 3F
+2276:	189E  C9      	        RET  ; ROM $189E: C9
+2277:	189F          	NATIVE_189F:
+2278:	189F  3E03    	        LD A,$03  ; ROM $189F: 3E 03
+2279:	18A1  323420  	        LD ($2034),A  ; ROM $18A1: 32 34 20
+2280:	18A4  0602    	        LD B,$02  ; ROM $18A4: 06 02
+2281:	18A6  C32B12  	        JP $122B  ; ROM $18A6: C3 2B 12
+2282:	18A9          	NATIVE_18A9:
+2283:	18A9  210A20  	        LD HL,$200A  ; ROM $18A9: 21 0A 20
+2284:	18AC  86      	        ADD A,(HL)  ; ROM $18AC: 86
+2285:	18AD  27      	        DAA  ; ROM $18AD: 27
+2286:	18AE  77      	        LD (HL),A  ; ROM $18AE: 77
+2287:	18AF  2B      	        DEC HL  ; ROM $18AF: 2B
+2288:	18B0  3E00    	        LD A,$00  ; ROM $18B0: 3E 00
+2289:	18B2  8E      	        ADC A,(HL)  ; ROM $18B2: 8E
+2290:	18B3  27      	        DAA  ; ROM $18B3: 27
+2291:	18B4  77      	        LD (HL),A  ; ROM $18B4: 77
+2292:	18B5  C9      	        RET  ; ROM $18B5: C9
+2293:	18B6          	NATIVE_18B6:
+2294:	18B6  3A1420  	        LD A,($2014)  ; ROM $18B6: 3A 14 20
+2295:	18B9  FE03    	        CP $03  ; ROM $18B9: FE 03
+2296:	18BB  D2C018  	        JP NC,$18C0  ; ROM $18BB: D2 C0 18
+2297:	18BE  3E03    	        LD A,$03  ; ROM $18BE: 3E 03
+2298:	18C0          	NATIVE_18C0:
+2299:	18C0  FEFC    	        CP $FC  ; ROM $18C0: FE FC
+2300:	18C2  DAC718  	        JP C,$18C7  ; ROM $18C2: DA C7 18
+2301:	18C5  3EFC    	        LD A,$FC  ; ROM $18C5: 3E FC
+2302:	18C7          	NATIVE_18C7:
+2303:	18C7  D603    	        SUB $03  ; ROM $18C7: D6 03
+2304:	18C9  6F      	        LD L,A  ; ROM $18C9: 6F
+2305:	18CA  E607    	        AND $07  ; ROM $18CA: E6 07
+2306:	18CC  3C      	        INC A  ; ROM $18CC: 3C
+2307:	18CD  4F      	        LD C,A  ; ROM $18CD: 4F
+2308:	18CE  3A1520  	        LD A,($2015)  ; ROM $18CE: 3A 15 20
+2309:	18D1  D603    	        SUB $03  ; ROM $18D1: D6 03
+2310:	18D3  D2D818  	        JP NC,$18D8  ; ROM $18D3: D2 D8 18
+2311:	18D6  3E03    	        LD A,$03  ; ROM $18D6: 3E 03
+2312:	18D8          	NATIVE_18D8:
+2313:	18D8  67      	        LD H,A  ; ROM $18D8: 67
+2314:	18D9  22B420  	        LD ($20B4),HL  ; ROM $18D9: 22 B4 20
+2315:	18DC  EB      	        EX DE,HL  ; ROM $18DC: EB
+2316:	18DD  CDB101  	        CALL $01B1  ; ROM $18DD: CD B1 01
+2317:	18E0  3E0A    	        LD A,$0A  ; ROM $18E0: 3E 0A
+2318:	18E2  323920  	        LD ($2039),A  ; ROM $18E2: 32 39 20
+2319:	18E5  0680    	        LD B,$80  ; ROM $18E5: 06 80
+2320:	18E7          	NATIVE_18E7:
+2321:	18E7  211C19  	        LD HL,$191C  ; ROM $18E7: 21 1C 19
+2322:	18EA  3E06    	        LD A,$06  ; ROM $18EA: 3E 06
+2323:	18EC          	NATIVE_18EC:
+2324:	18EC  F5      	        PUSH AF  ; ROM $18EC: F5
+2325:	18ED  E5      	        PUSH HL  ; ROM $18ED: E5
+2326:	18EE  6E      	        LD L,(HL)  ; ROM $18EE: 6E
+2327:	18EF  2600    	        LD H,$00  ; ROM $18EF: 26 00
+2328:	18F1  79      	        LD A,C  ; ROM $18F1: 79
+2329:	18F2          	NATIVE_18F2:
+2330:	18F2  29      	        ADD HL,HL  ; ROM $18F2: 29
+2331:	18F3  3D      	        DEC A  ; ROM $18F3: 3D
+2332:	18F4  C2F218  	        JP NZ,$18F2  ; ROM $18F4: C2 F2 18
+2333:	18F7  EB      	        EX DE,HL  ; ROM $18F7: EB
+2334:	18F8  05      	        DEC B  ; ROM $18F8: 05
+2335:	18F9  FA0619  	        JP M,$1906  ; ROM $18F9: FA 06 19
+2336:	18FC  7B      	        LD A,E  ; ROM $18FC: 7B
+2337:	18FD  B6      	        OR (HL)  ; ROM $18FD: B6
+2338:	18FE  77      	        LD (HL),A  ; ROM $18FE: 77
+2339:	18FF  23      	        INC HL  ; ROM $18FF: 23
+2340:	1900  7A      	        LD A,D  ; ROM $1900: 7A
+2341:	1901  B6      	        OR (HL)  ; ROM $1901: B6
+2342:	1902  77      	        LD (HL),A  ; ROM $1902: 77
+2343:	1903  C30F19  	        JP $190F  ; ROM $1903: C3 0F 19
+2344:	1906          	NATIVE_1906:
+2345:	1906  7B      	        LD A,E  ; ROM $1906: 7B
+2346:	1907  2F      	        CPL  ; ROM $1907: 2F
+2347:	1908  A6      	        AND (HL)  ; ROM $1908: A6
+2348:	1909  77      	        LD (HL),A  ; ROM $1909: 77
+2349:	190A  23      	        INC HL  ; ROM $190A: 23
+2350:	190B  7A      	        LD A,D  ; ROM $190B: 7A
+2351:	190C  2F      	        CPL  ; ROM $190C: 2F
+2352:	190D  A6      	        AND (HL)  ; ROM $190D: A6
+2353:	190E  77      	        LD (HL),A  ; ROM $190E: 77
+2354:	190F          	NATIVE_190F:
+2355:	190F  111F00  	        LD DE,$001F  ; ROM $190F: 11 1F 00
+2356:	1912  19      	        ADD HL,DE  ; ROM $1912: 19
+2357:	1913  EB      	        EX DE,HL  ; ROM $1913: EB
+2358:	1914  E1      	        POP HL  ; ROM $1914: E1
+2359:	1915  23      	        INC HL  ; ROM $1915: 23
+2360:	1916  F1      	        POP AF  ; ROM $1916: F1
+2361:	1917  3D      	        DEC A  ; ROM $1917: 3D
+2362:	1918  C2EC18  	        JP NZ,$18EC  ; ROM $1918: C2 EC 18
+2363:	191B  C9      	        RET  ; ROM $191B: C9
+2364:	191C  44201A18	        DB $44,$20,$1A,$18,$20,$44,$24,$3B,$1B,$8C,$3C,$10 ; ROM $191C unclassified
 	      2044243B
 	      1B8C3C10
-2304:	1928  543B1A9C	        DB $54,$3B,$1A,$9C,$3C,$10,$50,$30,$20,$20,$20,$20 ; ROM $1928 unclassified
+2365:	1928  543B1A9C	        DB $54,$3B,$1A,$9C,$3C,$10,$50,$30,$20,$20,$20,$20 ; ROM $1928 unclassified
 	      3C105030
 	      20202020
-2305:	1934  2020    	        DB $20,$20 ; ROM $1934 unclassified
-2306:	1936          	NATIVE_1936:
-2307:	1936  3A8120  	        LD A,($2081)  ; ROM $1936: 3A 81 20
-2308:	1939  A7      	        AND A  ; ROM $1939: A7
-2309:	193A  C8      	        RET Z  ; ROM $193A: C8
-2310:	193B  11B120  	        LD DE,$20B1  ; ROM $193B: 11 B1 20
-2311:	193E  1A      	        LD A,(DE)  ; ROM $193E: 1A
-2312:	193F  A7      	        AND A  ; ROM $193F: A7
-2313:	1940  C0      	        RET NZ  ; ROM $1940: C0
-2314:	1941  2F      	        CPL  ; ROM $1941: 2F
-2315:	1942  12      	        LD (DE),A  ; ROM $1942: 12
-2316:	1943  214B1A  	        LD HL,$1A4B  ; ROM $1943: 21 4B 1A
-2317:	1946  11A73E  	        LD DE,$3EA7  ; ROM $1946: 11 A7 3E
-2318:	1949  3E13    	        LD A,$13  ; ROM $1949: 3E 13
-2319:	194B  CD3201  	        CALL $0132  ; ROM $194B: CD 32 01
-2320:	194E  216519  	        LD HL,$1965  ; ROM $194E: 21 65 19
-2321:	1951          	NATIVE_1951:
-2322:	1951  5E      	        LD E,(HL)  ; ROM $1951: 5E
-2323:	1952  23      	        INC HL  ; ROM $1952: 23
-2324:	1953  56      	        LD D,(HL)  ; ROM $1953: 56
-2325:	1954  23      	        INC HL  ; ROM $1954: 23
-2326:	1955  7A      	        LD A,D  ; ROM $1955: 7A
-2327:	1956  B3      	        OR E  ; ROM $1956: B3
-2328:	1957  C8      	        RET Z  ; ROM $1957: C8
-2329:	1958  D5      	        PUSH DE  ; ROM $1958: D5
-2330:	1959  5E      	        LD E,(HL)  ; ROM $1959: 5E
-2331:	195A  23      	        INC HL  ; ROM $195A: 23
-2332:	195B  56      	        LD D,(HL)  ; ROM $195B: 56
-2333:	195C  23      	        INC HL  ; ROM $195C: 23
-2334:	195D  E3      	        EX (SP),HL  ; ROM $195D: E3
-2335:	195E  CDF40F  	        CALL $0FF4  ; ROM $195E: CD F4 0F
-2336:	1961  E1      	        POP HL  ; ROM $1961: E1
-2337:	1962  C35119  	        JP $1951  ; ROM $1962: C3 51 19
-2338:	1965  960C243B	        DB $96,$0C,$24,$3B,$B3,$0C,$8C,$3C,$D5,$0C,$54,$3B ; ROM $1965 unclassified
+2366:	1934  2020    	        DB $20,$20 ; ROM $1934 unclassified
+2367:	1936          	NATIVE_1936:
+2368:	1936  3A8120  	        LD A,($2081)  ; ROM $1936: 3A 81 20
+2369:	1939  A7      	        AND A  ; ROM $1939: A7
+2370:	193A  C8      	        RET Z  ; ROM $193A: C8
+2371:	193B  11B120  	        LD DE,$20B1  ; ROM $193B: 11 B1 20
+2372:	193E  1A      	        LD A,(DE)  ; ROM $193E: 1A
+2373:	193F  A7      	        AND A  ; ROM $193F: A7
+2374:	1940  C0      	        RET NZ  ; ROM $1940: C0
+2375:	1941  2F      	        CPL  ; ROM $1941: 2F
+2376:	1942  12      	        LD (DE),A  ; ROM $1942: 12
+2377:	1943  214B1A  	        LD HL,$1A4B  ; ROM $1943: 21 4B 1A
+2378:	1946  11A73E  	        LD DE,$3EA7  ; ROM $1946: 11 A7 3E
+2379:	1949  3E13    	        LD A,$13  ; ROM $1949: 3E 13
+2380:	194B  CD3201  	        CALL $0132  ; ROM $194B: CD 32 01
+2381:	194E  216519  	        LD HL,$1965  ; ROM $194E: 21 65 19
+2382:	1951          	NATIVE_1951:
+2383:	1951  5E      	        LD E,(HL)  ; ROM $1951: 5E
+2384:	1952  23      	        INC HL  ; ROM $1952: 23
+2385:	1953  56      	        LD D,(HL)  ; ROM $1953: 56
+2386:	1954  23      	        INC HL  ; ROM $1954: 23
+2387:	1955  7A      	        LD A,D  ; ROM $1955: 7A
+2388:	1956  B3      	        OR E  ; ROM $1956: B3
+2389:	1957  C8      	        RET Z  ; ROM $1957: C8
+2390:	1958  D5      	        PUSH DE  ; ROM $1958: D5
+2391:	1959  5E      	        LD E,(HL)  ; ROM $1959: 5E
+2392:	195A  23      	        INC HL  ; ROM $195A: 23
+2393:	195B  56      	        LD D,(HL)  ; ROM $195B: 56
+2394:	195C  23      	        INC HL  ; ROM $195C: 23
+2395:	195D  E3      	        EX (SP),HL  ; ROM $195D: E3
+2396:	195E  CDF40F  	        CALL $0FF4  ; ROM $195E: CD F4 0F
+2397:	1961  E1      	        POP HL  ; ROM $1961: E1
+2398:	1962  C35119  	        JP $1951  ; ROM $1962: C3 51 19
+2399:	1965  960C243B	        DB $96,$0C,$24,$3B,$B3,$0C,$8C,$3C,$D5,$0C,$54,$3B ; ROM $1965 unclassified
 	      B30C8C3C
 	      D50C543B
-2339:	1971  F10C9C3C	        DB $F1,$0C,$9C,$3C,$00,$00 ; ROM $1971 unclassified
+2400:	1971  F10C9C3C	        DB $F1,$0C,$9C,$3C,$00,$00 ; ROM $1971 unclassified
 	      0000
-2340:	1977          	NATIVE_1977:
-2341:	1977  21B620  	        LD HL,$20B6  ; ROM $1977: 21 B6 20
-2342:	197A  7E      	        LD A,(HL)  ; ROM $197A: 7E
-2343:	197B  A7      	        AND A  ; ROM $197B: A7
-2344:	197C  C2AF19  	        JP NZ,$19AF  ; ROM $197C: C2 AF 19
-2345:	197F  34      	        INC (HL)  ; ROM $197F: 34
-2346:	1980  DB02    	        IN A,($02)  ; ROM $1980: DB 02
-2347:	1982  0F      	        RRCA  ; ROM $1982: 0F
-2348:	1983  0F      	        RRCA  ; ROM $1983: 0F
-2349:	1984  0F      	        RRCA  ; ROM $1984: 0F
-2350:	1985  0F      	        RRCA  ; ROM $1985: 0F
-2351:	1986  E603    	        AND $03  ; ROM $1986: E6 03
-2352:	1988  4F      	        LD C,A  ; ROM $1988: 4F
-2353:	1989  0600    	        LD B,$00  ; ROM $1989: 06 00
-2354:	198B  21FF19  	        LD HL,$19FF  ; ROM $198B: 21 FF 19
-2355:	198E  09      	        ADD HL,BC  ; ROM $198E: 09
-2356:	198F  3A0920  	        LD A,($2009)  ; ROM $198F: 3A 09 20
-2357:	1992  BE      	        CP (HL)  ; ROM $1992: BE
-2358:	1993  DAAF19  	        JP C,$19AF  ; ROM $1993: DA AF 19
-2359:	1996  21021A  	        LD HL,$1A02  ; ROM $1996: 21 02 1A
-2360:	1999  09      	        ADD HL,BC  ; ROM $1999: 09
-2361:	199A  7E      	        LD A,(HL)  ; ROM $199A: 7E
-2362:	199B  320820  	        LD ($2008),A  ; ROM $199B: 32 08 20
-2363:	199E  321F20  	        LD ($201F),A  ; ROM $199E: 32 1F 20
-2364:	19A1  21D810  	        LD HL,$10D8  ; ROM $19A1: 21 D8 10
-2365:	19A4  221220  	        LD ($2012),HL  ; ROM $19A4: 22 12 20
-2366:	19A7  0E07    	        LD C,$07  ; ROM $19A7: 0E 07
-2367:	19A9  CD061A  	        CALL $1A06  ; ROM $19A9: CD 06 1A
-2368:	19AC  C33201  	        JP $0132  ; ROM $19AC: C3 32 01
-2369:	19AF          	NATIVE_19AF:
-2370:	19AF  010920  	        LD BC,$2009  ; ROM $19AF: 01 09 20
-2371:	19B2  211C20  	        LD HL,$201C  ; ROM $19B2: 21 1C 20
-2372:	19B5  11F210  	        LD DE,$10F2  ; ROM $19B5: 11 F2 10
-2373:	19B8  CDF619  	        CALL $19F6  ; ROM $19B8: CD F6 19
-2374:	19BB  DACD19  	        JP C,$19CD  ; ROM $19BB: DA CD 19
-2375:	19BE  210620  	        LD HL,$2006  ; ROM $19BE: 21 06 20
-2376:	19C1  110C11  	        LD DE,$110C  ; ROM $19C1: 11 0C 11
-2377:	19C4  CDF619  	        CALL $19F6  ; ROM $19C4: CD F6 19
-2378:	19C7  DACD19  	        JP C,$19CD  ; ROM $19C7: DA CD 19
-2379:	19CA  112811  	        LD DE,$1128  ; ROM $19CA: 11 28 11
-2380:	19CD          	NATIVE_19CD:
-2381:	19CD  EB      	        EX DE,HL  ; ROM $19CD: EB
-2382:	19CE  221220  	        LD ($2012),HL  ; ROM $19CE: 22 12 20
-2383:	19D1  210620  	        LD HL,$2006  ; ROM $19D1: 21 06 20
-2384:	19D4  CDF619  	        CALL $19F6  ; ROM $19D4: CD F6 19
-2385:	19D7  DAE019  	        JP C,$19E0  ; ROM $19D7: DA E0 19
-2386:	19DA  2A0920  	        LD HL,($2009)  ; ROM $19DA: 2A 09 20
-2387:	19DD  220620  	        LD ($2006),HL  ; ROM $19DD: 22 06 20
-2388:	19E0          	NATIVE_19E0:
-2389:	19E0  3E01    	        LD A,$01  ; ROM $19E0: 3E 01
-2390:	19E2  323120  	        LD ($2031),A  ; ROM $19E2: 32 31 20
-2391:	19E5  321F20  	        LD ($201F),A  ; ROM $19E5: 32 1F 20
-2392:	19E8  2A0920  	        LD HL,($2009)  ; ROM $19E8: 2A 09 20
-2393:	19EB  221C20  	        LD ($201C),HL  ; ROM $19EB: 22 1C 20
-2394:	19EE  EB      	        EX DE,HL  ; ROM $19EE: EB
-2395:	19EF  210000  	        LD HL,$0000  ; ROM $19EF: 21 00 00
-2396:	19F2  220920  	        LD ($2009),HL  ; ROM $19F2: 22 09 20
-2397:	19F5  C9      	        RET  ; ROM $19F5: C9
-2398:	19F6          	NATIVE_19F6:
-2399:	19F6  0A      	        LD A,(BC)  ; ROM $19F6: 0A
-2400:	19F7  BE      	        CP (HL)  ; ROM $19F7: BE
-2401:	19F8  C0      	        RET NZ  ; ROM $19F8: C0
-2402:	19F9  23      	        INC HL  ; ROM $19F9: 23
-2403:	19FA  03      	        INC BC  ; ROM $19FA: 03
-2404:	19FB  0A      	        LD A,(BC)  ; ROM $19FB: 0A
-2405:	19FC  BE      	        CP (HL)  ; ROM $19FC: BE
-2406:	19FD  0B      	        DEC BC  ; ROM $19FD: 0B
-2407:	19FE  C9      	        RET  ; ROM $19FE: C9
-2408:	19FF  05070930	        DB $05,$07,$09,$30,$30,$30,$35 ; ROM $19FF unclassified
+2401:	1977          	NATIVE_1977:
+2402:	1977  21B620  	        LD HL,$20B6  ; ROM $1977: 21 B6 20
+2403:	197A  7E      	        LD A,(HL)  ; ROM $197A: 7E
+2404:	197B  A7      	        AND A  ; ROM $197B: A7
+2405:	197C  C2AF19  	        JP NZ,$19AF  ; ROM $197C: C2 AF 19
+2406:	197F  34      	        INC (HL)  ; ROM $197F: 34
+2407:	1980  DB02    	        IN A,($02)  ; ROM $1980: DB 02
+2408:	1982  0F      	        RRCA  ; ROM $1982: 0F
+2409:	1983  0F      	        RRCA  ; ROM $1983: 0F
+2410:	1984  0F      	        RRCA  ; ROM $1984: 0F
+2411:	1985  0F      	        RRCA  ; ROM $1985: 0F
+2412:	1986  E603    	        AND $03  ; ROM $1986: E6 03
+2413:	1988  4F      	        LD C,A  ; ROM $1988: 4F
+2414:	1989  0600    	        LD B,$00  ; ROM $1989: 06 00
+2415:	198B  21FF19  	        LD HL,$19FF  ; ROM $198B: 21 FF 19
+2416:	198E  09      	        ADD HL,BC  ; ROM $198E: 09
+2417:	198F  3A0920  	        LD A,($2009)  ; ROM $198F: 3A 09 20
+2418:	1992  BE      	        CP (HL)  ; ROM $1992: BE
+2419:	1993  DAAF19  	        JP C,$19AF  ; ROM $1993: DA AF 19
+2420:	1996  21021A  	        LD HL,$1A02  ; ROM $1996: 21 02 1A
+2421:	1999  09      	        ADD HL,BC  ; ROM $1999: 09
+2422:	199A  7E      	        LD A,(HL)  ; ROM $199A: 7E
+2423:	199B  320820  	        LD ($2008),A  ; ROM $199B: 32 08 20
+2424:	199E  321F20  	        LD ($201F),A  ; ROM $199E: 32 1F 20
+2425:	19A1  21D810  	        LD HL,$10D8  ; ROM $19A1: 21 D8 10
+2426:	19A4  221220  	        LD ($2012),HL  ; ROM $19A4: 22 12 20
+2427:	19A7  0E07    	        LD C,$07  ; ROM $19A7: 0E 07
+2428:	19A9  CD061A  	        CALL $1A06  ; ROM $19A9: CD 06 1A
+2429:	19AC  C33201  	        JP $0132  ; ROM $19AC: C3 32 01
+2430:	19AF          	NATIVE_19AF:
+2431:	19AF  010920  	        LD BC,$2009  ; ROM $19AF: 01 09 20
+2432:	19B2  211C20  	        LD HL,$201C  ; ROM $19B2: 21 1C 20
+2433:	19B5  11F210  	        LD DE,$10F2  ; ROM $19B5: 11 F2 10
+2434:	19B8  CDF619  	        CALL $19F6  ; ROM $19B8: CD F6 19
+2435:	19BB  DACD19  	        JP C,$19CD  ; ROM $19BB: DA CD 19
+2436:	19BE  210620  	        LD HL,$2006  ; ROM $19BE: 21 06 20
+2437:	19C1  110C11  	        LD DE,$110C  ; ROM $19C1: 11 0C 11
+2438:	19C4  CDF619  	        CALL $19F6  ; ROM $19C4: CD F6 19
+2439:	19C7  DACD19  	        JP C,$19CD  ; ROM $19C7: DA CD 19
+2440:	19CA  112811  	        LD DE,$1128  ; ROM $19CA: 11 28 11
+2441:	19CD          	NATIVE_19CD:
+2442:	19CD  EB      	        EX DE,HL  ; ROM $19CD: EB
+2443:	19CE  221220  	        LD ($2012),HL  ; ROM $19CE: 22 12 20
+2444:	19D1  210620  	        LD HL,$2006  ; ROM $19D1: 21 06 20
+2445:	19D4  CDF619  	        CALL $19F6  ; ROM $19D4: CD F6 19
+2446:	19D7  DAE019  	        JP C,$19E0  ; ROM $19D7: DA E0 19
+2447:	19DA  2A0920  	        LD HL,($2009)  ; ROM $19DA: 2A 09 20
+2448:	19DD  220620  	        LD ($2006),HL  ; ROM $19DD: 22 06 20
+2449:	19E0          	NATIVE_19E0:
+2450:	19E0  3E01    	        LD A,$01  ; ROM $19E0: 3E 01
+2451:	19E2  323120  	        LD ($2031),A  ; ROM $19E2: 32 31 20
+2452:	19E5  321F20  	        LD ($201F),A  ; ROM $19E5: 32 1F 20
+2453:	19E8  2A0920  	        LD HL,($2009)  ; ROM $19E8: 2A 09 20
+2454:	19EB  221C20  	        LD ($201C),HL  ; ROM $19EB: 22 1C 20
+2455:	19EE  EB      	        EX DE,HL  ; ROM $19EE: EB
+2456:	19EF  210000  	        LD HL,$0000  ; ROM $19EF: 21 00 00
+2457:	19F2  220920  	        LD ($2009),HL  ; ROM $19F2: 22 09 20
+2458:	19F5  C9      	        RET  ; ROM $19F5: C9
+2459:	19F6          	NATIVE_19F6:
+2460:	19F6  0A      	        LD A,(BC)  ; ROM $19F6: 0A
+2461:	19F7  BE      	        CP (HL)  ; ROM $19F7: BE
+2462:	19F8  C0      	        RET NZ  ; ROM $19F8: C0
+2463:	19F9  23      	        INC HL  ; ROM $19F9: 23
+2464:	19FA  03      	        INC BC  ; ROM $19FA: 03
+2465:	19FB  0A      	        LD A,(BC)  ; ROM $19FB: 0A
+2466:	19FC  BE      	        CP (HL)  ; ROM $19FC: BE
+2467:	19FD  0B      	        DEC BC  ; ROM $19FD: 0B
+2468:	19FE  C9      	        RET  ; ROM $19FE: C9
+2469:	19FF  05070930	        DB $05,$07,$09,$30,$30,$30,$35 ; ROM $19FF unclassified
 	      303035
-2409:	1A06          	NATIVE_1A06:
-2410:	1A06  21371A  	        LD HL,$1A37  ; ROM $1A06: 21 37 1A
-2411:	1A09  0600    	        LD B,$00  ; ROM $1A09: 06 00
-2412:	1A0B  09      	        ADD HL,BC  ; ROM $1A0B: 09
-2413:	1A0C  09      	        ADD HL,BC  ; ROM $1A0C: 09
-2414:	1A0D  5E      	        LD E,(HL)  ; ROM $1A0D: 5E
-2415:	1A0E  23      	        INC HL  ; ROM $1A0E: 23
-2416:	1A0F  56      	        LD D,(HL)  ; ROM $1A0F: 56
-2417:	1A10  DB02    	        IN A,($02)  ; ROM $1A10: DB 02
-2418:	1A12  0F      	        RRCA  ; ROM $1A12: 0F
-2419:	1A13  0F      	        RRCA  ; ROM $1A13: 0F
-2420:	1A14  E603    	        AND $03  ; ROM $1A14: E6 03
-2421:	1A16  C5      	        PUSH BC  ; ROM $1A16: C5
-2422:	1A17  212F1A  	        LD HL,$1A2F  ; ROM $1A17: 21 2F 1A
-2423:	1A1A  4F      	        LD C,A  ; ROM $1A1A: 4F
-2424:	1A1B  09      	        ADD HL,BC  ; ROM $1A1B: 09
-2425:	1A1C  09      	        ADD HL,BC  ; ROM $1A1C: 09
-2426:	1A1D  7E      	        LD A,(HL)  ; ROM $1A1D: 7E
-2427:	1A1E  23      	        INC HL  ; ROM $1A1E: 23
-2428:	1A1F  66      	        LD H,(HL)  ; ROM $1A1F: 66
-2429:	1A20  6F      	        LD L,A  ; ROM $1A20: 6F
-2430:	1A21  C1      	        POP BC  ; ROM $1A21: C1
-2431:	1A22          	NATIVE_1A22:
-2432:	1A22  7E      	        LD A,(HL)  ; ROM $1A22: 7E
-2433:	1A23  23      	        INC HL  ; ROM $1A23: 23
-2434:	1A24  A7      	        AND A  ; ROM $1A24: A7
-2435:	1A25  F2221A  	        JP P,$1A22  ; ROM $1A25: F2 22 1A
-2436:	1A28  0D      	        DEC C  ; ROM $1A28: 0D
-2437:	1A29  F2221A  	        JP P,$1A22  ; ROM $1A29: F2 22 1A
-2438:	1A2C  E67F    	        AND $7F  ; ROM $1A2C: E6 7F
-2439:	1A2E  C9      	        RET  ; ROM $1A2E: C9
-2440:	1A2F  C31A1B1B	        DB $C3,$1A,$1B,$1B,$79,$1B,$D9,$1B,$08,$28,$08,$34 ; ROM $1A2F unclassified
+2470:	1A06          	NATIVE_1A06:
+2471:	1A06  21371A  	        LD HL,$1A37  ; ROM $1A06: 21 37 1A
+2472:	1A09  0600    	        LD B,$00  ; ROM $1A09: 06 00
+2473:	1A0B  09      	        ADD HL,BC  ; ROM $1A0B: 09
+2474:	1A0C  09      	        ADD HL,BC  ; ROM $1A0C: 09
+2475:	1A0D  5E      	        LD E,(HL)  ; ROM $1A0D: 5E
+2476:	1A0E  23      	        INC HL  ; ROM $1A0E: 23
+2477:	1A0F  56      	        LD D,(HL)  ; ROM $1A0F: 56
+2478:	1A10  DB02    	        IN A,($02)  ; ROM $1A10: DB 02
+2479:	1A12  0F      	        RRCA  ; ROM $1A12: 0F
+2480:	1A13  0F      	        RRCA  ; ROM $1A13: 0F
+2481:	1A14  E603    	        AND $03  ; ROM $1A14: E6 03
+2482:	1A16  C5      	        PUSH BC  ; ROM $1A16: C5
+2483:	1A17  212F1A  	        LD HL,$1A2F  ; ROM $1A17: 21 2F 1A
+2484:	1A1A  4F      	        LD C,A  ; ROM $1A1A: 4F
+2485:	1A1B  09      	        ADD HL,BC  ; ROM $1A1B: 09
+2486:	1A1C  09      	        ADD HL,BC  ; ROM $1A1C: 09
+2487:	1A1D  7E      	        LD A,(HL)  ; ROM $1A1D: 7E
+2488:	1A1E  23      	        INC HL  ; ROM $1A1E: 23
+2489:	1A1F  66      	        LD H,(HL)  ; ROM $1A1F: 66
+2490:	1A20  6F      	        LD L,A  ; ROM $1A20: 6F
+2491:	1A21  C1      	        POP BC  ; ROM $1A21: C1
+2492:	1A22          	NATIVE_1A22:
+2493:	1A22  7E      	        LD A,(HL)  ; ROM $1A22: 7E
+2494:	1A23  23      	        INC HL  ; ROM $1A23: 23
+2495:	1A24  A7      	        AND A  ; ROM $1A24: A7
+2496:	1A25  F2221A  	        JP P,$1A22  ; ROM $1A25: F2 22 1A
+2497:	1A28  0D      	        DEC C  ; ROM $1A28: 0D
+2498:	1A29  F2221A  	        JP P,$1A22  ; ROM $1A29: F2 22 1A
+2499:	1A2C  E67F    	        AND $7F  ; ROM $1A2C: E6 7F
+2500:	1A2E  C9      	        RET  ; ROM $1A2E: C9
+2501:	1A2F  C31A1B1B	        DB $C3,$1A,$1B,$1B,$79,$1B,$D9,$1B,$08,$28,$08,$34 ; ROM $1A2F unclassified
 	      791BD91B
 	      08280834
-2441:	1A3B  B43E0424	        DB $B4,$3E,$04,$24,$15,$24,$A6,$3E,$06,$24,$A7,$3E ; ROM $1A3B unclassified
+2502:	1A3B  B43E0424	        DB $B4,$3E,$04,$24,$15,$24,$A6,$3E,$06,$24,$A7,$3E ; ROM $1A3B unclassified
 	      1524A63E
 	      0624A73E
-2442:	1A47  0B300B30	        DB $0B,$30,$0B,$30,$40,$40,$40,$40,$40,$40,$40,$40 ; ROM $1A47 unclassified
+2503:	1A47  0B300B30	        DB $0B,$30,$0B,$30,$40,$40,$40,$40,$40,$40,$40,$40 ; ROM $1A47 unclassified
 	      40404040
 	      40404040
-2443:	1A53  40404040	        DB $40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$44 ; ROM $1A53 unclassified
+2504:	1A53  40404040	        DB $40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$44 ; ROM $1A53 unclassified
 	      40404040
 	      40404044
-2444:	1A5F  45534552	        DB $45,$53,$45,$52,$54,$40,$47,$55,$4E,$00,$40,$40 ; ROM $1A5F unclassified
+2505:	1A5F  45534552	        DB $45,$53,$45,$52,$54,$40,$47,$55,$4E,$00,$40,$40 ; ROM $1A5F unclassified
 	      54404755
 	      4E004040
-2445:	1A6B  40404032	        DB $40,$40,$40,$32,$30,$30,$40,$42,$4F,$4E,$55,$53 ; ROM $1A6B unclassified
+2506:	1A6B  40404032	        DB $40,$40,$40,$32,$30,$30,$40,$42,$4F,$4E,$55,$53 ; ROM $1A6B unclassified
 	      30304042
 	      4F4E5553
-2446:	1A77  40404040	        DB $40,$40,$40,$40,$40,$31,$30,$30,$40,$55,$47,$48 ; ROM $1A77 unclassified
+2507:	1A77  40404040	        DB $40,$40,$40,$40,$40,$31,$30,$30,$40,$55,$47,$48 ; ROM $1A77 unclassified
 	      40313030
 	      40554748
-2447:	1A83  4A425546	        DB $4A,$42,$55,$46,$4A,$41,$52,$47,$4A,$50,$4F,$57 ; ROM $1A83 unclassified
+2508:	1A83  4A425546	        DB $4A,$42,$55,$46,$4A,$41,$52,$47,$4A,$50,$4F,$57 ; ROM $1A83 unclassified
 	      4A415247
 	      4A504F57
-2448:	1A8F  4A5A4F57	        DB $4A,$5A,$4F,$57,$4A,$42,$4F,$50,$4A,$57,$41,$4D ; ROM $1A8F unclassified
+2509:	1A8F  4A5A4F57	        DB $4A,$5A,$4F,$57,$4A,$42,$4F,$50,$4A,$57,$41,$4D ; ROM $1A8F unclassified
 	      4A424F50
 	      4A57414D
-2449:	1A9B  4A42414D	        DB $4A,$42,$41,$4D,$4A,$4D,$49,$53,$53,$45,$44,$40 ; ROM $1A9B unclassified
+2510:	1A9B  4A42414D	        DB $4A,$42,$41,$4D,$4A,$4D,$49,$53,$53,$45,$44,$40 ; ROM $1A9B unclassified
 	      4A4D4953
 	      53454440
-2450:	1AA7  41474149	        DB $41,$47,$41,$49,$4E,$40,$44,$55,$4D,$4D,$59,$54 ; ROM $1AA7 unclassified
+2511:	1AA7  41474149	        DB $41,$47,$41,$49,$4E,$40,$44,$55,$4D,$4D,$59,$54 ; ROM $1AA7 unclassified
 	      4E404455
 	      4D4D5954
-2451:	1AB3  55524B45	        DB $55,$52,$4B,$45,$59,$52,$45,$4C,$4F,$41,$44,$43 ; ROM $1AB3 unclassified
+2512:	1AB3  55524B45	        DB $55,$52,$4B,$45,$59,$52,$45,$4C,$4F,$41,$44,$43 ; ROM $1AB3 unclassified
 	      5952454C
 	      4F414443
-2452:	1ABF  59434C45	        DB $59,$43,$4C,$45,$84,$47,$41,$4D,$45,$84,$4F,$56 ; ROM $1ABF unclassified
+2513:	1ABF  59434C45	        DB $59,$43,$4C,$45,$84,$47,$41,$4D,$45,$84,$4F,$56 ; ROM $1ABF unclassified
 	      8447414D
 	      45844F56
-2453:	1ACB  45528B49	        DB $45,$52,$8B,$49,$4E,$53,$45,$52,$54,$40,$43,$4F ; ROM $1ACB unclassified
+2514:	1ACB  45528B49	        DB $45,$52,$8B,$49,$4E,$53,$45,$52,$54,$40,$43,$4F ; ROM $1ACB unclassified
 	      4E534552
 	      5440434F
-2454:	1AD7  494E8454	        DB $49,$4E,$84,$54,$49,$4D,$45,$85,$53,$43,$4F,$52 ; ROM $1AD7 unclassified
+2515:	1AD7  494E8454	        DB $49,$4E,$84,$54,$49,$4D,$45,$85,$53,$43,$4F,$52 ; ROM $1AD7 unclassified
 	      494D4585
 	      53434F52
-2455:	1AE3  458A4849	        DB $45,$8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45 ; ROM $1AE3 unclassified
+2516:	1AE3  458A4849	        DB $45,$8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45 ; ROM $1AE3 unclassified
 	      47484053
 	      434F5245
-2456:	1AEF  894C4153	        DB $89,$4C,$41,$53,$54,$40,$47,$41,$4D,$45,$8D,$45 ; ROM $1AEF unclassified
+2517:	1AEF  894C4153	        DB $89,$4C,$41,$53,$54,$40,$47,$41,$4D,$45,$8D,$45 ; ROM $1AEF unclassified
 	      54404741
 	      4D458D45
-2457:	1AFB  5854454E	        DB $58,$54,$45,$4E,$44,$45,$44,$40,$54,$49,$4D,$45 ; ROM $1AFB unclassified
+2518:	1AFB  5854454E	        DB $58,$54,$45,$4E,$44,$45,$44,$40,$54,$49,$4D,$45 ; ROM $1AFB unclassified
 	      44454440
 	      54494D45
-2458:	1B07  89474554	        DB $89,$47,$45,$54,$40,$52,$45,$41,$44,$59,$89,$40 ; ROM $1B07 unclassified
+2519:	1B07  89474554	        DB $89,$47,$45,$54,$40,$52,$45,$41,$44,$59,$89,$40 ; ROM $1B07 unclassified
 	      40524541
 	      44598940
-2459:	1B13  4053484F	        DB $40,$53,$48,$4F,$4F,$54,$40,$40,$84,$47,$41,$4D ; ROM $1B13 unclassified
+2520:	1B13  4053484F	        DB $40,$53,$48,$4F,$4F,$54,$40,$40,$84,$47,$41,$4D ; ROM $1B13 unclassified
 	      4F544040
 	      8447414D
-2460:	1B1F  45844F56	        DB $45,$84,$4F,$56,$45,$52,$89,$45,$49,$4E,$57,$45 ; ROM $1B1F unclassified
+2521:	1B1F  45844F56	        DB $45,$84,$4F,$56,$45,$52,$89,$45,$49,$4E,$57,$45 ; ROM $1B1F unclassified
 	      45528945
 	      494E5745
-2461:	1B2B  5246454E	        DB $52,$46,$45,$4E,$84,$5A,$45,$49,$54,$86,$50,$55 ; ROM $1B2B unclassified
+2522:	1B2B  5246454E	        DB $52,$46,$45,$4E,$84,$5A,$45,$49,$54,$86,$50,$55 ; ROM $1B2B unclassified
 	      845A4549
 	      54865055
-2462:	1B37  4E4B5445	        DB $4E,$4B,$54,$45,$86,$52,$45,$4B,$4F,$52,$44,$88 ; ROM $1B37 unclassified
+2523:	1B37  4E4B5445	        DB $4E,$4B,$54,$45,$86,$52,$45,$4B,$4F,$52,$44,$88 ; ROM $1B37 unclassified
 	      8652454B
 	      4F524488
-2463:	1B43  454E4453	        DB $45,$4E,$44,$53,$50,$49,$45,$4C,$91,$5A,$45,$49 ; ROM $1B43 unclassified
+2524:	1B43  454E4453	        DB $45,$4E,$44,$53,$50,$49,$45,$4C,$91,$5A,$45,$49 ; ROM $1B43 unclassified
 	      5049454C
 	      915A4549
-2464:	1B4F  54564552	        DB $54,$56,$45,$52,$4C,$41,$45,$4E,$47,$45,$52,$55 ; ROM $1B4F unclassified
+2525:	1B4F  54564552	        DB $54,$56,$45,$52,$4C,$41,$45,$4E,$47,$45,$52,$55 ; ROM $1B4F unclassified
 	      4C41454E
 	      47455255
-2465:	1B5B  4E478D46	        DB $4E,$47,$8D,$46,$45,$52,$54,$49,$47,$40,$4D,$41 ; ROM $1B5B unclassified
+2526:	1B5B  4E478D46	        DB $4E,$47,$8D,$46,$45,$52,$54,$49,$47,$40,$4D,$41 ; ROM $1B5B unclassified
 	      45525449
 	      47404D41
-2466:	1B67  4348454E	        DB $43,$48,$45,$4E,$8D,$40,$40,$53,$43,$48,$49,$45 ; ROM $1B67 unclassified
+2527:	1B67  4348454E	        DB $43,$48,$45,$4E,$8D,$40,$40,$53,$43,$48,$49,$45 ; ROM $1B67 unclassified
 	      8D404053
 	      43484945
-2467:	1B73  5353454E	        DB $53,$53,$45,$4E,$40,$40,$83,$46,$49,$4E,$81,$40 ; ROM $1B73 unclassified
+2528:	1B73  5353454E	        DB $53,$53,$45,$4E,$40,$40,$83,$46,$49,$4E,$81,$40 ; ROM $1B73 unclassified
 	      40408346
 	      494E8140
-2468:	1B7F  8C4D4554	        DB $8C,$4D,$45,$54,$54,$45,$5A,$40,$50,$49,$45,$43 ; ROM $1B7F unclassified
+2529:	1B7F  8C4D4554	        DB $8C,$4D,$45,$54,$54,$45,$5A,$40,$50,$49,$45,$43 ; ROM $1B7F unclassified
 	      54455A40
 	      50494543
-2469:	1B8B  45855445	        DB $45,$85,$54,$45,$4D,$50,$53,$85,$53,$43,$4F,$52 ; ROM $1B8B unclassified
+2530:	1B8B  45855445	        DB $45,$85,$54,$45,$4D,$50,$53,$85,$53,$43,$4F,$52 ; ROM $1B8B unclassified
 	      4D505385
 	      53434F52
-2470:	1B97  458A4849	        DB $45,$8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45 ; ROM $1B97 unclassified
+2531:	1B97  458A4849	        DB $45,$8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45 ; ROM $1B97 unclassified
 	      47484053
 	      434F5245
-2471:	1BA3  8C444552	        DB $8C,$44,$45,$52,$4E,$49,$45,$52,$40,$43,$4F,$55 ; ROM $1BA3 unclassified
+2532:	1BA3  8C444552	        DB $8C,$44,$45,$52,$4E,$49,$45,$52,$40,$43,$4F,$55 ; ROM $1BA3 unclassified
 	      4E494552
 	      40434F55
-2472:	1BAF  508C5052	        DB $50,$8C,$50,$52,$4F,$4C,$4F,$4E,$47,$41,$54,$49 ; ROM $1BAF unclassified
+2533:	1BAF  508C5052	        DB $50,$8C,$50,$52,$4F,$4C,$4F,$4E,$47,$41,$54,$49 ; ROM $1BAF unclassified
 	      4F4C4F4E
 	      47415449
-2473:	1BBB  4F4E8D50	        DB $4F,$4E,$8D,$50,$52,$45,$50,$41,$52,$45,$5A,$40 ; ROM $1BBB unclassified
+2534:	1BBB  4F4E8D50	        DB $4F,$4E,$8D,$50,$52,$45,$50,$41,$52,$45,$5A,$40 ; ROM $1BBB unclassified
 	      52455041
 	      52455A40
-2474:	1BC7  564F5553	        DB $56,$4F,$55,$53,$8D,$40,$40,$40,$40,$53,$48,$4F ; ROM $1BC7 unclassified
+2535:	1BC7  564F5553	        DB $56,$4F,$55,$53,$8D,$40,$40,$40,$40,$53,$48,$4F ; ROM $1BC7 unclassified
 	      8D404040
 	      4053484F
-2475:	1BD3  4F544040	        DB $4F,$54,$40,$40,$40,$40,$84,$53,$50,$49,$4C,$84 ; ROM $1BD3 unclassified
+2536:	1BD3  4F544040	        DB $4F,$54,$40,$40,$40,$40,$84,$53,$50,$49,$4C,$84 ; ROM $1BD3 unclassified
 	      40408453
 	      50494C84
-2476:	1BDF  534C5554	        DB $53,$4C,$55,$54,$87,$49,$4E,$44,$4B,$41,$53,$54 ; ROM $1BDF unclassified
+2537:	1BDF  534C5554	        DB $53,$4C,$55,$54,$87,$49,$4E,$44,$4B,$41,$53,$54 ; ROM $1BDF unclassified
 	      87494E44
 	      4B415354
-2477:	1BEB  83544944	        DB $83,$54,$49,$44,$85,$50,$4F,$49,$4E,$54,$89,$54 ; ROM $1BEB unclassified
+2538:	1BEB  83544944	        DB $83,$54,$49,$44,$85,$50,$4F,$49,$4E,$54,$89,$54 ; ROM $1BEB unclassified
 	      85504F49
 	      4E548954
-2478:	1BF7  4F504050	        DB $4F,$50,$40,$50,$4F,$49,$4E,$54,$8B,$53,$49,$44 ; ROM $1BF7 unclassified
+2539:	1BF7  4F504050	        DB $4F,$50,$40,$50,$4F,$49,$4E,$54,$8B,$53,$49,$44 ; ROM $1BF7 unclassified
 	      4F494E54
 	      8B534944
-2479:	1C03  53544540	        DB $53,$54,$45,$40,$53,$50,$49,$4C,$8A,$45,$4B,$53 ; ROM $1C03 unclassified
+2540:	1C03  53544540	        DB $53,$54,$45,$40,$53,$50,$49,$4C,$8A,$45,$4B,$53 ; ROM $1C03 unclassified
 	      5350494C
 	      8A454B53
-2480:	1C0F  54524140	        DB $54,$52,$41,$40,$54,$49,$44,$85,$50,$41,$52,$41 ; ROM $1C0F unclassified
+2541:	1C0F  54524140	        DB $54,$52,$41,$40,$54,$49,$44,$85,$50,$41,$52,$41 ; ROM $1C0F unclassified
 	      54494485
 	      50415241
-2481:	1C1B  54854053	        DB $54,$85,$40,$53,$4B,$59,$44 ; ROM $1C1B unclassified
+2542:	1C1B  54854053	        DB $54,$85,$40,$53,$4B,$59,$44 ; ROM $1C1B unclassified
 	      4B5944
-2482:	1C22          	NATIVE_1C22:
-2483:	1C22  AF      	        XOR A  ; ROM $1C22: AF
-2484:	1C23  323120  	        LD ($2031),A  ; ROM $1C23: 32 31 20
-2485:	1C26  2A1920  	        LD HL,($2019)  ; ROM $1C26: 2A 19 20
-2486:	1C29  220020  	        LD ($2000),HL  ; ROM $1C29: 22 00 20
-2487:	1C2C  C9      	        RET  ; ROM $1C2C: C9
-2488:	1C2D          	NATIVE_1C2D:
-2489:	1C2D  2A0020  	        LD HL,($2000)  ; ROM $1C2D: 2A 00 20
-2490:	1C30  23      	        INC HL  ; ROM $1C30: 23
-2491:	1C31  220020  	        LD ($2000),HL  ; ROM $1C31: 22 00 20
-2492:	1C34  C9      	        RET  ; ROM $1C34: C9
-2493:	1C35          	NATIVE_1C35:
-2494:	1C35  3E08    	        LD A,$08  ; ROM $1C35: 3E 08
-2495:	1C37  D303    	        OUT ($03),A  ; ROM $1C37: D3 03
-2496:	1C39  118020  	        LD DE,$2080  ; ROM $1C39: 11 80 20
-2497:	1C3C  1A      	        LD A,(DE)  ; ROM $1C3C: 1A
-2498:	1C3D  E609    	        AND $09  ; ROM $1C3D: E6 09
-2499:	1C3F  12      	        LD (DE),A  ; ROM $1C3F: 12
-2500:	1C40  D307    	        OUT ($07),A  ; ROM $1C40: D3 07
-2501:	1C42  C9      	        RET  ; ROM $1C42: C9
-2502:	1C43          	NATIVE_1C43:
-2503:	1C43  3E01    	        LD A,$01  ; ROM $1C43: 3E 01
-2504:	1C45  320320  	        LD ($2003),A  ; ROM $1C45: 32 03 20
-2505:	1C48  218D20  	        LD HL,$208D  ; ROM $1C48: 21 8D 20
-2506:	1C4B  010800  	        LD BC,$0008  ; ROM $1C4B: 01 08 00
-2507:	1C4E  7E      	        LD A,(HL)  ; ROM $1C4E: 7E
-2508:	1C4F  09      	        ADD HL,BC  ; ROM $1C4F: 09
-2509:	1C50  B6      	        OR (HL)  ; ROM $1C50: B6
-2510:	1C51  09      	        ADD HL,BC  ; ROM $1C51: 09
-2511:	1C52  B6      	        OR (HL)  ; ROM $1C52: B6
-2512:	1C53  09      	        ADD HL,BC  ; ROM $1C53: 09
-2513:	1C54  B6      	        OR (HL)  ; ROM $1C54: B6
-2514:	1C55  CA5E1C  	        JP Z,$1C5E  ; ROM $1C55: CA 5E 1C
-2515:	1C58  3E0A    	        LD A,$0A  ; ROM $1C58: 3E 0A
-2516:	1C5A  323620  	        LD ($2036),A  ; ROM $1C5A: 32 36 20
-2517:	1C5D  C9      	        RET  ; ROM $1C5D: C9
-2518:	1C5E          	NATIVE_1C5E:
-2519:	1C5E  21BA20  	        LD HL,$20BA  ; ROM $1C5E: 21 BA 20
-2520:	1C61  7E      	        LD A,(HL)  ; ROM $1C61: 7E
-2521:	1C62  34      	        INC (HL)  ; ROM $1C62: 34
-2522:	1C63  3D      	        DEC A  ; ROM $1C63: 3D
-2523:	1C64  C27C1C  	        JP NZ,$1C7C  ; ROM $1C64: C2 7C 1C
-2524:	1C67  3E03    	        LD A,$03  ; ROM $1C67: 3E 03
-2525:	1C69          	NATIVE_1C69:
-2526:	1C69  F5      	        PUSH AF  ; ROM $1C69: F5
-2527:	1C6A  CD0E12  	        CALL $120E  ; ROM $1C6A: CD 0E 12
-2528:	1C6D  7E      	        LD A,(HL)  ; ROM $1C6D: 7E
-2529:	1C6E  E6BB    	        AND $BB  ; ROM $1C6E: E6 BB
-2530:	1C70  77      	        LD (HL),A  ; ROM $1C70: 77
-2531:	1C71  F1      	        POP AF  ; ROM $1C71: F1
-2532:	1C72  3D      	        DEC A  ; ROM $1C72: 3D
-2533:	1C73  F2691C  	        JP P,$1C69  ; ROM $1C73: F2 69 1C
-2534:	1C76  3E04    	        LD A,$04  ; ROM $1C76: 3E 04
-2535:	1C78  323620  	        LD ($2036),A  ; ROM $1C78: 32 36 20
-2536:	1C7B  C9      	        RET  ; ROM $1C7B: C9
-2537:	1C7C          	NATIVE_1C7C:
-2538:	1C7C  3D      	        DEC A  ; ROM $1C7C: 3D
-2539:	1C7D  C29B1C  	        JP NZ,$1C9B  ; ROM $1C7D: C2 9B 1C
-2540:	1C80  3E5A    	        LD A,$5A  ; ROM $1C80: 3E 5A
-2541:	1C82  323620  	        LD ($2036),A  ; ROM $1C82: 32 36 20
-2542:	1C85  21B81A  	        LD HL,$1AB8  ; ROM $1C85: 21 B8 1A
-2543:	1C88  110428  	        LD DE,$2804  ; ROM $1C88: 11 04 28
-2544:	1C8B  3E06    	        LD A,$06  ; ROM $1C8B: 3E 06
-2545:	1C8D  CD6701  	        CALL $0167  ; ROM $1C8D: CD 67 01
-2546:	1C90  21BE1A  	        LD HL,$1ABE  ; ROM $1C90: 21 BE 1A
-2547:	1C93  110634  	        LD DE,$3406  ; ROM $1C93: 11 06 34
-2548:	1C96  3E05    	        LD A,$05  ; ROM $1C96: 3E 05
-2549:	1C98  C36701  	        JP $0167  ; ROM $1C98: C3 67 01
-2550:	1C9B          	NATIVE_1C9B:
-2551:	1C9B  3600    	        LD (HL),$00  ; ROM $1C9B: 36 00
-2552:	1C9D  214B1A  	        LD HL,$1A4B  ; ROM $1C9D: 21 4B 1A
-2553:	1CA0  110428  	        LD DE,$2804  ; ROM $1CA0: 11 04 28
-2554:	1CA3  3E06    	        LD A,$06  ; ROM $1CA3: 3E 06
-2555:	1CA5  CD6701  	        CALL $0167  ; ROM $1CA5: CD 67 01
-2556:	1CA8  110634  	        LD DE,$3406  ; ROM $1CA8: 11 06 34
-2557:	1CAB  3E05    	        LD A,$05  ; ROM $1CAB: 3E 05
-2558:	1CAD  CD6701  	        CALL $0167  ; ROM $1CAD: CD 67 01
-2559:	1CB0  3E03    	        LD A,$03  ; ROM $1CB0: 3E 03
-2560:	1CB2          	NATIVE_1CB2:
-2561:	1CB2  F5      	        PUSH AF  ; ROM $1CB2: F5
-2562:	1CB3  CD0E12  	        CALL $120E  ; ROM $1CB3: CD 0E 12
-2563:	1CB6  7E      	        LD A,(HL)  ; ROM $1CB6: 7E
-2564:	1CB7  F644    	        OR $44  ; ROM $1CB7: F6 44
-2565:	1CB9  77      	        LD (HL),A  ; ROM $1CB9: 77
-2566:	1CBA  F1      	        POP AF  ; ROM $1CBA: F1
-2567:	1CBB  3D      	        DEC A  ; ROM $1CBB: 3D
-2568:	1CBC  F2B21C  	        JP P,$1CB2  ; ROM $1CBC: F2 B2 1C
-2569:	1CBF  3E06    	        LD A,$06  ; ROM $1CBF: 3E 06
-2570:	1CC1  32B920  	        LD ($20B9),A  ; ROM $1CC1: 32 B9 20
-2571:	1CC4  AF      	        XOR A  ; ROM $1CC4: AF
-2572:	1CC5  320320  	        LD ($2003),A  ; ROM $1CC5: 32 03 20
-2573:	1CC8  C9      	        RET  ; ROM $1CC8: C9
-2574:	1CC9          	NATIVE_1CC9:
-2575:	1CC9  218D20  	        LD HL,$208D  ; ROM $1CC9: 21 8D 20
-2576:	1CCC  013C20  	        LD BC,$203C  ; ROM $1CCC: 01 3C 20
-2577:	1CCF  C3EA1C  	        JP $1CEA  ; ROM $1CCF: C3 EA 1C
-2578:	1CD2          	NATIVE_1CD2:
-2579:	1CD2  219520  	        LD HL,$2095  ; ROM $1CD2: 21 95 20
-2580:	1CD5  013D20  	        LD BC,$203D  ; ROM $1CD5: 01 3D 20
-2581:	1CD8  C3EA1C  	        JP $1CEA  ; ROM $1CD8: C3 EA 1C
-2582:	1CDB          	NATIVE_1CDB:
-2583:	1CDB  219D20  	        LD HL,$209D  ; ROM $1CDB: 21 9D 20
-2584:	1CDE  013E20  	        LD BC,$203E  ; ROM $1CDE: 01 3E 20
-2585:	1CE1  C3EA1C  	        JP $1CEA  ; ROM $1CE1: C3 EA 1C
-2586:	1CE4          	NATIVE_1CE4:
-2587:	1CE4  21A520  	        LD HL,$20A5  ; ROM $1CE4: 21 A5 20
-2588:	1CE7  013F20  	        LD BC,$203F  ; ROM $1CE7: 01 3F 20
-2589:	1CEA          	NATIVE_1CEA:
-2590:	1CEA  7E      	        LD A,(HL)  ; ROM $1CEA: 7E
-2591:	1CEB  35      	        DEC (HL)  ; ROM $1CEB: 35
-2592:	1CEC  3D      	        DEC A  ; ROM $1CEC: 3D
-2593:	1CED  C2FD1C  	        JP NZ,$1CFD  ; ROM $1CED: C2 FD 1C
-2594:	1CF0  23      	        INC HL  ; ROM $1CF0: 23
-2595:	1CF1  23      	        INC HL  ; ROM $1CF1: 23
-2596:	1CF2  5E      	        LD E,(HL)  ; ROM $1CF2: 5E
-2597:	1CF3  23      	        INC HL  ; ROM $1CF3: 23
-2598:	1CF4  56      	        LD D,(HL)  ; ROM $1CF4: 56
-2599:	1CF5  214B1A  	        LD HL,$1A4B  ; ROM $1CF5: 21 4B 1A
-2600:	1CF8  3E04    	        LD A,$04  ; ROM $1CF8: 3E 04
-2601:	1CFA  C33201  	        JP $0132  ; ROM $1CFA: C3 32 01
-2602:	1CFD          	NATIVE_1CFD:
-2603:	1CFD  3D      	        DEC A  ; ROM $1CFD: 3D
-2604:	1CFE  C20F1D  	        JP NZ,$1D0F  ; ROM $1CFE: C2 0F 1D
-2605:	1D01  3E3C    	        LD A,$3C  ; ROM $1D01: 3E 3C
-2606:	1D03  02      	        LD (BC),A  ; ROM $1D03: 02
-2607:	1D04  23      	        INC HL  ; ROM $1D04: 23
-2608:	1D05  23      	        INC HL  ; ROM $1D05: 23
-2609:	1D06  5E      	        LD E,(HL)  ; ROM $1D06: 5E
-2610:	1D07  23      	        INC HL  ; ROM $1D07: 23
-2611:	1D08  56      	        LD D,(HL)  ; ROM $1D08: 56
-2612:	1D09  23      	        INC HL  ; ROM $1D09: 23
-2613:	1D0A  3E04    	        LD A,$04  ; ROM $1D0A: 3E 04
-2614:	1D0C  C33201  	        JP $0132  ; ROM $1D0C: C3 32 01
-2615:	1D0F          	NATIVE_1D0F:
-2616:	1D0F  3E14    	        LD A,$14  ; ROM $1D0F: 3E 14
-2617:	1D11  02      	        LD (BC),A  ; ROM $1D11: 02
-2618:	1D12  23      	        INC HL  ; ROM $1D12: 23
-2619:	1D13  7E      	        LD A,(HL)  ; ROM $1D13: 7E
-2620:	1D14  A7      	        AND A  ; ROM $1D14: A7
-2621:	1D15  3E88    	        LD A,$88  ; ROM $1D15: 3E 88
-2622:	1D17  C21C1D  	        JP NZ,$1D1C  ; ROM $1D17: C2 1C 1D
-2623:	1D1A  3E48    	        LD A,$48  ; ROM $1D1A: 3E 48
-2624:	1D1C          	NATIVE_1D1C:
-2625:	1D1C  D303    	        OUT ($03),A  ; ROM $1D1C: D3 03
-2626:	1D1E  3E0F    	        LD A,$0F  ; ROM $1D1E: 3E 0F
-2627:	1D20  323420  	        LD ($2034),A  ; ROM $1D20: 32 34 20
-2628:	1D23  7E      	        LD A,(HL)  ; ROM $1D23: 7E
-2629:	1D24  23      	        INC HL  ; ROM $1D24: 23
-2630:	1D25  5E      	        LD E,(HL)  ; ROM $1D25: 5E
-2631:	1D26  23      	        INC HL  ; ROM $1D26: 23
-2632:	1D27  56      	        LD D,(HL)  ; ROM $1D27: 56
-2633:	1D28  21801A  	        LD HL,$1A80  ; ROM $1D28: 21 80 1A
-2634:	1D2B  07      	        RLCA  ; ROM $1D2B: 07
-2635:	1D2C  07      	        RLCA  ; ROM $1D2C: 07
-2636:	1D2D  4F      	        LD C,A  ; ROM $1D2D: 4F
-2637:	1D2E  0600    	        LD B,$00  ; ROM $1D2E: 06 00
-2638:	1D30  09      	        ADD HL,BC  ; ROM $1D30: 09
-2639:	1D31  3E04    	        LD A,$04  ; ROM $1D31: 3E 04
-2640:	1D33  C33201  	        JP $0132  ; ROM $1D33: C3 32 01
-2641:	1D36          	NATIVE_1D36:
-2642:	1D36  2AB420  	        LD HL,($20B4)  ; ROM $1D36: 2A B4 20
-2643:	1D39  AF      	        XOR A  ; ROM $1D39: AF
-2644:	1D3A  32B520  	        LD ($20B5),A  ; ROM $1D3A: 32 B5 20
-2645:	1D3D  7D      	        LD A,L  ; ROM $1D3D: 7D
-2646:	1D3E  E607    	        AND $07  ; ROM $1D3E: E6 07
-2647:	1D40  3C      	        INC A  ; ROM $1D40: 3C
-2648:	1D41  4F      	        LD C,A  ; ROM $1D41: 4F
-2649:	1D42  EB      	        EX DE,HL  ; ROM $1D42: EB
-2650:	1D43  CDB101  	        CALL $01B1  ; ROM $1D43: CD B1 01
-2651:	1D46  0600    	        LD B,$00  ; ROM $1D46: 06 00
-2652:	1D48  C3E718  	        JP $18E7  ; ROM $1D48: C3 E7 18
-2653:	1D4B          	NATIVE_1D4B:
-2654:	1D4B  21B820  	        LD HL,$20B8  ; ROM $1D4B: 21 B8 20
-2655:	1D4E  118020  	        LD DE,$2080  ; ROM $1D4E: 11 80 20
-2656:	1D51  7E      	        LD A,(HL)  ; ROM $1D51: 7E
-2657:	1D52  35      	        DEC (HL)  ; ROM $1D52: 35
-2658:	1D53  3D      	        DEC A  ; ROM $1D53: 3D
-2659:	1D54  C2601D  	        JP NZ,$1D60  ; ROM $1D54: C2 60 1D
-2660:	1D57  AF      	        XOR A  ; ROM $1D57: AF
-2661:	1D58          	NATIVE_1D58:
-2662:	1D58  323A20  	        LD ($203A),A  ; ROM $1D58: 32 3A 20
-2663:	1D5B  1A      	        LD A,(DE)  ; ROM $1D5B: 1A
-2664:	1D5C  E6FE    	        AND $FE  ; ROM $1D5C: E6 FE
-2665:	1D5E  12      	        LD (DE),A  ; ROM $1D5E: 12
-2666:	1D5F  C9      	        RET  ; ROM $1D5F: C9
-2667:	1D60          	NATIVE_1D60:
-2668:	1D60  3D      	        DEC A  ; ROM $1D60: 3D
-2669:	1D61  C26E1D  	        JP NZ,$1D6E  ; ROM $1D61: C2 6E 1D
-2670:	1D64          	NATIVE_1D64:
-2671:	1D64  3E03    	        LD A,$03  ; ROM $1D64: 3E 03
-2672:	1D66  323A20  	        LD ($203A),A  ; ROM $1D66: 32 3A 20
-2673:	1D69  1A      	        LD A,(DE)  ; ROM $1D69: 1A
-2674:	1D6A  F601    	        OR $01  ; ROM $1D6A: F6 01
-2675:	1D6C  12      	        LD (DE),A  ; ROM $1D6C: 12
-2676:	1D6D  C9      	        RET  ; ROM $1D6D: C9
-2677:	1D6E          	NATIVE_1D6E:
-2678:	1D6E  3D      	        DEC A  ; ROM $1D6E: 3D
-2679:	1D6F  C2641D  	        JP NZ,$1D64  ; ROM $1D6F: C2 64 1D
-2680:	1D72  3E02    	        LD A,$02  ; ROM $1D72: 3E 02
-2681:	1D74  C3581D  	        JP $1D58  ; ROM $1D74: C3 58 1D
-2682:	1D77          	NATIVE_1D77:
-2683:	1D77  21B720  	        LD HL,$20B7  ; ROM $1D77: 21 B7 20
-2684:	1D7A  7E      	        LD A,(HL)  ; ROM $1D7A: 7E
-2685:	1D7B  34      	        INC (HL)  ; ROM $1D7B: 34
-2686:	1D7C  A7      	        AND A  ; ROM $1D7C: A7
-2687:	1D7D  C28D1D  	        JP NZ,$1D8D  ; ROM $1D7D: C2 8D 1D
-2688:	1D80  3E28    	        LD A,$28  ; ROM $1D80: 3E 28
-2689:	1D82  D303    	        OUT ($03),A  ; ROM $1D82: D3 03
-2690:	1D84  3E04    	        LD A,$04  ; ROM $1D84: 3E 04
-2691:	1D86  323420  	        LD ($2034),A  ; ROM $1D86: 32 34 20
-2692:	1D89  323320  	        LD ($2033),A  ; ROM $1D89: 32 33 20
-2693:	1D8C  C9      	        RET  ; ROM $1D8C: C9
-2694:	1D8D          	NATIVE_1D8D:
-2695:	1D8D  212219  	        LD HL,$1922  ; ROM $1D8D: 21 22 19
-2696:	1D90  11AD20  	        LD DE,$20AD  ; ROM $1D90: 11 AD 20
-2697:	1D93  3E04    	        LD A,$04  ; ROM $1D93: 3E 04
-2698:	1D95          	NATIVE_1D95:
-2699:	1D95  F5      	        PUSH AF  ; ROM $1D95: F5
-2700:	1D96  1A      	        LD A,(DE)  ; ROM $1D96: 1A
-2701:	1D97  13      	        INC DE  ; ROM $1D97: 13
-2702:	1D98  D5      	        PUSH DE  ; ROM $1D98: D5
-2703:	1D99  F5      	        PUSH AF  ; ROM $1D99: F5
-2704:	1D9A  5E      	        LD E,(HL)  ; ROM $1D9A: 5E
-2705:	1D9B  23      	        INC HL  ; ROM $1D9B: 23
-2706:	1D9C  56      	        LD D,(HL)  ; ROM $1D9C: 56
-2707:	1D9D  23      	        INC HL  ; ROM $1D9D: 23
-2708:	1D9E  7E      	        LD A,(HL)  ; ROM $1D9E: 7E
-2709:	1D9F  D603    	        SUB $03  ; ROM $1D9F: D6 03
-2710:	1DA1  47      	        LD B,A  ; ROM $1DA1: 47
-2711:	1DA2  23      	        INC HL  ; ROM $1DA2: 23
-2712:	1DA3  0E01    	        LD C,$01  ; ROM $1DA3: 0E 01
-2713:	1DA5  F1      	        POP AF  ; ROM $1DA5: F1
-2714:	1DA6  E5      	        PUSH HL  ; ROM $1DA6: E5
-2715:	1DA7  EB      	        EX DE,HL  ; ROM $1DA7: EB
-2716:	1DA8  111023  	        LD DE,$2310  ; ROM $1DA8: 11 10 23
-2717:	1DAB  A7      	        AND A  ; ROM $1DAB: A7
-2718:	1DAC  CABA1D  	        JP Z,$1DBA  ; ROM $1DAC: CA BA 1D
-2719:	1DAF  CDF90F  	        CALL $0FF9  ; ROM $1DAF: CD F9 0F
-2720:	1DB2  11230D  	        LD DE,$0D23  ; ROM $1DB2: 11 23 0D
-2721:	1DB5  0603    	        LD B,$03  ; ROM $1DB5: 06 03
-2722:	1DB7  CDF90F  	        CALL $0FF9  ; ROM $1DB7: CD F9 0F
-2723:	1DBA          	NATIVE_1DBA:
-2724:	1DBA  E1      	        POP HL  ; ROM $1DBA: E1
-2725:	1DBB  D1      	        POP DE  ; ROM $1DBB: D1
-2726:	1DBC  F1      	        POP AF  ; ROM $1DBC: F1
-2727:	1DBD  3D      	        DEC A  ; ROM $1DBD: 3D
-2728:	1DBE  C2951D  	        JP NZ,$1D95  ; ROM $1DBE: C2 95 1D
-2729:	1DC1  21AD20  	        LD HL,$20AD  ; ROM $1DC1: 21 AD 20
-2730:	1DC4  010405  	        LD BC,$0504  ; ROM $1DC4: 01 04 05
-2731:	1DC7          	NATIVE_1DC7:
-2732:	1DC7  7E      	        LD A,(HL)  ; ROM $1DC7: 7E
-2733:	1DC8  23      	        INC HL  ; ROM $1DC8: 23
-2734:	1DC9  A7      	        AND A  ; ROM $1DC9: A7
-2735:	1DCA  C8      	        RET Z  ; ROM $1DCA: C8
-2736:	1DCB  0D      	        DEC C  ; ROM $1DCB: 0D
-2737:	1DCC  C2C71D  	        JP NZ,$1DC7  ; ROM $1DCC: C2 C7 1D
-2738:	1DCF          	NATIVE_1DCF:
-2739:	1DCF  71      	        LD (HL),C  ; ROM $1DCF: 71
-2740:	1DD0  2B      	        DEC HL  ; ROM $1DD0: 2B
-2741:	1DD1  05      	        DEC B  ; ROM $1DD1: 05
-2742:	1DD2  C2CF1D  	        JP NZ,$1DCF  ; ROM $1DD2: C2 CF 1D
-2743:	1DD5  AF      	        XOR A  ; ROM $1DD5: AF
-2744:	1DD6  328120  	        LD ($2081),A  ; ROM $1DD6: 32 81 20
-2745:	1DD9  21691A  	        LD HL,$1A69  ; ROM $1DD9: 21 69 1A
-2746:	1DDC  11A73E  	        LD DE,$3EA7  ; ROM $1DDC: 11 A7 3E
-2747:	1DDF  3E11    	        LD A,$11  ; ROM $1DDF: 3E 11
-2748:	1DE1  CD3201  	        CALL $0132  ; ROM $1DE1: CD 32 01
-2749:	1DE4  3E20    	        LD A,$20  ; ROM $1DE4: 3E 20
-2750:	1DE6  C3A918  	        JP $18A9  ; ROM $1DE6: C3 A9 18
-2751:	1DE9  C9      	        DB $C9 ; ROM $1DE9 unclassified
-2752:	1DEA          	NATIVE_1DEA:
-2753:	1DEA  3ABA20  	        LD A,($20BA)  ; ROM $1DEA: 3A BA 20
-2754:	1DED  A7      	        AND A  ; ROM $1DED: A7
-2755:	1DEE  CAF71D  	        JP Z,$1DF7  ; ROM $1DEE: CA F7 1D
-2756:	1DF1  3E0C    	        LD A,$0C  ; ROM $1DF1: 3E 0C
-2757:	1DF3  323B20  	        LD ($203B),A  ; ROM $1DF3: 32 3B 20
-2758:	1DF6  C9      	        RET  ; ROM $1DF6: C9
-2759:	1DF7          	NATIVE_1DF7:
-2760:	1DF7  3E03    	        LD A,$03  ; ROM $1DF7: 3E 03
-2761:	1DF9          	NATIVE_1DF9:
-2762:	1DF9  F5      	        PUSH AF  ; ROM $1DF9: F5
-2763:	1DFA  CD0E12  	        CALL $120E  ; ROM $1DFA: CD 0E 12
-2764:	1DFD  7E      	        LD A,(HL)  ; ROM $1DFD: 7E
-2765:	1DFE  A7      	        AND A  ; ROM $1DFE: A7
-2766:	1DFF  F20B1E  	        JP P,$1E0B  ; ROM $1DFF: F2 0B 1E
-2767:	1E02  E604    	        AND $04  ; ROM $1E02: E6 04
-2768:	1E04  C20B1E  	        JP NZ,$1E0B  ; ROM $1E04: C2 0B 1E
-2769:	1E07  7E      	        LD A,(HL)  ; ROM $1E07: 7E
-2770:	1E08  F604    	        OR $04  ; ROM $1E08: F6 04
-2771:	1E0A  77      	        LD (HL),A  ; ROM $1E0A: 77
-2772:	1E0B          	NATIVE_1E0B:
-2773:	1E0B  F1      	        POP AF  ; ROM $1E0B: F1
-2774:	1E0C  3D      	        DEC A  ; ROM $1E0C: 3D
-2775:	1E0D  F2F91D  	        JP P,$1DF9  ; ROM $1E0D: F2 F9 1D
-2776:	1E10  C9      	        RET  ; ROM $1E10: C9
-2777:	1E11          	NATIVE_1E11:
-2778:	1E11  211620  	        LD HL,$2016  ; ROM $1E11: 21 16 20
-2779:	1E14  DB02    	        IN A,($02)  ; ROM $1E14: DB 02
-2780:	1E16  2F      	        CPL  ; ROM $1E16: 2F
-2781:	1E17  E640    	        AND $40  ; ROM $1E17: E6 40
-2782:	1E19  47      	        LD B,A  ; ROM $1E19: 47
-2783:	1E1A  AE      	        XOR (HL)  ; ROM $1E1A: AE
-2784:	1E1B  C8      	        RET Z  ; ROM $1E1B: C8
-2785:	1E1C  70      	        LD (HL),B  ; ROM $1E1C: 70
-2786:	1E1D  78      	        LD A,B  ; ROM $1E1D: 78
-2787:	1E1E  A7      	        AND A  ; ROM $1E1E: A7
-2788:	1E1F  C8      	        RET Z  ; ROM $1E1F: C8
-2789:	1E20  3E04    	        LD A,$04  ; ROM $1E20: 3E 04
-2790:	1E22  D303    	        OUT ($03),A  ; ROM $1E22: D3 03
-2791:	1E24  3E0A    	        LD A,$0A  ; ROM $1E24: 3E 0A
-2792:	1E26  323420  	        LD ($2034),A  ; ROM $1E26: 32 34 20
-2793:	1E29  AF      	        XOR A  ; ROM $1E29: AF
-2794:	1E2A  D307    	        OUT ($07),A  ; ROM $1E2A: D3 07
-2795:	1E2C  DB02    	        IN A,($02)  ; ROM $1E2C: DB 02
-2796:	1E2E  4F      	        LD C,A  ; ROM $1E2E: 4F
-2797:	1E2F  E602    	        AND $02  ; ROM $1E2F: E6 02
-2798:	1E31  211720  	        LD HL,$2017  ; ROM $1E31: 21 17 20
-2799:	1E34  CA461E  	        JP Z,$1E46  ; ROM $1E34: CA 46 1E
-2800:	1E37  34      	        INC (HL)  ; ROM $1E37: 34
-2801:	1E38  7E      	        LD A,(HL)  ; ROM $1E38: 7E
-2802:	1E39  FE02    	        CP $02  ; ROM $1E39: FE 02
-2803:	1E3B  D8      	        RET C  ; ROM $1E3B: D8
-2804:	1E3C  3600    	        LD (HL),$00  ; ROM $1E3C: 36 00
-2805:	1E3E  23      	        INC HL  ; ROM $1E3E: 23
-2806:	1E3F  79      	        LD A,C  ; ROM $1E3F: 79
-2807:	1E40  1F      	        RRA  ; ROM $1E40: 1F
-2808:	1E41  34      	        INC (HL)  ; ROM $1E41: 34
-2809:	1E42  D0      	        RET NC  ; ROM $1E42: D0
-2810:	1E43  34      	        INC (HL)  ; ROM $1E43: 34
-2811:	1E44  34      	        INC (HL)  ; ROM $1E44: 34
-2812:	1E45  C9      	        RET  ; ROM $1E45: C9
-2813:	1E46          	NATIVE_1E46:
-2814:	1E46  3600    	        LD (HL),$00  ; ROM $1E46: 36 00
-2815:	1E48  23      	        INC HL  ; ROM $1E48: 23
-2816:	1E49  34      	        INC (HL)  ; ROM $1E49: 34
-2817:	1E4A  79      	        LD A,C  ; ROM $1E4A: 79
-2818:	1E4B  1F      	        RRA  ; ROM $1E4B: 1F
-2819:	1E4C  D0      	        RET NC  ; ROM $1E4C: D0
-2820:	1E4D  34      	        INC (HL)  ; ROM $1E4D: 34
-2821:	1E4E  C9      	        RET  ; ROM $1E4E: C9
-2822:	1E4F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E4F unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2823:	1E5B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E5B unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2824:	1E67  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E67 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2825:	1E73  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E73 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2826:	1E7F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E7F unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2827:	1E8B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E8B unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2828:	1E97  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E97 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2829:	1EA3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EA3 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2830:	1EAF  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EAF unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2831:	1EBB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EBB unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2832:	1EC7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EC7 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2833:	1ED3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1ED3 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2834:	1EDF  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EDF unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2835:	1EEB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EEB unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2836:	1EF7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EF7 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2837:	1F03  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F03 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2838:	1F0F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F0F unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2839:	1F1B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F1B unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2840:	1F27  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F27 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2841:	1F33  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F33 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2842:	1F3F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F3F unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2843:	1F4B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F4B unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2844:	1F57  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F57 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2845:	1F63  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F63 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2846:	1F6F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F6F unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2847:	1F7B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F7B unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2848:	1F87  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F87 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2849:	1F93  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F93 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2850:	1F9F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F9F unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2851:	1FAB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FAB unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2852:	1FB7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FB7 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2853:	1FC3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FC3 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2854:	1FCF  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FCF unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2855:	1FDB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FDB unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2856:	1FE7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FE7 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2857:	1FF3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FF3 unclassified
-	      FFFFFFFF
-	      FFFFFFFF
-2858:	1FFF  4E      	        DB $4E ; ROM $1FFF unclassified
+2543:	1C22          	NATIVE_1C22:
+2544:	1C22  AF      	        XOR A  ; ROM $1C22: AF
+2545:	1C23  323120  	        LD ($2031),A  ; ROM $1C23: 32 31 20
+2546:	1C26  2A1920  	        LD HL,($2019)  ; ROM $1C26: 2A 19 20
+2547:	1C29  220020  	        LD ($2000),HL  ; ROM $1C29: 22 00 20
+2548:	1C2C  C9      	        RET  ; ROM $1C2C: C9
+2549:	1C2D          	NATIVE_1C2D:
+2550:	1C2D  2A0020  	        LD HL,($2000)  ; ROM $1C2D: 2A 00 20
+2551:	1C30  23      	        INC HL  ; ROM $1C30: 23
+2552:	1C31  220020  	        LD ($2000),HL  ; ROM $1C31: 22 00 20
+2553:	1C34  C9      	        RET  ; ROM $1C34: C9
+2554:	1C35          	NATIVE_1C35:
+2555:	1C35  3E08    	        LD A,$08  ; ROM $1C35: 3E 08
+2556:	1C37  D303    	        OUT ($03),A  ; ROM $1C37: D3 03
+2557:	1C39  118020  	        LD DE,$2080  ; ROM $1C39: 11 80 20
+2558:	1C3C  1A      	        LD A,(DE)  ; ROM $1C3C: 1A
+2559:	1C3D  E609    	        AND $09  ; ROM $1C3D: E6 09
+2560:	1C3F  12      	        LD (DE),A  ; ROM $1C3F: 12
+2561:	1C40  D307    	        OUT ($07),A  ; ROM $1C40: D3 07
+2562:	1C42  C9      	        RET  ; ROM $1C42: C9
+2563:	1C43          	NATIVE_1C43:
+2564:	1C43  3E01    	        LD A,$01  ; ROM $1C43: 3E 01
+2565:	1C45  320320  	        LD ($2003),A  ; ROM $1C45: 32 03 20
+2566:	1C48  218D20  	        LD HL,$208D  ; ROM $1C48: 21 8D 20
+2567:	1C4B  010800  	        LD BC,$0008  ; ROM $1C4B: 01 08 00
+2568:	1C4E  7E      	        LD A,(HL)  ; ROM $1C4E: 7E
+2569:	1C4F  09      	        ADD HL,BC  ; ROM $1C4F: 09
+2570:	1C50  B6      	        OR (HL)  ; ROM $1C50: B6
+2571:	1C51  09      	        ADD HL,BC  ; ROM $1C51: 09
+2572:	1C52  B6      	        OR (HL)  ; ROM $1C52: B6
+2573:	1C53  09      	        ADD HL,BC  ; ROM $1C53: 09
+2574:	1C54  B6      	        OR (HL)  ; ROM $1C54: B6
+2575:	1C55  CA5E1C  	        JP Z,$1C5E  ; ROM $1C55: CA 5E 1C
+2576:	1C58  3E0A    	        LD A,$0A  ; ROM $1C58: 3E 0A
+2577:	1C5A  323620  	        LD ($2036),A  ; ROM $1C5A: 32 36 20
+2578:	1C5D  C9      	        RET  ; ROM $1C5D: C9
+2579:	1C5E          	NATIVE_1C5E:
+2580:	1C5E  21BA20  	        LD HL,$20BA  ; ROM $1C5E: 21 BA 20
+2581:	1C61  7E      	        LD A,(HL)  ; ROM $1C61: 7E
+2582:	1C62  34      	        INC (HL)  ; ROM $1C62: 34
+2583:	1C63  3D      	        DEC A  ; ROM $1C63: 3D
+2584:	1C64  C27C1C  	        JP NZ,$1C7C  ; ROM $1C64: C2 7C 1C
+2585:	1C67  3E03    	        LD A,$03  ; ROM $1C67: 3E 03
+2586:	1C69          	NATIVE_1C69:
+2587:	1C69  F5      	        PUSH AF  ; ROM $1C69: F5
+2588:	1C6A  CD0E12  	        CALL $120E  ; ROM $1C6A: CD 0E 12
+2589:	1C6D  7E      	        LD A,(HL)  ; ROM $1C6D: 7E
+2590:	1C6E  E6BB    	        AND $BB  ; ROM $1C6E: E6 BB
+2591:	1C70  77      	        LD (HL),A  ; ROM $1C70: 77
+2592:	1C71  F1      	        POP AF  ; ROM $1C71: F1
+2593:	1C72  3D      	        DEC A  ; ROM $1C72: 3D
+2594:	1C73  F2691C  	        JP P,$1C69  ; ROM $1C73: F2 69 1C
+2595:	1C76  3E04    	        LD A,$04  ; ROM $1C76: 3E 04
+2596:	1C78  323620  	        LD ($2036),A  ; ROM $1C78: 32 36 20
+2597:	1C7B  C9      	        RET  ; ROM $1C7B: C9
+2598:	1C7C          	NATIVE_1C7C:
+2599:	1C7C  3D      	        DEC A  ; ROM $1C7C: 3D
+2600:	1C7D  C29B1C  	        JP NZ,$1C9B  ; ROM $1C7D: C2 9B 1C
+2601:	1C80  3E5A    	        LD A,$5A  ; ROM $1C80: 3E 5A
+2602:	1C82  323620  	        LD ($2036),A  ; ROM $1C82: 32 36 20
+2603:	1C85  21B81A  	        LD HL,$1AB8  ; ROM $1C85: 21 B8 1A
+2604:	1C88  110428  	        LD DE,$2804  ; ROM $1C88: 11 04 28
+2605:	1C8B  3E06    	        LD A,$06  ; ROM $1C8B: 3E 06
+2606:	1C8D  CD6701  	        CALL $0167  ; ROM $1C8D: CD 67 01
+2607:	1C90  21BE1A  	        LD HL,$1ABE  ; ROM $1C90: 21 BE 1A
+2608:	1C93  110634  	        LD DE,$3406  ; ROM $1C93: 11 06 34
+2609:	1C96  3E05    	        LD A,$05  ; ROM $1C96: 3E 05
+2610:	1C98  C36701  	        JP $0167  ; ROM $1C98: C3 67 01
+2611:	1C9B          	NATIVE_1C9B:
+2612:	1C9B  3600    	        LD (HL),$00  ; ROM $1C9B: 36 00
+2613:	1C9D  214B1A  	        LD HL,$1A4B  ; ROM $1C9D: 21 4B 1A
+2614:	1CA0  110428  	        LD DE,$2804  ; ROM $1CA0: 11 04 28
+2615:	1CA3  3E06    	        LD A,$06  ; ROM $1CA3: 3E 06
+2616:	1CA5  CD6701  	        CALL $0167  ; ROM $1CA5: CD 67 01
+2617:	1CA8  110634  	        LD DE,$3406  ; ROM $1CA8: 11 06 34
+2618:	1CAB  3E05    	        LD A,$05  ; ROM $1CAB: 3E 05
+2619:	1CAD  CD6701  	        CALL $0167  ; ROM $1CAD: CD 67 01
+2620:	1CB0  3E03    	        LD A,$03  ; ROM $1CB0: 3E 03
+2621:	1CB2          	NATIVE_1CB2:
+2622:	1CB2  F5      	        PUSH AF  ; ROM $1CB2: F5
+2623:	1CB3  CD0E12  	        CALL $120E  ; ROM $1CB3: CD 0E 12
+2624:	1CB6  7E      	        LD A,(HL)  ; ROM $1CB6: 7E
+2625:	1CB7  F644    	        OR $44  ; ROM $1CB7: F6 44
+2626:	1CB9  77      	        LD (HL),A  ; ROM $1CB9: 77
+2627:	1CBA  F1      	        POP AF  ; ROM $1CBA: F1
+2628:	1CBB  3D      	        DEC A  ; ROM $1CBB: 3D
+2629:	1CBC  F2B21C  	        JP P,$1CB2  ; ROM $1CBC: F2 B2 1C
+2630:	1CBF  3E06    	        LD A,$06  ; ROM $1CBF: 3E 06
+2631:	1CC1  32B920  	        LD ($20B9),A  ; ROM $1CC1: 32 B9 20
+2632:	1CC4  AF      	        XOR A  ; ROM $1CC4: AF
+2633:	1CC5  320320  	        LD ($2003),A  ; ROM $1CC5: 32 03 20
+2634:	1CC8  C9      	        RET  ; ROM $1CC8: C9
+2635:	1CC9          	NATIVE_1CC9:
+2636:	1CC9  218D20  	        LD HL,$208D  ; ROM $1CC9: 21 8D 20
+2637:	1CCC  013C20  	        LD BC,$203C  ; ROM $1CCC: 01 3C 20
+2638:	1CCF  C3EA1C  	        JP $1CEA  ; ROM $1CCF: C3 EA 1C
+2639:	1CD2          	NATIVE_1CD2:
+2640:	1CD2  219520  	        LD HL,$2095  ; ROM $1CD2: 21 95 20
+2641:	1CD5  013D20  	        LD BC,$203D  ; ROM $1CD5: 01 3D 20
+2642:	1CD8  C3EA1C  	        JP $1CEA  ; ROM $1CD8: C3 EA 1C
+2643:	1CDB          	NATIVE_1CDB:
+2644:	1CDB  219D20  	        LD HL,$209D  ; ROM $1CDB: 21 9D 20
+2645:	1CDE  013E20  	        LD BC,$203E  ; ROM $1CDE: 01 3E 20
+2646:	1CE1  C3EA1C  	        JP $1CEA  ; ROM $1CE1: C3 EA 1C
+2647:	1CE4          	NATIVE_1CE4:
+2648:	1CE4  21A520  	        LD HL,$20A5  ; ROM $1CE4: 21 A5 20
+2649:	1CE7  013F20  	        LD BC,$203F  ; ROM $1CE7: 01 3F 20
+2650:	1CEA          	NATIVE_1CEA:
+2651:	1CEA  7E      	        LD A,(HL)  ; ROM $1CEA: 7E
+2652:	1CEB  35      	        DEC (HL)  ; ROM $1CEB: 35
+2653:	1CEC  3D      	        DEC A  ; ROM $1CEC: 3D
+2654:	1CED  C2FD1C  	        JP NZ,$1CFD  ; ROM $1CED: C2 FD 1C
+2655:	1CF0  23      	        INC HL  ; ROM $1CF0: 23
+2656:	1CF1  23      	        INC HL  ; ROM $1CF1: 23
+2657:	1CF2  5E      	        LD E,(HL)  ; ROM $1CF2: 5E
+2658:	1CF3  23      	        INC HL  ; ROM $1CF3: 23
+2659:	1CF4  56      	        LD D,(HL)  ; ROM $1CF4: 56
+2660:	1CF5  214B1A  	        LD HL,$1A4B  ; ROM $1CF5: 21 4B 1A
+2661:	1CF8  3E04    	        LD A,$04  ; ROM $1CF8: 3E 04
+2662:	1CFA  C33201  	        JP $0132  ; ROM $1CFA: C3 32 01
+2663:	1CFD          	NATIVE_1CFD:
+2664:	1CFD  3D      	        DEC A  ; ROM $1CFD: 3D
+2665:	1CFE  C20F1D  	        JP NZ,$1D0F  ; ROM $1CFE: C2 0F 1D
+2666:	1D01  3E3C    	        LD A,$3C  ; ROM $1D01: 3E 3C
+2667:	1D03  02      	        LD (BC),A  ; ROM $1D03: 02
+2668:	1D04  23      	        INC HL  ; ROM $1D04: 23
+2669:	1D05  23      	        INC HL  ; ROM $1D05: 23
+2670:	1D06  5E      	        LD E,(HL)  ; ROM $1D06: 5E
+2671:	1D07  23      	        INC HL  ; ROM $1D07: 23
+2672:	1D08  56      	        LD D,(HL)  ; ROM $1D08: 56
+2673:	1D09  23      	        INC HL  ; ROM $1D09: 23
+2674:	1D0A  3E04    	        LD A,$04  ; ROM $1D0A: 3E 04
+2675:	1D0C  C33201  	        JP $0132  ; ROM $1D0C: C3 32 01
+2676:	1D0F          	NATIVE_1D0F:
+2677:	1D0F  3E14    	        LD A,$14  ; ROM $1D0F: 3E 14
+2678:	1D11  02      	        LD (BC),A  ; ROM $1D11: 02
+2679:	1D12  23      	        INC HL  ; ROM $1D12: 23
+2680:	1D13  7E      	        LD A,(HL)  ; ROM $1D13: 7E
+2681:	1D14  A7      	        AND A  ; ROM $1D14: A7
+2682:	1D15  3E88    	        LD A,$88  ; ROM $1D15: 3E 88
+2683:	1D17  C21C1D  	        JP NZ,$1D1C  ; ROM $1D17: C2 1C 1D
+2684:	1D1A  3E48    	        LD A,$48  ; ROM $1D1A: 3E 48
+2685:	1D1C          	NATIVE_1D1C:
+2686:	1D1C  D303    	        OUT ($03),A  ; ROM $1D1C: D3 03
+2687:	1D1E  3E0F    	        LD A,$0F  ; ROM $1D1E: 3E 0F
+2688:	1D20  323420  	        LD ($2034),A  ; ROM $1D20: 32 34 20
+2689:	1D23  7E      	        LD A,(HL)  ; ROM $1D23: 7E
+2690:	1D24  23      	        INC HL  ; ROM $1D24: 23
+2691:	1D25  5E      	        LD E,(HL)  ; ROM $1D25: 5E
+2692:	1D26  23      	        INC HL  ; ROM $1D26: 23
+2693:	1D27  56      	        LD D,(HL)  ; ROM $1D27: 56
+2694:	1D28  21801A  	        LD HL,$1A80  ; ROM $1D28: 21 80 1A
+2695:	1D2B  07      	        RLCA  ; ROM $1D2B: 07
+2696:	1D2C  07      	        RLCA  ; ROM $1D2C: 07
+2697:	1D2D  4F      	        LD C,A  ; ROM $1D2D: 4F
+2698:	1D2E  0600    	        LD B,$00  ; ROM $1D2E: 06 00
+2699:	1D30  09      	        ADD HL,BC  ; ROM $1D30: 09
+2700:	1D31  3E04    	        LD A,$04  ; ROM $1D31: 3E 04
+2701:	1D33  C33201  	        JP $0132  ; ROM $1D33: C3 32 01
+2702:	1D36          	NATIVE_1D36:
+2703:	1D36  2AB420  	        LD HL,($20B4)  ; ROM $1D36: 2A B4 20
+2704:	1D39  AF      	        XOR A  ; ROM $1D39: AF
+2705:	1D3A  32B520  	        LD ($20B5),A  ; ROM $1D3A: 32 B5 20
+2706:	1D3D  7D      	        LD A,L  ; ROM $1D3D: 7D
+2707:	1D3E  E607    	        AND $07  ; ROM $1D3E: E6 07
+2708:	1D40  3C      	        INC A  ; ROM $1D40: 3C
+2709:	1D41  4F      	        LD C,A  ; ROM $1D41: 4F
+2710:	1D42  EB      	        EX DE,HL  ; ROM $1D42: EB
+2711:	1D43  CDB101  	        CALL $01B1  ; ROM $1D43: CD B1 01
+2712:	1D46  0600    	        LD B,$00  ; ROM $1D46: 06 00
+2713:	1D48  C3E718  	        JP $18E7  ; ROM $1D48: C3 E7 18
+2714:	1D4B          	NATIVE_1D4B:
+2715:	1D4B  21B820  	        LD HL,$20B8  ; ROM $1D4B: 21 B8 20
+2716:	1D4E  118020  	        LD DE,$2080  ; ROM $1D4E: 11 80 20
+2717:	1D51  7E      	        LD A,(HL)  ; ROM $1D51: 7E
+2718:	1D52  35      	        DEC (HL)  ; ROM $1D52: 35
+2719:	1D53  3D      	        DEC A  ; ROM $1D53: 3D
+2720:	1D54  C2601D  	        JP NZ,$1D60  ; ROM $1D54: C2 60 1D
+2721:	1D57  AF      	        XOR A  ; ROM $1D57: AF
+2722:	1D58          	NATIVE_1D58:
+2723:	1D58  323A20  	        LD ($203A),A  ; ROM $1D58: 32 3A 20
+2724:	1D5B  1A      	        LD A,(DE)  ; ROM $1D5B: 1A
+2725:	1D5C  E6FE    	        AND $FE  ; ROM $1D5C: E6 FE
+2726:	1D5E  12      	        LD (DE),A  ; ROM $1D5E: 12
+2727:	1D5F  C9      	        RET  ; ROM $1D5F: C9
+2728:	1D60          	NATIVE_1D60:
+2729:	1D60  3D      	        DEC A  ; ROM $1D60: 3D
+2730:	1D61  C26E1D  	        JP NZ,$1D6E  ; ROM $1D61: C2 6E 1D
+2731:	1D64          	NATIVE_1D64:
+2732:	1D64  3E03    	        LD A,$03  ; ROM $1D64: 3E 03
+2733:	1D66  323A20  	        LD ($203A),A  ; ROM $1D66: 32 3A 20
+2734:	1D69  1A      	        LD A,(DE)  ; ROM $1D69: 1A
+2735:	1D6A  F601    	        OR $01  ; ROM $1D6A: F6 01
+2736:	1D6C  12      	        LD (DE),A  ; ROM $1D6C: 12
+2737:	1D6D  C9      	        RET  ; ROM $1D6D: C9
+2738:	1D6E          	NATIVE_1D6E:
+2739:	1D6E  3D      	        DEC A  ; ROM $1D6E: 3D
+2740:	1D6F  C2641D  	        JP NZ,$1D64  ; ROM $1D6F: C2 64 1D
+2741:	1D72  3E02    	        LD A,$02  ; ROM $1D72: 3E 02
+2742:	1D74  C3581D  	        JP $1D58  ; ROM $1D74: C3 58 1D
+2743:	1D77          	NATIVE_1D77:
+2744:	1D77  21B720  	        LD HL,$20B7  ; ROM $1D77: 21 B7 20
+2745:	1D7A  7E      	        LD A,(HL)  ; ROM $1D7A: 7E
+2746:	1D7B  34      	        INC (HL)  ; ROM $1D7B: 34
+2747:	1D7C  A7      	        AND A  ; ROM $1D7C: A7
+2748:	1D7D  C28D1D  	        JP NZ,$1D8D  ; ROM $1D7D: C2 8D 1D
+2749:	1D80  3E28    	        LD A,$28  ; ROM $1D80: 3E 28
+2750:	1D82  D303    	        OUT ($03),A  ; ROM $1D82: D3 03
+2751:	1D84  3E04    	        LD A,$04  ; ROM $1D84: 3E 04
+2752:	1D86  323420  	        LD ($2034),A  ; ROM $1D86: 32 34 20
+2753:	1D89  323320  	        LD ($2033),A  ; ROM $1D89: 32 33 20
+2754:	1D8C  C9      	        RET  ; ROM $1D8C: C9
+2755:	1D8D          	NATIVE_1D8D:
+2756:	1D8D  212219  	        LD HL,$1922  ; ROM $1D8D: 21 22 19
+2757:	1D90  11AD20  	        LD DE,$20AD  ; ROM $1D90: 11 AD 20
+2758:	1D93  3E04    	        LD A,$04  ; ROM $1D93: 3E 04
+2759:	1D95          	NATIVE_1D95:
+2760:	1D95  F5      	        PUSH AF  ; ROM $1D95: F5
+2761:	1D96  1A      	        LD A,(DE)  ; ROM $1D96: 1A
+2762:	1D97  13      	        INC DE  ; ROM $1D97: 13
+2763:	1D98  D5      	        PUSH DE  ; ROM $1D98: D5
+2764:	1D99  F5      	        PUSH AF  ; ROM $1D99: F5
+2765:	1D9A  5E      	        LD E,(HL)  ; ROM $1D9A: 5E
+2766:	1D9B  23      	        INC HL  ; ROM $1D9B: 23
+2767:	1D9C  56      	        LD D,(HL)  ; ROM $1D9C: 56
+2768:	1D9D  23      	        INC HL  ; ROM $1D9D: 23
+2769:	1D9E  7E      	        LD A,(HL)  ; ROM $1D9E: 7E
+2770:	1D9F  D603    	        SUB $03  ; ROM $1D9F: D6 03
+2771:	1DA1  47      	        LD B,A  ; ROM $1DA1: 47
+2772:	1DA2  23      	        INC HL  ; ROM $1DA2: 23
+2773:	1DA3  0E01    	        LD C,$01  ; ROM $1DA3: 0E 01
+2774:	1DA5  F1      	        POP AF  ; ROM $1DA5: F1
+2775:	1DA6  E5      	        PUSH HL  ; ROM $1DA6: E5
+2776:	1DA7  EB      	        EX DE,HL  ; ROM $1DA7: EB
+2777:	1DA8  111023  	        LD DE,$2310  ; ROM $1DA8: 11 10 23
+2778:	1DAB  A7      	        AND A  ; ROM $1DAB: A7
+2779:	1DAC  CABA1D  	        JP Z,$1DBA  ; ROM $1DAC: CA BA 1D
+2780:	1DAF  CDF90F  	        CALL $0FF9  ; ROM $1DAF: CD F9 0F
+2781:	1DB2  11230D  	        LD DE,$0D23  ; ROM $1DB2: 11 23 0D
+2782:	1DB5  0603    	        LD B,$03  ; ROM $1DB5: 06 03
+2783:	1DB7  CDF90F  	        CALL $0FF9  ; ROM $1DB7: CD F9 0F
+2784:	1DBA          	NATIVE_1DBA:
+2785:	1DBA  E1      	        POP HL  ; ROM $1DBA: E1
+2786:	1DBB  D1      	        POP DE  ; ROM $1DBB: D1
+2787:	1DBC  F1      	        POP AF  ; ROM $1DBC: F1
+2788:	1DBD  3D      	        DEC A  ; ROM $1DBD: 3D
+2789:	1DBE  C2951D  	        JP NZ,$1D95  ; ROM $1DBE: C2 95 1D
+2790:	1DC1  21AD20  	        LD HL,$20AD  ; ROM $1DC1: 21 AD 20
+2791:	1DC4  010405  	        LD BC,$0504  ; ROM $1DC4: 01 04 05
+2792:	1DC7          	NATIVE_1DC7:
+2793:	1DC7  7E      	        LD A,(HL)  ; ROM $1DC7: 7E
+2794:	1DC8  23      	        INC HL  ; ROM $1DC8: 23
+2795:	1DC9  A7      	        AND A  ; ROM $1DC9: A7
+2796:	1DCA  C8      	        RET Z  ; ROM $1DCA: C8
+2797:	1DCB  0D      	        DEC C  ; ROM $1DCB: 0D
+2798:	1DCC  C2C71D  	        JP NZ,$1DC7  ; ROM $1DCC: C2 C7 1D
+2799:	1DCF          	NATIVE_1DCF:
+2800:	1DCF  71      	        LD (HL),C  ; ROM $1DCF: 71
+2801:	1DD0  2B      	        DEC HL  ; ROM $1DD0: 2B
+2802:	1DD1  05      	        DEC B  ; ROM $1DD1: 05
+2803:	1DD2  C2CF1D  	        JP NZ,$1DCF  ; ROM $1DD2: C2 CF 1D
+2804:	1DD5  AF      	        XOR A  ; ROM $1DD5: AF
+2805:	1DD6  328120  	        LD ($2081),A  ; ROM $1DD6: 32 81 20
+2806:	1DD9  21691A  	        LD HL,$1A69  ; ROM $1DD9: 21 69 1A
+2807:	1DDC  11A73E  	        LD DE,$3EA7  ; ROM $1DDC: 11 A7 3E
+2808:	1DDF  3E11    	        LD A,$11  ; ROM $1DDF: 3E 11
+2809:	1DE1  CD3201  	        CALL $0132  ; ROM $1DE1: CD 32 01
+2810:	1DE4  3E20    	        LD A,$20  ; ROM $1DE4: 3E 20
+2811:	1DE6  C3A918  	        JP $18A9  ; ROM $1DE6: C3 A9 18
+2812:	1DE9  C9      	        DB $C9 ; ROM $1DE9 unclassified
+2813:	1DEA          	NATIVE_1DEA:
+2814:	1DEA  3ABA20  	        LD A,($20BA)  ; ROM $1DEA: 3A BA 20
+2815:	1DED  A7      	        AND A  ; ROM $1DED: A7
+2816:	1DEE  CAF71D  	        JP Z,$1DF7  ; ROM $1DEE: CA F7 1D
+2817:	1DF1  3E0C    	        LD A,$0C  ; ROM $1DF1: 3E 0C
+2818:	1DF3  323B20  	        LD ($203B),A  ; ROM $1DF3: 32 3B 20
+2819:	1DF6  C9      	        RET  ; ROM $1DF6: C9
+2820:	1DF7          	NATIVE_1DF7:
+2821:	1DF7  3E03    	        LD A,$03  ; ROM $1DF7: 3E 03
+2822:	1DF9          	NATIVE_1DF9:
+2823:	1DF9  F5      	        PUSH AF  ; ROM $1DF9: F5
+2824:	1DFA  CD0E12  	        CALL $120E  ; ROM $1DFA: CD 0E 12
+2825:	1DFD  7E      	        LD A,(HL)  ; ROM $1DFD: 7E
+2826:	1DFE  A7      	        AND A  ; ROM $1DFE: A7
+2827:	1DFF  F20B1E  	        JP P,$1E0B  ; ROM $1DFF: F2 0B 1E
+2828:	1E02  E604    	        AND $04  ; ROM $1E02: E6 04
+2829:	1E04  C20B1E  	        JP NZ,$1E0B  ; ROM $1E04: C2 0B 1E
+2830:	1E07  7E      	        LD A,(HL)  ; ROM $1E07: 7E
+2831:	1E08  F604    	        OR $04  ; ROM $1E08: F6 04
+2832:	1E0A  77      	        LD (HL),A  ; ROM $1E0A: 77
+2833:	1E0B          	NATIVE_1E0B:
+2834:	1E0B  F1      	        POP AF  ; ROM $1E0B: F1
+2835:	1E0C  3D      	        DEC A  ; ROM $1E0C: 3D
+2836:	1E0D  F2F91D  	        JP P,$1DF9  ; ROM $1E0D: F2 F9 1D
+2837:	1E10  C9      	        RET  ; ROM $1E10: C9
+2838:	1E11          	NATIVE_1E11:
+2839:	1E11  211620  	        LD HL,$2016  ; ROM $1E11: 21 16 20
+2840:	1E14  DB02    	        IN A,($02)  ; ROM $1E14: DB 02
+2841:	1E16  2F      	        CPL  ; ROM $1E16: 2F
+2842:	1E17  E640    	        AND $40  ; ROM $1E17: E6 40
+2843:	1E19  47      	        LD B,A  ; ROM $1E19: 47
+2844:	1E1A  AE      	        XOR (HL)  ; ROM $1E1A: AE
+2845:	1E1B  C8      	        RET Z  ; ROM $1E1B: C8
+2846:	1E1C  70      	        LD (HL),B  ; ROM $1E1C: 70
+2847:	1E1D  78      	        LD A,B  ; ROM $1E1D: 78
+2848:	1E1E  A7      	        AND A  ; ROM $1E1E: A7
+2849:	1E1F  C8      	        RET Z  ; ROM $1E1F: C8
+2850:	1E20  3E04    	        LD A,$04  ; ROM $1E20: 3E 04
+2851:	1E22  D303    	        OUT ($03),A  ; ROM $1E22: D3 03
+2852:	1E24  3E0A    	        LD A,$0A  ; ROM $1E24: 3E 0A
+2853:	1E26  323420  	        LD ($2034),A  ; ROM $1E26: 32 34 20
+2854:	1E29  AF      	        XOR A  ; ROM $1E29: AF
+2855:	1E2A  D307    	        OUT ($07),A  ; ROM $1E2A: D3 07
+2856:	1E2C  DB02    	        IN A,($02)  ; ROM $1E2C: DB 02
+2857:	1E2E  4F      	        LD C,A  ; ROM $1E2E: 4F
+2858:	1E2F  E602    	        AND $02  ; ROM $1E2F: E6 02
+2859:	1E31  211720  	        LD HL,$2017  ; ROM $1E31: 21 17 20
+2860:	1E34  CA461E  	        JP Z,$1E46  ; ROM $1E34: CA 46 1E
+2861:	1E37  34      	        INC (HL)  ; ROM $1E37: 34
+2862:	1E38  7E      	        LD A,(HL)  ; ROM $1E38: 7E
+2863:	1E39  FE02    	        CP $02  ; ROM $1E39: FE 02
+2864:	1E3B  D8      	        RET C  ; ROM $1E3B: D8
+2865:	1E3C  3600    	        LD (HL),$00  ; ROM $1E3C: 36 00
+2866:	1E3E  23      	        INC HL  ; ROM $1E3E: 23
+2867:	1E3F  79      	        LD A,C  ; ROM $1E3F: 79
+2868:	1E40  1F      	        RRA  ; ROM $1E40: 1F
+2869:	1E41  34      	        INC (HL)  ; ROM $1E41: 34
+2870:	1E42  D0      	        RET NC  ; ROM $1E42: D0
+2871:	1E43  34      	        INC (HL)  ; ROM $1E43: 34
+2872:	1E44  34      	        INC (HL)  ; ROM $1E44: 34
+2873:	1E45  C9      	        RET  ; ROM $1E45: C9
+2874:	1E46          	NATIVE_1E46:
+2875:	1E46  3600    	        LD (HL),$00  ; ROM $1E46: 36 00
+2876:	1E48  23      	        INC HL  ; ROM $1E48: 23
+2877:	1E49  34      	        INC (HL)  ; ROM $1E49: 34
+2878:	1E4A  79      	        LD A,C  ; ROM $1E4A: 79
+2879:	1E4B  1F      	        RRA  ; ROM $1E4B: 1F
+2880:	1E4C  D0      	        RET NC  ; ROM $1E4C: D0
+2881:	1E4D  34      	        INC (HL)  ; ROM $1E4D: 34
+2882:	1E4E  C9      	        RET  ; ROM $1E4E: C9
+2883:	1E4F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E4F unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2884:	1E5B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E5B unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2885:	1E67  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E67 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2886:	1E73  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E73 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2887:	1E7F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E7F unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2888:	1E8B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E8B unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2889:	1E97  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1E97 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2890:	1EA3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EA3 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2891:	1EAF  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EAF unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2892:	1EBB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EBB unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2893:	1EC7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EC7 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2894:	1ED3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1ED3 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2895:	1EDF  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EDF unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2896:	1EEB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EEB unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2897:	1EF7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1EF7 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2898:	1F03  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F03 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2899:	1F0F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F0F unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2900:	1F1B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F1B unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2901:	1F27  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F27 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2902:	1F33  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F33 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2903:	1F3F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F3F unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2904:	1F4B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F4B unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2905:	1F57  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F57 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2906:	1F63  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F63 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2907:	1F6F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F6F unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2908:	1F7B  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F7B unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2909:	1F87  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F87 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2910:	1F93  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F93 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2911:	1F9F  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1F9F unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2912:	1FAB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FAB unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2913:	1FB7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FB7 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2914:	1FC3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FC3 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2915:	1FCF  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FCF unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2916:	1FDB  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FDB unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2917:	1FE7  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FE7 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2918:	1FF3  FFFFFFFF	        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF ; ROM $1FF3 unclassified
+	      FFFFFFFF
+	      FFFFFFFF
+2919:	1FFF  4E      	        DB $4E ; ROM $1FFF unclassified
 **** src/desertgun.asm ****
 
 
 
 Statistics:
 
-   230	symbols
+   250	symbols
   8192	bytes
 
 
 
 Symbol Table:
 
-native_0000        0+    native_06a6      6a6+    native_1545     1545+    
-native_0008        8+    native_06aa      6aa+    native_154c     154c+    
-native_0010       10+    native_06b1      6b1+    native_155e     155e+    
-native_0018       18+    native_06c4      6c4+    native_16f0     16f0+    
-native_0027       27+    native_06cc      6cc+    native_1718     1718+    
-native_002a       2a+    native_06d1      6d1+    native_1748     1748+    
-native_003f       3f+    native_0f7b      f7b+    native_1769     1769+    
-native_0041       41+    native_0f8e      f8e+    native_1776     1776+    
-native_0048       48+    native_0f94      f94+    native_1787     1787+    
-native_0063       63+    native_0f97      f97+    native_17a7     17a7+    
-native_0065       65+    native_0fa2      fa2+    native_17d6     17d6+    
-native_0079       79+    native_0fab      fab+    native_17dc     17dc+    
-native_007b       7b+    native_0fac      fac+    native_17ec     17ec+    
-native_007e       7e+    native_0fbe      fbe+    native_17ff     17ff+    
-native_009a       9a+    native_0fc7      fc7+    native_1802     1802+    
-native_009c       9c+    native_0fd3      fd3+    native_1815     1815+    
-native_00a1       a1+    native_0fd7      fd7+    native_1825     1825+    
-native_00bc       bc+    native_0fdc      fdc+    native_1848     1848+    
-native_00c2       c2+    native_0ff4      ff4+    native_1854     1854+    
-native_00c8       c8+    native_0ff9      ff9+    native_1858     1858+    
-native_00d9       d9+    native_0ffb      ffb+    native_188c     188c+    
-native_00e6       e6+    native_100e     100e+    native_189f     189f+    
-native_00eb       eb+    native_1033     1033+    native_18a9     18a9+    
-native_0105      105+    native_1047     1047+    native_18b6     18b6+    
-native_011c      11c+    native_106d     106d+    native_18c0     18c0+    
-native_0132      132+    native_107a     107a+    native_18c7     18c7+    
-native_0133      133+    native_1142     1142+    native_18d8     18d8+    
-native_013b      13b+    native_116c     116c+    native_18e7     18e7+    
-native_0144      144+    native_117a     117a+    native_18ec     18ec+    
-native_014b      14b+    native_1181     1181+    native_18f2     18f2+    
-native_0154      154+    native_11ac     11ac+    native_1906     1906+    
-native_0167      167+    native_11ae     11ae+    native_190f     190f+    
-native_0172      172+    native_11ba     11ba+    native_1936     1936+    
-native_017c      17c+    native_11d0     11d0+    native_1951     1951+    
-native_0183      183+    native_11ea     11ea+    native_1977     1977+    
-native_01b1      1b1+    native_120e     120e+    native_19af     19af+    
-native_01b3      1b3+    native_1214     1214+    native_19cd     19cd+    
-native_01c7      1c7+    native_121a     121a+    native_19e0     19e0+    
-native_0273      273+    native_1223     1223+    native_19f6     19f6+    
-native_027b      27b+    native_122b     122b+    native_1a06     1a06+    
-native_0281      281+    native_1232     1232+    native_1a22     1a22+    
-native_0404      404+    native_123e     123e+    native_1c22     1c22+    
-native_0424      424+    native_1246     1246+    native_1c2d     1c2d+    
-native_0441      441+    native_124e     124e+    native_1c35     1c35+    
-native_0449      449+    native_125d     125d+    native_1c43     1c43+    
-native_0456      456+    native_127e     127e+    native_1c5e     1c5e+    
-native_046c      46c+    native_129e     129e+    native_1c69     1c69+    
-native_047c      47c+    native_12b1     12b1+    native_1c7c     1c7c+    
-native_0481      481+    native_12e5     12e5+    native_1c9b     1c9b+    
-native_0486      486+    native_1318     1318+    native_1cb2     1cb2+    
-native_0495      495+    native_132e     132e+    native_1cc9     1cc9+    
-native_04a2      4a2+    native_133c     133c+    native_1cd2     1cd2+    
-native_04ad      4ad+    native_1345     1345+    native_1cdb     1cdb+    
-native_04c3      4c3+    native_1356     1356+    native_1ce4     1ce4+    
-native_04cd      4cd+    native_136c     136c+    native_1cea     1cea+    
-native_04e0      4e0+    native_1372     1372+    native_1cfd     1cfd+    
-native_0547      547+    native_138a     138a+    native_1d0f     1d0f+    
-native_0566      566+    native_13a6     13a6+    native_1d1c     1d1c+    
-native_0587      587+    native_13c1     13c1+    native_1d36     1d36+    
-native_0589      589+    native_13f2     13f2+    native_1d4b     1d4b+    
-native_05a6      5a6+    native_1422     1422+    native_1d58     1d58+    
-native_05a9      5a9+    native_1442     1442+    native_1d60     1d60+    
-native_05ab      5ab+    native_145a     145a+    native_1d64     1d64+    
-native_05c8      5c8+    native_1472     1472+    native_1d6e     1d6e+    
-native_05d6      5d6+    native_147c     147c+    native_1d77     1d77+    
-native_05e6      5e6+    native_1485     1485+    native_1d8d     1d8d+    
-native_05e8      5e8+    native_148c     148c+    native_1d95     1d95+    
-native_05f6      5f6+    native_1492     1492+    native_1dba     1dba+    
-native_061b      61b+    native_1494     1494+    native_1dc7     1dc7+    
-native_0627      627+    native_14a0     14a0+    native_1dcf     1dcf+    
-native_0631      631+    native_14a8     14a8+    native_1dea     1dea+    
-native_063a      63a+    native_14ae     14ae+    native_1df7     1df7+    
-native_065a      65a+    native_1503     1503+    native_1df9     1df9+    
-native_0675      675+    native_1505     1505+    native_1e0b     1e0b+    
-native_067f      67f+    native_1523     1523+    native_1e11     1e11+    
-native_0685      685+    native_1537     1537+    native_1e46     1e46+    
-native_0697      697+    native_1538     1538+    
+cmd_1633_clear_display 1633+    native_05d6      5d6+    native_14ae     14ae+    
+cmd_1634_init_render 1634+    native_05e6      5e6+    native_1503     1503+    
+cmd_1639_render_mode_a 1639+    native_05e8      5e8+    native_1505     1505+    
+cmd_163b_init_render 163b+    native_05f6      5f6+    native_1523     1523+    
+cmd_1640_render_mode_a 1640+    native_061b      61b+    native_1537     1537+    
+cmd_1642_render_mode_a 1642+    native_0627      627+    native_1538     1538+    
+cmd_1644_init_render 1644+    native_0631      631+    native_1545     1545+    
+cmd_1649_init_descriptor 1649+    native_063a      63a+    native_154c     154c+    
+cmd_164a_store_immediate 164a+    native_065a      65a+    native_155e     155e+    
+cmd_164e_store_immediate 164e+    native_0675      675+    native_16f0     16f0+    
+cmd_1652_set_render_pointer 1652+    native_067f      67f+    native_1718     1718+    
+cmd_1656_store_immediate 1656+    native_0685      685+    native_1748     1748+    
+cmd_165a_store_immediate 165a+    native_0697      697+    native_1769     1769+    
+cmd_165e_render_packet 165e+    native_06a6      6a6+    native_1776     1776+    
+cmd_1664_reset_round 1664+    native_06aa      6aa+    native_1787     1787+    
+cmd_1665_render_mode_a 1665+    native_06b1      6b1+    native_17a7     17a7+    
+cmd_1667_set_mode 1667+    native_06c4      6c4+    native_17d6     17d6+    
+cmd_1669_frame_scheduler 1669+    native_06cc      6cc+    native_17dc     17dc+    
+cmd_1676_set_mode 1676+    native_06d1      6d1+    native_17ec     17ec+    
+cmd_1678_frame_scheduler 1678+    native_0f7b      f7b+    native_17ff     17ff+    
+native_0000        0+    native_0f8e      f8e+    native_1802     1802+    
+native_0008        8+    native_0f94      f94+    native_1815     1815+    
+native_0010       10+    native_0f97      f97+    native_1825     1825+    
+native_0018       18+    native_0fa2      fa2+    native_1848     1848+    
+native_0027       27+    native_0fab      fab+    native_1854     1854+    
+native_002a       2a+    native_0fac      fac+    native_1858     1858+    
+native_003f       3f+    native_0fbe      fbe+    native_188c     188c+    
+native_0041       41+    native_0fc7      fc7+    native_189f     189f+    
+native_0048       48+    native_0fd3      fd3+    native_18a9     18a9+    
+native_0063       63+    native_0fd7      fd7+    native_18b6     18b6+    
+native_0065       65+    native_0fdc      fdc+    native_18c0     18c0+    
+native_0079       79+    native_0ff4      ff4+    native_18c7     18c7+    
+native_007b       7b+    native_0ff9      ff9+    native_18d8     18d8+    
+native_007e       7e+    native_0ffb      ffb+    native_18e7     18e7+    
+native_009a       9a+    native_100e     100e+    native_18ec     18ec+    
+native_009c       9c+    native_1033     1033+    native_18f2     18f2+    
+native_00a1       a1+    native_1047     1047+    native_1906     1906+    
+native_00bc       bc+    native_106d     106d+    native_190f     190f+    
+native_00c2       c2+    native_107a     107a+    native_1936     1936+    
+native_00c8       c8+    native_1142     1142+    native_1951     1951+    
+native_00d9       d9+    native_116c     116c+    native_1977     1977+    
+native_00e6       e6+    native_117a     117a+    native_19af     19af+    
+native_00eb       eb+    native_1181     1181+    native_19cd     19cd+    
+native_0105      105+    native_11ac     11ac+    native_19e0     19e0+    
+native_011c      11c+    native_11ae     11ae+    native_19f6     19f6+    
+native_0132      132+    native_11ba     11ba+    native_1a06     1a06+    
+native_0133      133+    native_11d0     11d0+    native_1a22     1a22+    
+native_013b      13b+    native_11ea     11ea+    native_1c22     1c22+    
+native_0144      144+    native_120e     120e+    native_1c2d     1c2d+    
+native_014b      14b+    native_1214     1214+    native_1c35     1c35+    
+native_0154      154+    native_121a     121a+    native_1c43     1c43+    
+native_0167      167+    native_1223     1223+    native_1c5e     1c5e+    
+native_0172      172+    native_122b     122b+    native_1c69     1c69+    
+native_017c      17c+    native_1232     1232+    native_1c7c     1c7c+    
+native_0183      183+    native_123e     123e+    native_1c9b     1c9b+    
+native_01b1      1b1+    native_1246     1246+    native_1cb2     1cb2+    
+native_01b3      1b3+    native_124e     124e+    native_1cc9     1cc9+    
+native_01c7      1c7+    native_125d     125d+    native_1cd2     1cd2+    
+native_0273      273+    native_127e     127e+    native_1cdb     1cdb+    
+native_027b      27b+    native_129e     129e+    native_1ce4     1ce4+    
+native_0281      281+    native_12b1     12b1+    native_1cea     1cea+    
+native_0404      404+    native_12e5     12e5+    native_1cfd     1cfd+    
+native_0424      424+    native_1318     1318+    native_1d0f     1d0f+    
+native_0441      441+    native_132e     132e+    native_1d1c     1d1c+    
+native_0449      449+    native_133c     133c+    native_1d36     1d36+    
+native_0456      456+    native_1345     1345+    native_1d4b     1d4b+    
+native_046c      46c+    native_1356     1356+    native_1d58     1d58+    
+native_047c      47c+    native_136c     136c+    native_1d60     1d60+    
+native_0481      481+    native_1372     1372+    native_1d64     1d64+    
+native_0486      486+    native_138a     138a+    native_1d6e     1d6e+    
+native_0495      495+    native_13a6     13a6+    native_1d77     1d77+    
+native_04a2      4a2+    native_13c1     13c1+    native_1d8d     1d8d+    
+native_04ad      4ad+    native_13f2     13f2+    native_1d95     1d95+    
+native_04c3      4c3+    native_1422     1422+    native_1dba     1dba+    
+native_04cd      4cd+    native_1442     1442+    native_1dc7     1dc7+    
+native_04e0      4e0+    native_145a     145a+    native_1dcf     1dcf+    
+native_0547      547+    native_1472     1472+    native_1dea     1dea+    
+native_0566      566+    native_147c     147c+    native_1df7     1df7+    
+native_0587      587+    native_1485     1485+    native_1df9     1df9+    
+native_0589      589+    native_148c     148c+    native_1e0b     1e0b+    
+native_05a6      5a6+    native_1492     1492+    native_1e11     1e11+    
+native_05a9      5a9+    native_1494     1494+    native_1e46     1e46+    
+native_05ab      5ab+    native_14a0     14a0+    
+native_05c8      5c8+    native_14a8     14a8+    
