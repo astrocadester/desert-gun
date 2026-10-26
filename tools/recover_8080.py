@@ -88,6 +88,13 @@ def main():
     for index,address in enumerate(vectors):
         if game=="desertgun" and index==0:continue # zero goes directly to scheduler
         word_aliases.setdefault(address,[]).append(index)
+    typed_rom_vectors={}
+    for i in range(13):
+        address=0xF61+2*i
+        target=int.from_bytes(mem[address:address+2],"little")
+        assert target<len(mem), ("bad native/script pointer",address,target)
+        assert address not in typed_rom_vectors, ("overlapping vector",address)
+        typed_rom_vectors[address]=("GAME_WORD",i,target)
     packet_begins={int(x["pc"],16):x for x in word_scan["unique_packets"]}
     packet_owner={}
     for start,p in packet_begins.items():
@@ -111,6 +118,13 @@ def main():
         asm.extend(["",f"        ORG ${lo:04X}",f"; Device {name}, SHA1 {hashlib.sha1(parts[part]).hexdigest()}"])
         pc=lo
         while pc<hi:
+            if pc in typed_rom_vectors:
+                kind,index,target=typed_rom_vectors[pc]
+                assert pc not in code and pc not in packet_owner, ("vector overlaps executable or script",pc)
+                asm.append(f"ROM_{kind}_{index:02X}:")
+                asm.append("        DW $"+format(target,"04X")+f" ; {kind} pointer from ROM $"+format(pc,"04X"))
+                pc+=2
+                continue
             if pc in packet_begins:
                 pkt=packet_begins[pc]
                 opcode=int(pkt["opcode"],16)
