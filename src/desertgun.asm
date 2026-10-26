@@ -347,38 +347,38 @@ NATIVE_0281:
         JP NZ,$0281  ; ROM $0283: C2 81 02
         EX DE,HL  ; ROM $0286: EB
         RET  ; ROM $0287: C9
-        DB $3C,$7E,$66,$66,$66,$66,$66,$66,$7E,$3C,$18,$1C ; ROM $0288 unclassified
-        DB $18,$18,$18,$18,$18,$18,$3C,$3C,$3C,$7E,$66,$60 ; ROM $0294 unclassified
-        DB $7C,$3E,$06,$06,$7E,$7E,$3C,$7E,$66,$60,$38,$78 ; ROM $02A0 unclassified
-        DB $60,$66,$7E,$3C,$66,$66,$66,$66,$7E,$7E,$60,$60 ; ROM $02AC unclassified
-        DB $60,$60,$3E,$3E,$06,$06,$3E,$7E,$60,$66,$7E,$3C ; ROM $02B8 unclassified
-        DB $3C,$3E,$06,$06,$3E,$7E,$66,$66,$7E,$3C,$7E,$7E ; ROM $02C4 unclassified
-        DB $60,$70,$30,$38,$18,$1C,$0C,$0C,$3C,$7E,$66,$66 ; ROM $02D0 unclassified
-        DB $3C,$7E,$66,$66,$7E,$3C,$3C,$7E,$66,$66,$7E,$7C ; ROM $02DC unclassified
-        DB $60,$60,$7C,$3C,$00,$00,$00,$00,$00,$00,$00,$00 ; ROM $02E8 unclassified
-        DB $00,$00,$18,$3C,$7E,$66,$66,$66,$7E,$7E,$66,$66 ; ROM $02F4 unclassified
-        DB $3E,$7E,$66,$66,$3E,$7E,$66,$66,$7E,$3E,$3C,$7E ; ROM $0300 unclassified
-        DB $66,$06,$06,$06,$06,$66,$7E,$3C,$3E,$7E,$66,$66 ; ROM $030C unclassified
-        DB $66,$66,$66,$66,$7E,$3E,$7E,$7E,$06,$06,$3E,$3E ; ROM $0318 unclassified
-        DB $06,$06,$7E,$7E,$7E,$7E,$06,$06,$3E,$3E,$06,$06 ; ROM $0324 unclassified
-        DB $06,$06,$3C,$7E,$66,$06,$06,$76,$76,$66,$7E,$3C ; ROM $0330 unclassified
-        DB $66,$66,$66,$66,$7E,$7E,$66,$66,$66,$66,$3C,$3C ; ROM $033C unclassified
-        DB $18,$18,$18,$18,$18,$18,$3C,$3C,$18,$18,$18,$18 ; ROM $0348 unclassified
-        DB $18,$18,$00,$00,$18,$18,$66,$66,$76,$3E,$1E,$1E ; ROM $0354 unclassified
-        DB $3E,$76,$66,$66,$06,$06,$06,$06,$06,$06,$06,$06 ; ROM $0360 unclassified
-        DB $7E,$7E,$C3,$C3,$E7,$E7,$FF,$FF,$DB,$C3,$C3,$C3 ; ROM $036C unclassified
-        DB $66,$66,$6E,$6E,$7E,$7E,$76,$76,$66,$66,$3C,$7E ; ROM $0378 unclassified
-        DB $66,$66,$66,$66,$66,$66,$7E,$3C,$3E,$7E,$66,$66 ; ROM $0384 unclassified
-        DB $7E,$3E,$06,$06,$06,$06,$3C,$7E,$66,$66,$66,$66 ; ROM $0390 unclassified
-        DB $66,$36,$76,$6C,$3E,$7E,$66,$66,$7E,$3E,$76,$66 ; ROM $039C unclassified
-        DB $66,$66,$3C,$7E,$66,$06,$3E,$7C,$60,$66,$7E,$3C ; ROM $03A8 unclassified
-        DB $7E,$7E,$18,$18,$18,$18,$18,$18,$18,$18,$66,$66 ; ROM $03B4 unclassified
-        DB $66,$66,$66,$66,$66,$66,$7E,$3C,$66,$66,$66,$66 ; ROM $03C0 unclassified
-        DB $66,$7E,$3C,$3C,$18,$18,$C3,$C3,$C3,$DB,$FF,$FF ; ROM $03CC unclassified
-        DB $E7,$E7,$C3,$C3,$66,$66,$7E,$3C,$18,$18,$3C,$7E ; ROM $03D8 unclassified
-        DB $66,$66,$66,$66,$7E,$3C,$18,$18,$18,$18,$18,$18 ; ROM $03E4 unclassified
-        DB $7E,$7E,$60,$70,$38,$1C,$0E,$06,$7E,$7E,$08,$3E ; ROM $03F0 unclassified
-        DB $3E,$3E,$3E,$3E,$3E,$3E,$7F,$7F ; ROM $03FC unclassified
+        DB $3C,$7E,$66,$66,$66,$66,$66,$66,$7E,$3C,$18,$1C ; ROM $0288 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $18,$18,$18,$18,$18,$18,$3C,$3C,$3C,$7E,$66,$60 ; ROM $0294 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $7C,$3E,$06,$06,$7E,$7E,$3C,$7E,$66,$60,$38,$78 ; ROM $02A0 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $60,$66,$7E,$3C,$66,$66,$66,$66,$7E,$7E,$60,$60 ; ROM $02AC ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $60,$60,$3E,$3E,$06,$06,$3E,$7E,$60,$66,$7E,$3C ; ROM $02B8 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $3C,$3E,$06,$06,$3E,$7E,$66,$66,$7E,$3C,$7E,$7E ; ROM $02C4 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $60,$70,$30,$38,$18,$1C,$0C,$0C,$3C,$7E,$66,$66 ; ROM $02D0 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $3C,$7E,$66,$66,$7E,$3C,$3C,$7E,$66,$66,$7E,$7C ; ROM $02DC ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $60,$60,$7C,$3C,$00,$00,$00,$00,$00,$00,$00,$00 ; ROM $02E8 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $00,$00,$18,$3C,$7E,$66,$66,$66,$7E,$7E,$66,$66 ; ROM $02F4 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $3E,$7E,$66,$66,$3E,$7E,$66,$66,$7E,$3E,$3C,$7E ; ROM $0300 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$06,$06,$06,$06,$66,$7E,$3C,$3E,$7E,$66,$66 ; ROM $030C ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$66,$66,$66,$7E,$3E,$7E,$7E,$06,$06,$3E,$3E ; ROM $0318 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $06,$06,$7E,$7E,$7E,$7E,$06,$06,$3E,$3E,$06,$06 ; ROM $0324 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $06,$06,$3C,$7E,$66,$06,$06,$76,$76,$66,$7E,$3C ; ROM $0330 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$66,$66,$66,$7E,$7E,$66,$66,$66,$66,$3C,$3C ; ROM $033C ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $18,$18,$18,$18,$18,$18,$3C,$3C,$18,$18,$18,$18 ; ROM $0348 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $18,$18,$00,$00,$18,$18,$66,$66,$76,$3E,$1E,$1E ; ROM $0354 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $3E,$76,$66,$66,$06,$06,$06,$06,$06,$06,$06,$06 ; ROM $0360 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $7E,$7E,$C3,$C3,$E7,$E7,$FF,$FF,$DB,$C3,$C3,$C3 ; ROM $036C ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$66,$6E,$6E,$7E,$7E,$76,$76,$66,$66,$3C,$7E ; ROM $0378 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$66,$66,$66,$66,$66,$7E,$3C,$3E,$7E,$66,$66 ; ROM $0384 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $7E,$3E,$06,$06,$06,$06,$3C,$7E,$66,$66,$66,$66 ; ROM $0390 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$36,$76,$6C,$3E,$7E,$66,$66,$7E,$3E,$76,$66 ; ROM $039C ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$66,$3C,$7E,$66,$06,$3E,$7C,$60,$66,$7E,$3C ; ROM $03A8 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $7E,$7E,$18,$18,$18,$18,$18,$18,$18,$18,$66,$66 ; ROM $03B4 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$66,$66,$66,$66,$66,$7E,$3C,$66,$66,$66,$66 ; ROM $03C0 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$7E,$3C,$3C,$18,$18,$C3,$C3,$C3,$DB,$FF,$FF ; ROM $03CC ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $E7,$E7,$C3,$C3,$66,$66,$7E,$3C,$18,$18,$3C,$7E ; ROM $03D8 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $66,$66,$66,$66,$7E,$3C,$18,$18,$18,$18,$18,$18 ; ROM $03E4 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $7E,$7E,$60,$70,$38,$1C,$0E,$06,$7E,$7E,$08,$3E ; ROM $03F0 ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $3E,$3E,$3E,$3E,$3E,$3E,$7F,$7F ; ROM $03FC ROM_DATA_GLYPH_BITMAP (classification of overlapping bytes; see DB-PROVENANCE)
 NATIVE_0404:
         CALL $05F6  ; ROM $0404: CD F6 05
         CALL $063A  ; ROM $0407: CD 3A 06
@@ -1020,9 +1020,9 @@ NATIVE_06D1:
         DB $1E,$00,$00,$3F,$00,$80,$FF,$03,$C0,$07,$03,$C0 ; ROM $0F38 unclassified
         DB $07,$03,$E0,$07,$00,$E0,$03,$00,$E0,$07,$00,$F0 ; ROM $0F44 unclassified
         DB $1F,$00,$E0,$1F,$00,$F6,$1F,$00,$FF,$0F,$00,$C6 ; ROM $0F50 unclassified
-        DB $07,$00,$E0,$FF,$00,$AB,$0F,$94,$0F,$A2,$0F,$AC ; ROM $0F5C unclassified
-        DB $0F,$BE,$0F,$C7,$0F,$D3,$0F,$0E,$10,$47,$10,$8E ; ROM $0F68 unclassified
-        DB $0F,$6D,$10,$7A,$10,$7B,$0F ; ROM $0F74 unclassified
+        DB $07,$00,$E0,$FF,$00,$AB,$0F,$94,$0F,$A2,$0F,$AC ; ROM $0F5C ROM_DATA_COMMAND_VECTOR_TABLE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $0F,$BE,$0F,$C7,$0F,$D3,$0F,$0E,$10,$47,$10,$8E ; ROM $0F68 ROM_DATA_COMMAND_VECTOR_TABLE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $0F,$6D,$10,$7A,$10,$7B,$0F ; ROM $0F74 ROM_DATA_COMMAND_VECTOR_TABLE (classification of overlapping bytes; see DB-PROVENANCE)
 NATIVE_0F7B:
         EX DE,HL  ; ROM $0F7B: EB
         LD A,(HL)  ; ROM $0F7C: 7E
@@ -1913,39 +1913,39 @@ NATIVE_155E:
         DEC A  ; ROM $155F: 3D
         JP P,$1505  ; ROM $1560: F2 05 15
         RET  ; ROM $1563: C9
-        DB $CE,$15,$1F,$16,$B9,$15,$0D,$16,$92,$15,$A4,$15 ; ROM $1564 unclassified
-        DB $E0,$15,$F5,$15,$DA,$15,$2B,$16,$C5,$15,$19,$16 ; ROM $1570 unclassified
-        DB $9E,$15,$B3,$15,$EF,$15,$FE,$15,$04,$08,$08,$0C ; ROM $157C unclassified
-        DB $14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19,$14,$1E ; ROM $1588 unclassified
-        DB $05,$52,$0D,$0A,$8C,$0D,$0F,$C6,$0D,$FF,$8C,$0D ; ROM $1594 unclassified
-        DB $05,$E4,$06,$FF,$29,$0D,$06,$2C,$0E,$0A,$9D,$0E ; ROM $15A0 unclassified
-        DB $0F,$02,$0F,$13,$9D,$0E,$FF,$2C,$0E,$05,$E4,$06 ; ROM $15AC unclassified
-        DB $FF,$00,$0E,$02,$C3,$0A,$04,$FB,$0A,$06,$33,$0B ; ROM $15B8 unclassified
-        DB $FF,$6B,$0B,$05,$E4,$06,$0F,$A3,$0B,$FF,$C3,$0B ; ROM $15C4 unclassified
-        DB $01,$FE,$0B,$02,$24,$0C,$03,$4A,$0C,$FF,$70,$0C ; ROM $15D0 unclassified
-        DB $05,$E4,$06,$FF,$E6,$0B,$05,$65,$09,$19,$9D,$09 ; ROM $15DC unclassified
-        DB $1E,$D1,$08,$37,$15,$09,$FF,$65,$09,$05,$E4,$06 ; ROM $15E8 unclassified
-        DB $FF,$DE,$09,$0E,$27,$0A,$19,$F5,$09,$FF,$27,$0A ; ROM $15F4 unclassified
-        DB $05,$E4,$06,$0F,$F5,$09,$14,$65,$0A,$19,$91,$0A ; ROM $1600 unclassified
-        DB $FF,$AF,$0A,$03,$95,$07,$06,$EF,$07,$09,$49,$08 ; ROM $160C unclassified
-        DB $FF,$EF,$07,$05,$E4,$06,$FF,$A3,$08,$02,$49,$07 ; ROM $1618 unclassified
-        DB $04,$6F,$07,$06,$49,$07,$FF,$23,$07,$05,$E4,$06 ; ROM $1624 unclassified
-        DB $FF,$12,$07,$06,$08,$06,$20,$A0,$3E,$01,$05,$08 ; ROM $1630 unclassified
-        DB $0B,$20,$00,$24,$01,$06,$01,$04,$08,$1C,$20,$1B ; ROM $163C unclassified
-        DB $24,$07,$05,$01,$81,$20,$05,$01,$B1,$20,$03,$10 ; ROM $1648 unclassified
-        DB $33,$16,$05,$01,$35,$20,$05,$01,$38,$20,$0C,$0B ; ROM $1654 unclassified
-        DB $5E,$1A,$8A,$2F,$0B,$01,$02,$02,$3C,$00,$0C,$0C ; ROM $1660 unclassified
-        DB $4B,$1A,$B4,$3E,$02,$1E,$00,$04,$64,$16,$02,$1E ; ROM $166C unclassified
-        DB $00,$06,$01,$08,$02,$78,$00,$01,$09,$02,$3C,$00 ; ROM $1678 unclassified
-        DB $0C,$0D,$4B,$1A,$09,$30,$05,$06,$B9,$20,$05,$01 ; ROM $1684 unclassified
-        DB $0D,$20,$05,$01,$81,$20,$05,$01,$35,$20,$00,$05 ; ROM $1690 unclassified
-        DB $00,$0D,$20,$05,$00,$37,$20,$05,$00,$38,$20,$0C ; ROM $169C unclassified
-        DB $10,$4B,$1A,$00,$24,$0C,$10,$4B,$1A,$10,$24,$0C ; ROM $16A8 unclassified
-        DB $10,$4B,$1A,$A0,$3E,$0C,$10,$4B,$1A,$B0,$3E,$08 ; ROM $16B4 unclassified
-        DB $06,$20,$A0,$3E,$01,$05,$08,$0B,$20,$00,$24,$01 ; ROM $16C0 unclassified
-        DB $06,$01,$04,$08,$1C,$20,$1B,$24,$02,$1E,$00,$0A ; ROM $16CC unclassified
-        DB $40,$20,$0A,$4F,$20,$0A,$5E,$20,$0A,$6D,$20,$02 ; ROM $16D8 unclassified
-        DB $0F,$00,$09,$00,$09,$01,$02,$F0,$00,$04,$33,$16 ; ROM $16E4 unclassified
+        DB $CE,$15,$1F,$16,$B9,$15,$0D,$16,$92,$15,$A4,$15 ; ROM $1564 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $E0,$15,$F5,$15,$DA,$15,$2B,$16,$C5,$15,$19,$16 ; ROM $1570 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $9E,$15,$B3,$15,$EF,$15,$FE,$15,$04,$08,$08,$0C ; ROM $157C ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19,$14,$1E ; ROM $1588 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $05,$52,$0D,$0A,$8C,$0D,$0F,$C6,$0D,$FF,$8C,$0D ; ROM $1594 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $05,$E4,$06,$FF,$29,$0D,$06,$2C,$0E,$0A,$9D,$0E ; ROM $15A0 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $0F,$02,$0F,$13,$9D,$0E,$FF,$2C,$0E,$05,$E4,$06 ; ROM $15AC ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $FF,$00,$0E,$02,$C3,$0A,$04,$FB,$0A,$06,$33,$0B ; ROM $15B8 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $FF,$6B,$0B,$05,$E4,$06,$0F,$A3,$0B,$FF,$C3,$0B ; ROM $15C4 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $01,$FE,$0B,$02,$24,$0C,$03,$4A,$0C,$FF,$70,$0C ; ROM $15D0 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $05,$E4,$06,$FF,$E6,$0B,$05,$65,$09,$19,$9D,$09 ; ROM $15DC ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $1E,$D1,$08,$37,$15,$09,$FF,$65,$09,$05,$E4,$06 ; ROM $15E8 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $FF,$DE,$09,$0E,$27,$0A,$19,$F5,$09,$FF,$27,$0A ; ROM $15F4 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $05,$E4,$06,$0F,$F5,$09,$14,$65,$0A,$19,$91,$0A ; ROM $1600 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $FF,$AF,$0A,$03,$95,$07,$06,$EF,$07,$09,$49,$08 ; ROM $160C ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $FF,$EF,$07,$05,$E4,$06,$FF,$A3,$08,$02,$49,$07 ; ROM $1618 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $04,$6F,$07,$06,$49,$07,$FF,$23,$07,$05,$E4,$06 ; ROM $1624 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $FF,$12,$07,$06,$08,$06,$20,$A0,$3E,$01,$05,$08 ; ROM $1630 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $0B,$20,$00,$24,$01,$06,$01,$04,$08,$1C,$20,$1B ; ROM $163C ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $24,$07,$05,$01,$81,$20,$05,$01,$B1,$20,$03,$10 ; ROM $1648 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $33,$16,$05,$01,$35,$20,$05,$01,$38,$20,$0C,$0B ; ROM $1654 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $5E,$1A,$8A,$2F,$0B,$01,$02,$02,$3C,$00,$0C,$0C ; ROM $1660 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $4B,$1A,$B4,$3E,$02,$1E,$00,$04,$64,$16,$02,$1E ; ROM $166C ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $00,$06,$01,$08,$02,$78,$00,$01,$09,$02,$3C,$00 ; ROM $1678 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $0C,$0D,$4B,$1A,$09,$30,$05,$06,$B9,$20,$05,$01 ; ROM $1684 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $0D,$20,$05,$01,$81,$20,$05,$01,$35,$20,$00,$05 ; ROM $1690 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $00,$0D,$20,$05,$00,$37,$20,$05,$00,$38,$20,$0C ; ROM $169C ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $10,$4B,$1A,$00,$24,$0C,$10,$4B,$1A,$10,$24,$0C ; ROM $16A8 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $10,$4B,$1A,$A0,$3E,$0C,$10,$4B,$1A,$B0,$3E,$08 ; ROM $16B4 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $06,$20,$A0,$3E,$01,$05,$08,$0B,$20,$00,$24,$01 ; ROM $16C0 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $06,$01,$04,$08,$1C,$20,$1B,$24,$02,$1E,$00,$0A ; ROM $16CC ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $40,$20,$0A,$4F,$20,$0A,$5E,$20,$0A,$6D,$20,$02 ; ROM $16D8 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
+        DB $0F,$00,$09,$00,$09,$01,$02,$F0,$00,$04,$33,$16 ; ROM $16E4 ROM_DATA_SCRIPT_CANDIDATE (classification of overlapping bytes; see DB-PROVENANCE)
 NATIVE_16F0:
         LD HL,$20B2  ; ROM $16F0: 21 B2 20
         IN A,($02)  ; ROM $16F3: DB 02
