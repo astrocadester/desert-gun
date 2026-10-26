@@ -1023,6 +1023,7 @@ NATIVE_06D1:
         DB $07,$00,$E0,$FF,$00,$AB,$0F,$94,$0F,$A2,$0F,$AC ; ROM $0F5C unclassified
         DB $0F,$BE,$0F,$C7,$0F,$D3,$0F,$0E,$10,$47,$10,$8E ; ROM $0F68 native command vectors
         DB $0F,$6D,$10,$7A,$10,$7B,$0F ; ROM $0F74 native command vectors
+NATIVE_WORD_0C_DRAW_PACKET:
 NATIVE_0F7B:
         EX DE,HL  ; ROM $0F7B: EB
         LD A,(HL)  ; ROM $0F7C: 7E
@@ -1039,9 +1040,11 @@ NATIVE_0F7B:
         LD ($2000),HL  ; ROM $0F87: 22 00 20
         POP HL  ; ROM $0F8A: E1
         JP $0132  ; ROM $0F8B: C3 32 01
+NATIVE_WORD_09_DRAW_MODE_B:
 NATIVE_0F8E:
         LD HL,$0167  ; ROM $0F8E: 21 67 01
         JP $0F97  ; ROM $0F91: C3 97 0F
+NATIVE_WORD_01_DRAW_MODE_A:
 NATIVE_0F94:
         LD HL,$0132  ; ROM $0F94: 21 32 01
 NATIVE_0F97:
@@ -1052,6 +1055,7 @@ NATIVE_0F97:
         LD ($2000),HL  ; ROM $0F9B: 22 00 20
         CALL $1A06  ; ROM $0F9E: CD 06 1A
         RET  ; ROM $0FA1: C9
+NATIVE_WORD_02_SET_RAM_2031:
 NATIVE_0FA2:
         EX DE,HL  ; ROM $0FA2: EB
         LD A,(HL)  ; ROM $0FA3: 7E
@@ -1060,6 +1064,7 @@ NATIVE_0FA2:
         LD ($2000),HL  ; ROM $0FA8: 22 00 20
 NATIVE_0FAB:
         RET  ; ROM $0FAB: C9
+NATIVE_WORD_03_SET_MODE_AND_PTR:
 NATIVE_0FAC:
         EX DE,HL  ; ROM $0FAC: EB
         LD A,(HL)  ; ROM $0FAD: 7E
@@ -1073,6 +1078,7 @@ NATIVE_0FAC:
         EX DE,HL  ; ROM $0FB9: EB
         LD ($2019),HL  ; ROM $0FBA: 22 19 20
         RET  ; ROM $0FBD: C9
+NATIVE_WORD_04_BRANCH_SCRIPT:
 NATIVE_0FBE:
         EX DE,HL  ; ROM $0FBE: EB
         LD E,(HL)  ; ROM $0FBF: 5E
@@ -1081,6 +1087,7 @@ NATIVE_0FBE:
         EX DE,HL  ; ROM $0FC2: EB
         LD ($2000),HL  ; ROM $0FC3: 22 00 20
         RET  ; ROM $0FC6: C9
+NATIVE_WORD_05_STORE_BYTE:
 NATIVE_0FC7:
         EX DE,HL  ; ROM $0FC7: EB
         LD A,(HL)  ; ROM $0FC8: 7E
@@ -1092,6 +1099,7 @@ NATIVE_0FC7:
         LD ($2000),HL  ; ROM $0FCE: 22 00 20
         LD (DE),A  ; ROM $0FD1: 12
         RET  ; ROM $0FD2: C9
+NATIVE_WORD_06_CLEAR_DISPLAY:
 NATIVE_0FD3:
         POP HL  ; ROM $0FD3: E1
         LD SP,$4030  ; ROM $0FD4: 31 30 40
@@ -1146,6 +1154,7 @@ NATIVE_0FFB:
         DEC B  ; ROM $1009: 05
         JP NZ,$0FF9  ; ROM $100A: C2 F9 0F
         RET  ; ROM $100D: C9
+NATIVE_WORD_07_INIT_DESCRIPTOR:
 NATIVE_100E:
         LD HL,$204A  ; ROM $100E: 21 4A 20
         LD BC,$0BFE  ; ROM $1011: 01 FE 0B
@@ -1188,6 +1197,7 @@ NATIVE_1033:
         INC BC  ; ROM $1044: 03
         INC DE  ; ROM $1045: 13
         RET  ; ROM $1046: C9
+NATIVE_WORD_08_DRAW_AND_BRANCH:
 NATIVE_1047:
         EX DE,HL  ; ROM $1047: EB
         LD E,(HL)  ; ROM $1048: 5E
@@ -1213,6 +1223,7 @@ NATIVE_1047:
         POP HL  ; ROM $1067: E1
         LD A,$05  ; ROM $1068: 3E 05
         JP $0132  ; ROM $106A: C3 32 01
+NATIVE_WORD_0A_CLEAR_FLAG_BIT3:
 NATIVE_106D:
         EX DE,HL  ; ROM $106D: EB
         LD E,(HL)  ; ROM $106E: 5E
@@ -1224,6 +1235,7 @@ NATIVE_106D:
         AND $F7  ; ROM $1076: E6 F7
         LD (DE),A  ; ROM $1078: 12
         RET  ; ROM $1079: C9
+NATIVE_WORD_0B_RESET_ROUND:
 NATIVE_107A:
         LD HL,$2018  ; ROM $107A: 21 18 20
         LD A,(HL)  ; ROM $107D: 7E
@@ -1355,6 +1367,7 @@ NATIVE_11D0:
         LD H,(HL)  ; ROM $11E7: 66
         LD L,A  ; ROM $11E8: 6F
         JP (HL)  ; ROM $11E9: E9
+WORD_ZERO_FRAME_SCHEDULER:
 NATIVE_11EA:
         CALL $12E5  ; ROM $11EA: CD E5 12
         CALL $12B1  ; ROM $11ED: CD B1 12
