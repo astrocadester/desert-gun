@@ -69,6 +69,7 @@ def recover(mem,roots):
             pc+=size
     return code,owned,entries,edges
 
+WORD_NAMES=("FRAME_SCHEDULER","RENDER_MODE_A","SET_MODE","SET_RENDER_POINTER","SCRIPT_GOTO","STORE_IMMEDIATE","CLEAR_DISPLAY","INIT_DESCRIPTOR","INIT_RENDER","RENDER_MODE_B","CLEAR_BIT3","RESET_ROUND","RENDER_PACKET")
 def main():
     args=argparse.ArgumentParser()
     args.add_argument("game",choices=CFG.keys())
@@ -106,8 +107,24 @@ def main():
         pc=lo
         while pc<hi:
             if pc in packet_begins:
-                packet=packet_begins[pc]
-                asm.append(f"WORD_{pc:04X}: ; opcode {packet['opcode']}, {packet['length']-1} bytes inline")
+                pkt=packet_begins[pc]
+                opcode=int(pkt["opcode"],16)
+                name=WORD_NAMES[opcode]
+                operand=mem[pc+1:pc+pkt["length"]]
+                asm.append(f"CMD_{pc:04X}_{name}:")
+                asm.append(f"        DB $"+format(opcode,"02X")+f" ; {name}")
+                formats={1:"B",2:"B",3:"BW",4:"W",5:"BW",8:"WW",9:"B",10:"W",12:"BWW"}
+                spec=formats.get(opcode,"")
+                if sum(1 if x=="B" else 2 for x in spec)!=len(operand):
+                    raise AssertionError(("incorrect word format",pc,opcode,len(operand),spec))
+                n=0
+                for field in spec:
+                    width=1 if field=="B" else 2
+                    value=int.from_bytes(operand[n:n+width],"little")
+                    asm.append("        "+("DB $" if width==1 else "DW $")+format(value,"02X" if width==1 else "04X")+f" ; inline {field}")
+                    n+=width
+                pc+=pkt["length"]
+                continue
             if pc in entries and pc in code:asm.append(f"NATIVE_{pc:04X}:")
             if pc in code and pc+code[pc][1]<=hi:
                 inst,n,_,_=code[pc]
