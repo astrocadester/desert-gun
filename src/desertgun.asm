@@ -1020,9 +1020,33 @@ NATIVE_06D1:
         DB $1E,$00,$00,$3F,$00,$80,$FF,$03,$C0,$07,$03,$C0 ; ROM $0F38 unclassified
         DB $07,$03,$E0,$07,$00,$E0,$03,$00,$E0,$07,$00,$F0 ; ROM $0F44 unclassified
         DB $1F,$00,$E0,$1F,$00,$F6,$1F,$00,$FF,$0F,$00,$C6 ; ROM $0F50 unclassified
-        DB $07,$00,$E0,$FF,$00,$AB,$0F,$94,$0F,$A2,$0F,$AC ; ROM $0F5C unclassified
-        DB $0F,$BE,$0F,$C7,$0F,$D3,$0F,$0E,$10,$47,$10,$8E ; ROM $0F68 native command vectors
-        DB $0F,$6D,$10,$7A,$10,$7B,$0F ; ROM $0F74 native command vectors
+        DB $07,$00,$E0,$FF,$00 ; ROM $0F5C unclassified
+ROM_GAME_WORD_00:
+        DW $0FAB ; GAME_WORD pointer from ROM $0F61
+ROM_GAME_WORD_01:
+        DW $0F94 ; GAME_WORD pointer from ROM $0F63
+ROM_GAME_WORD_02:
+        DW $0FA2 ; GAME_WORD pointer from ROM $0F65
+ROM_GAME_WORD_03:
+        DW $0FAC ; GAME_WORD pointer from ROM $0F67
+ROM_GAME_WORD_04:
+        DW $0FBE ; GAME_WORD pointer from ROM $0F69
+ROM_GAME_WORD_05:
+        DW $0FC7 ; GAME_WORD pointer from ROM $0F6B
+ROM_GAME_WORD_06:
+        DW $0FD3 ; GAME_WORD pointer from ROM $0F6D
+ROM_GAME_WORD_07:
+        DW $100E ; GAME_WORD pointer from ROM $0F6F
+ROM_GAME_WORD_08:
+        DW $1047 ; GAME_WORD pointer from ROM $0F71
+ROM_GAME_WORD_09:
+        DW $0F8E ; GAME_WORD pointer from ROM $0F73
+ROM_GAME_WORD_0A:
+        DW $106D ; GAME_WORD pointer from ROM $0F75
+ROM_GAME_WORD_0B:
+        DW $107A ; GAME_WORD pointer from ROM $0F77
+ROM_GAME_WORD_0C:
+        DW $0F7B ; GAME_WORD pointer from ROM $0F79
 NATIVE_WORD_0C_DRAW_PACKET:
 NATIVE_0F7B:
         EX DE,HL  ; ROM $0F7B: EB
