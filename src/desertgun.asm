@@ -1020,9 +1020,34 @@ NATIVE_06D1:
         DB $1E,$00,$00,$3F,$00,$80,$FF,$03,$C0,$07,$03,$C0 ; ROM $0F38 unclassified
         DB $07,$03,$E0,$07,$00,$E0,$03,$00,$E0,$07,$00,$F0 ; ROM $0F44 unclassified
         DB $1F,$00,$E0,$1F,$00,$F6,$1F,$00,$FF,$0F,$00,$C6 ; ROM $0F50 unclassified
-        DB $07,$00,$E0,$FF,$00,$AB,$0F,$94,$0F,$A2,$0F,$AC ; ROM $0F5C unclassified
-        DB $0F,$BE,$0F,$C7,$0F,$D3,$0F,$0E,$10,$47,$10,$8E ; ROM $0F68 unclassified
-        DB $0F,$6D,$10,$7A,$10,$7B,$0F ; ROM $0F74 unclassified
+        DB $07,$00,$E0,$FF,$00 ; ROM $0F5C unclassified
+ROM_GAME_WORD_00:
+        DW $0FAB ; GAME_WORD pointer from ROM $0F61
+ROM_GAME_WORD_01:
+        DW $0F94 ; GAME_WORD pointer from ROM $0F63
+ROM_GAME_WORD_02:
+        DW $0FA2 ; GAME_WORD pointer from ROM $0F65
+ROM_GAME_WORD_03:
+        DW $0FAC ; GAME_WORD pointer from ROM $0F67
+ROM_GAME_WORD_04:
+        DW $0FBE ; GAME_WORD pointer from ROM $0F69
+ROM_GAME_WORD_05:
+        DW $0FC7 ; GAME_WORD pointer from ROM $0F6B
+ROM_GAME_WORD_06:
+        DW $0FD3 ; GAME_WORD pointer from ROM $0F6D
+ROM_GAME_WORD_07:
+        DW $100E ; GAME_WORD pointer from ROM $0F6F
+ROM_GAME_WORD_08:
+        DW $1047 ; GAME_WORD pointer from ROM $0F71
+ROM_GAME_WORD_09:
+        DW $0F8E ; GAME_WORD pointer from ROM $0F73
+ROM_GAME_WORD_0A:
+        DW $106D ; GAME_WORD pointer from ROM $0F75
+ROM_GAME_WORD_0B:
+        DW $107A ; GAME_WORD pointer from ROM $0F77
+ROM_GAME_WORD_0C:
+        DW $0F7B ; GAME_WORD pointer from ROM $0F79
+NATIVE_WORD_0C_DRAW_PACKET:
 NATIVE_0F7B:
         EX DE,HL  ; ROM $0F7B: EB
         LD A,(HL)  ; ROM $0F7C: 7E
@@ -1039,9 +1064,11 @@ NATIVE_0F7B:
         LD ($2000),HL  ; ROM $0F87: 22 00 20
         POP HL  ; ROM $0F8A: E1
         JP $0132  ; ROM $0F8B: C3 32 01
+NATIVE_WORD_09_DRAW_MODE_B:
 NATIVE_0F8E:
         LD HL,$0167  ; ROM $0F8E: 21 67 01
         JP $0F97  ; ROM $0F91: C3 97 0F
+NATIVE_WORD_01_DRAW_MODE_A:
 NATIVE_0F94:
         LD HL,$0132  ; ROM $0F94: 21 32 01
 NATIVE_0F97:
@@ -1052,6 +1079,7 @@ NATIVE_0F97:
         LD ($2000),HL  ; ROM $0F9B: 22 00 20
         CALL $1A06  ; ROM $0F9E: CD 06 1A
         RET  ; ROM $0FA1: C9
+NATIVE_WORD_02_SET_RAM_2031:
 NATIVE_0FA2:
         EX DE,HL  ; ROM $0FA2: EB
         LD A,(HL)  ; ROM $0FA3: 7E
@@ -1060,6 +1088,7 @@ NATIVE_0FA2:
         LD ($2000),HL  ; ROM $0FA8: 22 00 20
 NATIVE_0FAB:
         RET  ; ROM $0FAB: C9
+NATIVE_WORD_03_SET_MODE_AND_PTR:
 NATIVE_0FAC:
         EX DE,HL  ; ROM $0FAC: EB
         LD A,(HL)  ; ROM $0FAD: 7E
@@ -1073,6 +1102,7 @@ NATIVE_0FAC:
         EX DE,HL  ; ROM $0FB9: EB
         LD ($2019),HL  ; ROM $0FBA: 22 19 20
         RET  ; ROM $0FBD: C9
+NATIVE_WORD_04_BRANCH_SCRIPT:
 NATIVE_0FBE:
         EX DE,HL  ; ROM $0FBE: EB
         LD E,(HL)  ; ROM $0FBF: 5E
@@ -1081,6 +1111,7 @@ NATIVE_0FBE:
         EX DE,HL  ; ROM $0FC2: EB
         LD ($2000),HL  ; ROM $0FC3: 22 00 20
         RET  ; ROM $0FC6: C9
+NATIVE_WORD_05_STORE_BYTE:
 NATIVE_0FC7:
         EX DE,HL  ; ROM $0FC7: EB
         LD A,(HL)  ; ROM $0FC8: 7E
@@ -1092,6 +1123,7 @@ NATIVE_0FC7:
         LD ($2000),HL  ; ROM $0FCE: 22 00 20
         LD (DE),A  ; ROM $0FD1: 12
         RET  ; ROM $0FD2: C9
+NATIVE_WORD_06_CLEAR_DISPLAY:
 NATIVE_0FD3:
         POP HL  ; ROM $0FD3: E1
         LD SP,$4030  ; ROM $0FD4: 31 30 40
@@ -1146,6 +1178,7 @@ NATIVE_0FFB:
         DEC B  ; ROM $1009: 05
         JP NZ,$0FF9  ; ROM $100A: C2 F9 0F
         RET  ; ROM $100D: C9
+NATIVE_WORD_07_INIT_DESCRIPTOR:
 NATIVE_100E:
         LD HL,$204A  ; ROM $100E: 21 4A 20
         LD BC,$0BFE  ; ROM $1011: 01 FE 0B
@@ -1188,6 +1221,7 @@ NATIVE_1033:
         INC BC  ; ROM $1044: 03
         INC DE  ; ROM $1045: 13
         RET  ; ROM $1046: C9
+NATIVE_WORD_08_DRAW_AND_BRANCH:
 NATIVE_1047:
         EX DE,HL  ; ROM $1047: EB
         LD E,(HL)  ; ROM $1048: 5E
@@ -1213,6 +1247,7 @@ NATIVE_1047:
         POP HL  ; ROM $1067: E1
         LD A,$05  ; ROM $1068: 3E 05
         JP $0132  ; ROM $106A: C3 32 01
+NATIVE_WORD_0A_CLEAR_FLAG_BIT3:
 NATIVE_106D:
         EX DE,HL  ; ROM $106D: EB
         LD E,(HL)  ; ROM $106E: 5E
@@ -1224,6 +1259,7 @@ NATIVE_106D:
         AND $F7  ; ROM $1076: E6 F7
         LD (DE),A  ; ROM $1078: 12
         RET  ; ROM $1079: C9
+NATIVE_WORD_0B_RESET_ROUND:
 NATIVE_107A:
         LD HL,$2018  ; ROM $107A: 21 18 20
         LD A,(HL)  ; ROM $107D: 7E
@@ -1355,6 +1391,7 @@ NATIVE_11D0:
         LD H,(HL)  ; ROM $11E7: 66
         LD L,A  ; ROM $11E8: 6F
         JP (HL)  ; ROM $11E9: E9
+WORD_ZERO_FRAME_SCHEDULER:
 NATIVE_11EA:
         CALL $12E5  ; ROM $11EA: CD E5 12
         CALL $12B1  ; ROM $11ED: CD B1 12
@@ -1930,22 +1967,83 @@ NATIVE_155E:
         DB $FF,$AF,$0A,$03,$95,$07,$06,$EF,$07,$09,$49,$08 ; ROM $160C unclassified
         DB $FF,$EF,$07,$05,$E4,$06,$FF,$A3,$08,$02,$49,$07 ; ROM $1618 unclassified
         DB $04,$6F,$07,$06,$49,$07,$FF,$23,$07,$05,$E4,$06 ; ROM $1624 unclassified
-        DB $FF,$12,$07,$06,$08,$06,$20,$A0,$3E,$01,$05,$08 ; ROM $1630 unclassified
-        DB $0B,$20,$00,$24,$01,$06,$01,$04,$08,$1C,$20,$1B ; ROM $163C unclassified
-        DB $24,$07,$05,$01,$81,$20,$05,$01,$B1,$20,$03,$10 ; ROM $1648 unclassified
-        DB $33,$16,$05,$01,$35,$20,$05,$01,$38,$20,$0C,$0B ; ROM $1654 unclassified
-        DB $5E,$1A,$8A,$2F,$0B,$01,$02,$02,$3C,$00,$0C,$0C ; ROM $1660 unclassified
-        DB $4B,$1A,$B4,$3E,$02,$1E,$00,$04,$64,$16,$02,$1E ; ROM $166C unclassified
-        DB $00,$06,$01,$08,$02,$78,$00,$01,$09,$02,$3C,$00 ; ROM $1678 unclassified
-        DB $0C,$0D,$4B,$1A,$09,$30,$05,$06,$B9,$20,$05,$01 ; ROM $1684 unclassified
-        DB $0D,$20,$05,$01,$81,$20,$05,$01,$35,$20,$00,$05 ; ROM $1690 unclassified
-        DB $00,$0D,$20,$05,$00,$37,$20,$05,$00,$38,$20,$0C ; ROM $169C unclassified
-        DB $10,$4B,$1A,$00,$24,$0C,$10,$4B,$1A,$10,$24,$0C ; ROM $16A8 unclassified
-        DB $10,$4B,$1A,$A0,$3E,$0C,$10,$4B,$1A,$B0,$3E,$08 ; ROM $16B4 unclassified
-        DB $06,$20,$A0,$3E,$01,$05,$08,$0B,$20,$00,$24,$01 ; ROM $16C0 unclassified
-        DB $06,$01,$04,$08,$1C,$20,$1B,$24,$02,$1E,$00,$0A ; ROM $16CC unclassified
-        DB $40,$20,$0A,$4F,$20,$0A,$5E,$20,$0A,$6D,$20,$02 ; ROM $16D8 unclassified
-        DB $0F,$00,$09,$00,$09,$01,$02,$F0,$00,$04,$33,$16 ; ROM $16E4 unclassified
+        DB $FF,$12,$07 ; ROM $1630 unclassified
+CMD_1633_CLEAR_DISPLAY:
+        DB $06 ; CLEAR_DISPLAY
+CMD_1634_INIT_RENDER:
+        DB $08 ; INIT_RENDER
+        DW $2006 ; inline W
+        DW $3EA0 ; inline W
+CMD_1639_RENDER_MODE_A:
+        DB $01 ; RENDER_MODE_A
+        DB $05 ; inline B
+CMD_163B_INIT_RENDER:
+        DB $08 ; INIT_RENDER
+        DW $200B ; inline W
+        DW $2400 ; inline W
+CMD_1640_RENDER_MODE_A:
+        DB $01 ; RENDER_MODE_A
+        DB $06 ; inline B
+CMD_1642_RENDER_MODE_A:
+        DB $01 ; RENDER_MODE_A
+        DB $04 ; inline B
+CMD_1644_INIT_RENDER:
+        DB $08 ; INIT_RENDER
+        DW $201C ; inline W
+        DW $241B ; inline W
+CMD_1649_INIT_DESCRIPTOR:
+        DB $07 ; INIT_DESCRIPTOR
+CMD_164A_STORE_IMMEDIATE:
+        DB $05 ; STORE_IMMEDIATE
+        DB $01 ; inline B
+        DW $2081 ; inline W
+CMD_164E_STORE_IMMEDIATE:
+        DB $05 ; STORE_IMMEDIATE
+        DB $01 ; inline B
+        DW $20B1 ; inline W
+CMD_1652_SET_RENDER_POINTER:
+        DB $03 ; SET_RENDER_POINTER
+        DB $10 ; inline B
+        DW $1633 ; inline W
+CMD_1656_STORE_IMMEDIATE:
+        DB $05 ; STORE_IMMEDIATE
+        DB $01 ; inline B
+        DW $2035 ; inline W
+CMD_165A_STORE_IMMEDIATE:
+        DB $05 ; STORE_IMMEDIATE
+        DB $01 ; inline B
+        DW $2038 ; inline W
+CMD_165E_RENDER_PACKET:
+        DB $0C ; RENDER_PACKET
+        DB $0B ; inline B
+        DW $1A5E ; inline W
+        DW $2F8A ; inline W
+CMD_1664_RESET_ROUND:
+        DB $0B ; RESET_ROUND
+CMD_1665_RENDER_MODE_A:
+        DB $01 ; RENDER_MODE_A
+        DB $02 ; inline B
+CMD_1667_SET_MODE:
+        DB $02 ; SET_MODE
+        DB $3C ; inline B
+CMD_1669_FRAME_SCHEDULER:
+        DB $00 ; FRAME_SCHEDULER
+        DB $0C,$0C,$4B,$1A,$B4,$3E,$02,$1E,$00,$04,$64,$16 ; ROM $166A unclassified
+CMD_1676_SET_MODE:
+        DB $02 ; SET_MODE
+        DB $1E ; inline B
+CMD_1678_FRAME_SCHEDULER:
+        DB $00 ; FRAME_SCHEDULER
+        DB $06,$01,$08,$02,$78,$00,$01,$09,$02,$3C,$00,$0C ; ROM $1679 unclassified
+        DB $0D,$4B,$1A,$09,$30,$05,$06,$B9,$20,$05,$01,$0D ; ROM $1685 unclassified
+        DB $20,$05,$01,$81,$20,$05,$01,$35,$20,$00,$05,$00 ; ROM $1691 unclassified
+        DB $0D,$20,$05,$00,$37,$20,$05,$00,$38,$20,$0C,$10 ; ROM $169D unclassified
+        DB $4B,$1A,$00,$24,$0C,$10,$4B,$1A,$10,$24,$0C,$10 ; ROM $16A9 unclassified
+        DB $4B,$1A,$A0,$3E,$0C,$10,$4B,$1A,$B0,$3E,$08,$06 ; ROM $16B5 unclassified
+        DB $20,$A0,$3E,$01,$05,$08,$0B,$20,$00,$24,$01,$06 ; ROM $16C1 unclassified
+        DB $01,$04,$08,$1C,$20,$1B,$24,$02,$1E,$00,$0A,$40 ; ROM $16CD unclassified
+        DB $20,$0A,$4F,$20,$0A,$5E,$20,$0A,$6D,$20,$02,$0F ; ROM $16D9 unclassified
+        DB $00,$09,$00,$09,$01,$02,$F0,$00,$04,$33,$16 ; ROM $16E5 unclassified
 NATIVE_16F0:
         LD HL,$20B2  ; ROM $16F0: 21 B2 20
         IN A,($02)  ; ROM $16F3: DB 02
