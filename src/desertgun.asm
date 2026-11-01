@@ -2067,9 +2067,20 @@ FLOW_OBJECT_155E:
         JP P,FLOW_OBJECT_1505  ; ROM $1560: F2 05 15
         RET  ; ROM $1563: C9
 OBJECT_NATIVE_POINTERS:
-        DB $CE,$15,$1F,$16,$B9,$15,$0D,$16,$92,$15,$A4,$15 ; ROM $1564 native object/motion pointer table
-        DB $E0,$15,$F5,$15,$DA,$15,$2B,$16,$C5,$15,$19,$16 ; ROM $1570 native object/motion pointer table
-        DB $9E,$15,$B3,$15 ; ROM $157C native object/motion pointer table
+        DW $15CE ; ROM $1564 object routine pointers
+        DW $161F ; ROM $1566 object routine pointers
+        DW $15B9 ; ROM $1568 object routine pointers
+        DW $160D ; ROM $156A object routine pointers
+        DW $1592 ; ROM $156C object routine pointers
+        DW $15A4 ; ROM $156E object routine pointers
+        DW $15E0 ; ROM $1570 object routine pointers
+        DW $15F5 ; ROM $1572 object routine pointers
+        DW $15DA ; ROM $1574 object routine pointers
+        DW $162B ; ROM $1576 object routine pointers
+        DW $15C5 ; ROM $1578 object routine pointers
+        DW $1619 ; ROM $157A object routine pointers
+        DW $159E ; ROM $157C object routine pointers
+        DW $15B3 ; ROM $157E object routine pointers
 OBJECT_MOTION_DATA:
         DB $EF,$15,$FE,$15,$04,$08,$08,$0C ; ROM $1580 object, motion and sprite command data
         DB $14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19,$14,$1E ; ROM $1588 object, motion and sprite command data
@@ -2516,9 +2527,10 @@ FLOW_GAME_190F:
         DEC A  ; ROM $1917: 3D
         JP NZ,FLOW_GAME_18EC  ; ROM $1918: C2 EC 18
         RET  ; ROM $191B: C9
-        DB $44,$20,$1A,$18,$20,$44,$24,$3B,$1B,$8C,$3C,$10 ; ROM $191C non-executable ROM data; consumer still to be traced
-        DB $54,$3B,$1A,$9C,$3C,$10,$50,$30,$20,$20,$20,$20 ; ROM $1928 non-executable ROM data; consumer still to be traced
-        DB $20,$20 ; ROM $1934 non-executable ROM data; consumer still to be traced
+DRAWING_COORDINATE_RECORDS:
+        DB $44,$20,$1A,$18,$20,$44,$24,$3B,$1B,$8C,$3C,$10 ; ROM $191C screen coordinates and packed drawing parameters
+        DB $54,$3B,$1A,$9C,$3C,$10,$50,$30,$20,$20,$20,$20 ; ROM $1928 screen coordinates and packed drawing parameters
+        DB $20,$20 ; ROM $1934 screen coordinates and packed drawing parameters
 FRAME_SERVICE_1936:
         LD A,($2081)  ; ROM $1936: 3A 81 20
         AND A  ; ROM $1939: A7
@@ -2551,8 +2563,16 @@ FLOW_GAME_1951:
         CALL SUB_TABLE_0FF4  ; ROM $195E: CD F4 0F
         POP HL  ; ROM $1961: E1
         JP FLOW_GAME_1951  ; ROM $1962: C3 51 19
-        DB $96,$0C,$24,$3B,$B3,$0C,$8C,$3C,$D5,$0C,$54,$3B ; ROM $1965 non-executable ROM data; consumer still to be traced
-        DB $F1,$0C,$9C,$3C,$00,$00 ; ROM $1971 non-executable ROM data; consumer still to be traced
+SPRITE_COPY_POINTER_PAIRS:
+        DW $0C96 ; ROM $1965 sprite data/video pointer pairs
+        DW $3B24 ; ROM $1967 sprite data/video pointer pairs
+        DW $0CB3 ; ROM $1969 sprite data/video pointer pairs
+        DW $3C8C ; ROM $196B sprite data/video pointer pairs
+        DW $0CD5 ; ROM $196D sprite data/video pointer pairs
+        DW $3B54 ; ROM $196F sprite data/video pointer pairs
+        DW $0CF1 ; ROM $1971 sprite data/video pointer pairs
+        DW $3C9C ; ROM $1973 sprite data/video pointer pairs
+        DW $0000 ; ROM $1975 sprite data/video pointer pairs
 FLOW_GAME_1977:
         LD HL,$20B6  ; ROM $1977: 21 B6 20
         LD A,(HL)  ; ROM $197A: 7E
@@ -2621,7 +2641,8 @@ SUB_GAME_19F6:
         CP (HL)  ; ROM $19FC: BE
         DEC BC  ; ROM $19FD: 0B
         RET  ; ROM $19FE: C9
-        DB $05,$07,$09,$30,$30,$30,$35 ; ROM $19FF non-executable ROM data; consumer still to be traced
+DIFFICULTY_THRESHOLD_BYTES:
+        DB $05,$07,$09,$30,$30,$30,$35 ; ROM $19FF difficulty thresholds and selection bytes
 RENDER_WORD_PACKET:
         LD HL,$1A37  ; ROM $1A06: 21 37 1A
         LD B,$00  ; ROM $1A09: 06 00
@@ -2655,11 +2676,18 @@ READ_HIGH_BIT_TERMINATED_TEXT:
         AND $7F  ; ROM $1A2C: E6 7F
         RET  ; ROM $1A2E: C9
 SCREEN_MESSAGE_DIRECTORY:
-        DB $C3,$1A,$1B,$1B,$79,$1B,$D9,$1B,$08,$28,$08,$34 ; ROM $1A2F screen coordinate and text offsets
-        DB $B4,$3E,$04,$24,$15,$24,$A6,$3E,$06,$24,$A7,$3E ; ROM $1A3B screen coordinate and text offsets
-        DB $0B,$30,$0B,$30,$40,$40,$40,$40,$40,$40,$40,$40 ; ROM $1A47 screen coordinate and text offsets
-        DB $40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$44 ; ROM $1A53 screen coordinate and text offsets
-        DB $45 ; ROM $1A5F screen coordinate and text offsets
+        DW $1AC3 ; ROM $1A2F screen message string pointers
+        DW $1B1B ; ROM $1A31 screen message string pointers
+        DW $1B79 ; ROM $1A33 screen message string pointers
+        DW $1BD9 ; ROM $1A35 screen message string pointers
+MESSAGE_SCREEN_COORDINATE_POINTERS:
+        DW $2808 ; ROM $1A37 screen message destination pointers
+        DW $3408 ; ROM $1A39 screen message destination pointers
+        DW $3EB4 ; ROM $1A3B screen message destination pointers
+        DW $2404 ; ROM $1A3D screen message destination pointers
+        DB $15,$24,$A6,$3E,$06,$24,$A7,$3E,$0B,$30,$0B,$30 ; ROM $1A3F screen coordinate and text offsets
+        DB $40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40 ; ROM $1A4B screen coordinate and text offsets
+        DB $40,$40,$40,$40,$40,$40,$40,$44,$45 ; ROM $1A57 screen coordinate and text offsets
 SCREEN_MESSAGE_TEXT:
         DB $53,$45,$52,$54,$40,$47,$55,$4E,$00,$40,$40 ; ROM $1A60 high-bit-terminated screen message and token data
         DB $40,$40,$40,$32,$30,$30,$40,$42,$4F,$4E,$55,$53 ; ROM $1A6B high-bit-terminated screen message and token data
