@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Native Intel 8080 RE from original Midway ROM devices.
-All native instruction starts are reached from reset/IRQ vectors. Unclassified
-bytes remain DB, never silently converted into unverified instructions.
+Root native traversal includes reset/IRQ, bytecode vectors and proven stack/HL
+continuations. Genuine ROM image/text/script data stay typed, never guessed code.
 """
 import argparse,hashlib,json,re,zipfile
 from audit_words import audit
@@ -208,7 +208,10 @@ def main():
             "devices":[{"name":n,"base":i*size,"size":size,"sha1":hashlib.sha1(p).hexdigest()}
                        for i,(n,p) in enumerate(zip(names,parts))],
             "native_instruction_count":len(code),"native_byte_count":len(owned),
-            "edges":edges,"indexed_dispatch_signatures":signatures}
+            "edges":edges,"indexed_dispatch_signatures":signatures,
+            "extra_re_roots":[0x01D0,0x11C3,0x1DE9],
+            "cross_bank_instruction":{"address":0x17FF,"bytes":"C3 32 01","native_target":0x0132},
+            "revision":"v20261031-0001"}
     report.update({"script_pointer_ram":0x2000,"dispatcher":4560,"vector_table":3937,"vector_count":13,"vectors":vectors,"initial_script":5683,"decoded_script_sites":word_scan["distinct_packet_count"]})
     (ROOT/"docs"/"recovery.json").write_text(json.dumps(report,indent=2)+"\n")
     print(game,"native 8080 instructions",len(code),"code bytes",len(owned),
