@@ -1,37 +1,43 @@
-# Desert Gun: 8080 indexed bytecode interpreter
+# Desert Gun — ROM-verified 8080 indexed interpreter
 
 Source: original desertgu.zip, SHA256 bcc3ea2125ba8a987923370c5a2545c771a7e04eef2440d2f072ea488b851916
 
-## Runtime identity
+## Dispatcher ABI
 
-- Script-pointer RAM: `$2000`
-- Native command dispatcher: `$3A7`
-- Vector table: `$9AE`
-- Indexed native entries: 30
-- Initial ROM command stream: `$821`
+- Dispatcher $11D0–$11E9; script pointer in RAM $2000.
+- Token $00 is a frame handoff to $11EA, without advancing the script PC.
+- Nonzero tokens advance RAM $2000 past the opcode; DE addresses inline operands.
+- Little-endian native vector fetch from $0F61 + 2 x opcode.
+- Tail at $11E0: 07 4F 06 00 09 7E 23 66 6F E9.
+- 13 table slots: 12 executed nonzero words; slot zero points to RET at $0FAB
+  but is bypassed by the zero-scheduler branch.
 
-The dispatcher fetches a bytecode from its saved program counter, advances the pointer, indexes 16-bit native handler entries, and transfers control indirectly. Entry count does not imply each command has identical operands.
+## Native word vectors and inline operand widths
 
-| Index | Native handler | First 8 bytes at handler |
-|---:|---:|---|
-| `$00` | `$0FAB` | `C9 EB 7E 32 30 20 23 5E` |
-| `$01` | `$0F94` | `21 32 01 E5 EB 4E 23 22` |
-| `$02` | `$0FA2` | `EB 7E 32 31 20 23 22 00` |
-| `$03` | `$0FAC` | `EB 7E 32 30 20 23 5E 23` |
-| `$04` | `$0FBE` | `EB 5E 23 56 EB 22 00 20` |
-| `$05` | `$0FC7` | `EB 7E 23 5E 23 56 23 22` |
-| `$06` | `$0FD3` | `E1 31 30 40 F3 01 00 00` |
-| `$07` | `$100E` | `21 4A 20 01 FE 0B 70 2B` |
-| `$08` | `$1047` | `EB 5E 23 56 23 01 83 20` |
-| `$09` | `$0F8E` | `21 67 01 C3 97 0F 21 32` |
-| `$0A` | `$106D` | `EB 5E 23 56 23 22 00 20` |
-| `$0B` | `$107A` | `21 18 20 7E A7 C8 35 21` |
-| `$0C` | `$0F7B` | `EB 7E 23 5E 23 56 23 D5` |
+| Op | Native entry | Payload bytes | Working operation |
+|---|---|---:|---|
+| $00 | $0FAB | 0 | FRAME_HANDOFF |
+| $01 | $0F94 | 1 | DRAW_WITH_MODE_0132 |
+| $02 | $0FA2 | 1 | SET_2031 |
+| $03 | $0FAC | 3 | SET_2030_AND_POINTER |
+| $04 | $0FBE | 2 | GOTO_SCRIPT |
+| $05 | $0FC7 | 3 | STORE_IMMEDIATE_AT_ADDRESS |
+| $06 | $0FD3 | 0 | CLEAR_DISPLAY_MEMORY |
+| $07 | $100E | 0 | INITIALIZE_RAM_DESCRIPTOR |
+| $08 | $1047 | 4 | INITIALIZE_DRAW_AND_BRANCH |
+| $09 | $0F8E | 1 | DRAW_WITH_MODE_0167 |
+| $0A | $106D | 2 | CLEAR_BIT_08 |
+| $0B | $107A | 0 | ROUND_OR_SCENE_RESET |
+| $0C | $0F7B | 5 | DRAW_OR_COPY_PACKET |
 
-## Historical interpretation
+Word names describe observed machine behavior, not original DNA vocabulary.
+Script starts: $1633 (initial), $1676 (round reset).
+See [decoded scripts](decoded-scripts.md) and [word semantics](8080-WORD-SEMANTICS.md).
 
-Desert Gun (1977) directly demonstrates DNA's early indexed native-command interpreter. Common interpreter mechanics alone do not prove that the individual handler implementations or source files were identical across games.
+## Evolution and reuse
 
-## Verification boundaries
-
-This table is read directly from the original ROM. Native handler semantics, script operand sizes, interrupt cadence, and full address ownership require instruction- and data-flow analysis.
+Boot Hill, Sea Wolf, Tornado Baseball, Double Play and Extra Inning share the
+exact 10-byte indexing/indirect-jump tail. Desert Gun uses RAM $2000 for
+its script PC, while Boot Hill uses RAM $2006. The zero scheduler handoff
+is distinct from Gun Fight zero-command behavior. Opcode number alone
+does not establish identical handler semantics or ABI.
