@@ -47,7 +47,7 @@ Distinct statically decoded packet sites: 20
 | 0B | 1 |
 | 0C | 1 |
 
-Opcode $05 (Gun Fight) copies 15 inline bytes after a 16-bit destination; opcode $06 copies nine. They are not two-byte-only operands.
+Desert Gun opcode $05 writes an immediate byte to an inline 16-bit address; opcode $06 clears screen memory using no inline operands.
 
 This is static rooted decoding; it is not a complete emulation of interrupt-driven execution.
 
