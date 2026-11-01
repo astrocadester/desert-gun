@@ -4,6 +4,17 @@
 
 Desert Gun (1977) is an Intel 8080 Midway/Dave Nutting Associates arcade game. This repository preserves the original ROM set, reconstructs native executable instructions, and documents an indexed-bytecode interpreter present in its program ROM.
 
+## Hard RE: native code and DNA lineage
+
+**Revision v20261031-0001:** [Hard RE interpreter and lineage study](docs/hard-re-interpreter-lineage.md).
+
+- Added 82 native instruction starts recovered from startup/display continuations and a return stub; corrected an 8080 JP instruction straddling the $17FF/$1800 ROM boundary.
+- 2,311 native instruction starts representing 3,896 ROM bytes. True font, graphics, data tables and bytecode remain typed data, with readable ROM data labels and inline 8-bit glyph drawings.
+- Restored executable code at $01D0–$0267 and $11C3–$11CF. Native $0FD7 display clear is reused by startup and interpreted word $06.
+- Native game-word table at $0F61 contains 13 slots ($00–$0C), of which $00 branches directly to the frame scheduler and 12 are nonzero handler words.
+- The dispatcher at $11D0 uses the **exact shared ten-byte 8080 dispatch tail** identified in Boot Hill, Sea Wolf, Tornado Baseball, Double Play and Extra Inning.
+- A source-byte audit against the original authoritative 8 KB disassembly produced **zero mismatches and zero gaps**, but the updated source still requires a fresh local zmac build and bank-level verification before merge.
+
 ## Interpreter and DNA 8080 history
 
 The native dispatcher at `$11D0` fetches indexed 8080 game commands through script pointer `$2000` and vector table `$0F61`; the initial script begins at `$1633`. Second-pass word decoding establishes **13 entries ($00–$0C), with $00 taking an explicit scheduler branch and 12 nonzero native words**. Opcode $00 hands off directly to the frame scheduler at $11EA, in contrast with Gun Fight's zero-command repeat/wait logic.
@@ -29,4 +40,4 @@ Linux: `./build.sh`; Windows: `build.bat`. Both regenerate source from the prese
 
 ## Research status
 
-Confirmed: native indexed dispatch, original device ordering/hashes and target handlers. Native reconstruction follows reset/interrupt vectors, branch targets and dispatch-table entries; unrecovered/ambiguous bytes remain `DB` rather than being misrepresented as reachable code. The map marks candidate board RAM/video addresses separately from verified ROM ranges. Detailed command operand types and all alternate native entry paths remain subjects for deeper RE.
+Confirmed: native indexed dispatch, original device ordering/hashes and target handlers. Native reconstruction also follows the two recovered startup continuations loaded through HL before `JP (HL)`. Original bitmap, text, and other legitimate data remain `DB` or typed `DW` rather than being misrepresented as executable opcodes. The map marks candidate board RAM/video addresses separately from verified ROM ranges. Detailed command operand types and all alternate native entry paths remain subjects for deeper RE.
