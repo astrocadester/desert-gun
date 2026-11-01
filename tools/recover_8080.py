@@ -70,6 +70,21 @@ def recover(mem,roots):
     return code,owned,entries,edges
 
 WORD_NAMES=("FRAME_SCHEDULER","RENDER_MODE_A","SET_MODE","SET_RENDER_POINTER","SCRIPT_GOTO","STORE_IMMEDIATE","CLEAR_DISPLAY","INIT_DESCRIPTOR","INIT_RENDER","RENDER_MODE_B","CLEAR_BIT3","RESET_ROUND","RENDER_PACKET")
+# Semantic source annotations; kept here so build.sh regeneration preserves the RE.
+SEMANTIC_LABELS = {'1033':'SUB_WORD_1033','1047':'WORD_08_DRAW_BRANCH_ENTRY','1142':'RENDER_FRAME_DESCRIPTOR','1181':'FLOW_WORD_1181','1214':'FLOW_FRAME_1214','1223':'FLOW_FRAME_1223','1232':'SUB_FRAME_1232','1246':'FLOW_FRAME_1246','1318':'FRAME_SERVICE_1318','1345':'FLOW_FRAME_1345','1356':'FLOW_FRAME_1356','1372':'SUB_FRAME_1372','1422':'SUB_FRAME_1422','1442':'FLOW_FRAME_1442','1472':'SUB_FRAME_1472','1485':'FLOW_FRAME_1485','1492':'FLOW_FRAME_1492','1494':'SUB_FRAME_1494','1503':'FRAME_REBUILD_OBJECTS','1505':'FLOW_OBJECT_1505','1523':'FLOW_OBJECT_1523','1537':'FLOW_OBJECT_1537','1538':'FLOW_OBJECT_1538','1545':'FLOW_OBJECT_1545','1718':'FLOW_GAME_1718','1748':'FLOW_GAME_1748','1769':'FLOW_GAME_1769','1776':'FLOW_GAME_1776','1787':'FLOW_GAME_1787','1802':'FLOW_GAME_1802','1815':'FLOW_GAME_1815','1825':'FLOW_GAME_1825','1848':'FLOW_GAME_1848','1854':'FLOW_GAME_1854','1858':'FLOW_GAME_1858','1906':'FLOW_GAME_1906','1936':'FRAME_SERVICE_1936','1951':'FLOW_GAME_1951','1977':'FLOW_GAME_1977','0000':'RESET_ENTRY','0008':'IRQ_VECTOR_08','0010':'IRQ_VECTOR_10','0018':'BOOT_RAM_ROM_TEST','0027':'TEST_RAM_PATTERN_START','002A':'TEST_RAM_FORWARD_SCAN','003F':'FLOW_TEST_003F','0041':'FLOW_TEST_0041','0048':'TEST_RAM_REVERSE_SCAN','0063':'FLOW_TEST_0063','0065':'FLOW_TEST_0065','0079':'FLOW_TEST_0079','007B':'FLOW_TEST_007B','007E':'TEST_RAM_FINAL_SCAN','009A':'FLOW_TEST_009A','009C':'FLOW_TEST_009C','00A1':'TEST_RAM_RESULT','00BC':'FLOW_TEST_00BC','00C2':'FLOW_TEST_00C2','00C8':'FLOW_TEST_00C8','00D9':'TEST_ROM_CHECKSUM','00E6':'TEST_ROM_BANK_LOOP','00EB':'TEST_ROM_BYTE_LOOP','0105':'FLOW_TEST_0105','011C':'TEST_FAILURE_HALT','0132':'DRAW_ENCODED_GRAPHIC','0133':'DRAW_GRAPHIC_COMMAND_FETCH','013B':'DRAW_ADVANCE_VIDEO_CURSOR','0144':'DRAW_ADVANCE_LOOP','014B':'FLOW_DRAW_014B','0154':'FLOW_DRAW_0154','0167':'SUB_DRAW_0167','0172':'FLOW_DRAW_0172','017C':'FLOW_DRAW_017C','0183':'FLOW_DRAW_0183','01B1':'SUB_DRAW_01B1','01B3':'FLOW_DRAW_01B3','01C7':'TEST_DISPLAY_ENTRY','0273':'DRAW_LOOKUP_GLYPH','027B':'FLOW_DRAW_027B','0281':'DRAW_LOOKUP_REPEAT','0404':'IRQ_08_SERVICE','0424':'FLOW_IO_0424','0441':'FLOW_IO_0441','0449':'SUB_IO_0449','0456':'IRQ_10_SERVICE','046C':'FLOW_IO_046C','047C':'FLOW_IO_047C','0481':'FLOW_IO_0481','0486':'SUB_IO_0486','0495':'FLOW_IO_0495','04A2':'FLOW_IO_04A2','04AD':'FLOW_IO_04AD','04C3':'FLOW_IO_04C3','04CD':'FLOW_IO_04CD','04E0':'FLOW_IO_04E0','0547':'SUB_IO_0547','0566':'FLOW_IO_0566','0587':'FLOW_IO_0587','0589':'FLOW_IO_0589','05A6':'FLOW_IO_05A6','05A9':'FLOW_IO_05A9','05AB':'FLOW_IO_05AB','05C8':'SUB_IO_05C8','05D6':'FLOW_IO_05D6','05E6':'FLOW_IO_05E6','05E8':'FLOW_IO_05E8','05F6':'SUB_IO_05F6','061B':'FLOW_IO_061B','0627':'SUB_IO_0627','0631':'FLOW_IO_0631','063A':'SUB_IO_063A','065A':'FLOW_IO_065A','0675':'FLOW_IO_0675','067F':'FLOW_IO_067F','0685':'FLOW_IO_0685','0697':'FLOW_IO_0697','06A6':'FLOW_IO_06A6','06AA':'FLOW_IO_06AA','06B1':'SUB_IO_06B1','06C4':'FLOW_IO_06C4','06CC':'FLOW_IO_06CC','06D1':'FLOW_IO_06D1','0F7B':'WORD_0C_DRAW_PACKET_ENTRY','0F8E':'WORD_09_DRAW_MODE_B_ENTRY','0F94':'WORD_01_DRAW_MODE_A_ENTRY','0F97':'WORD_DRAW_COMMON','0FA2':'WORD_02_SET_MODE_ENTRY','0FAB':'WORD_RETURN_STUB','0FAC':'WORD_03_SET_MODE_POINTER_ENTRY','0FBE':'WORD_04_SCRIPT_GOTO_ENTRY','0FC7':'WORD_05_STORE_BYTE_ENTRY','0FD3':'WORD_06_CLEAR_VIDEO_ENTRY','0FD7':'CLEAR_VIDEO_STACK_LOOP_START','0FDC':'CLEAR_VIDEO_PUSH_LOOP','0FF4':'SUB_TABLE_0FF4','0FF9':'SUB_TABLE_0FF9','0FFB':'FLOW_TABLE_0FFB','100E':'WORD_07_INIT_DESCRIPTOR_ENTRY','106D':'WORD_0A_CLEAR_FLAG_ENTRY','107A':'WORD_0B_RESET_SCENE_ENTRY','116C':'FLOW_WORD_116C','117A':'FLOW_WORD_117A','11AC':'NORMALIZE_RENDER_DESCRIPTOR','11AE':'FLOW_WORD_11AE','11BA':'BOOT_MAIN_ENTRY','11D0':'BYTECODE_FETCH_DISPATCH','11EA':'BYTECODE_ZERO_FRAME_HANDOFF','120E':'SELECT_GAME_RECORD','121A':'SUB_FRAME_121A','122B':'SUB_FRAME_122B','123E':'FLOW_FRAME_123E','124E':'SUB_FRAME_124E','125D':'SUB_FRAME_125D','127E':'SUB_FRAME_127E','129E':'FRAME_SERVICE_129E','12B1':'FRAME_SERVICE_12B1','12E5':'FRAME_SERVICE_12E5','132E':'FLOW_FRAME_132E','133C':'FLOW_FRAME_133C','136C':'FLOW_FRAME_136C','138A':'FLOW_FRAME_138A','13A6':'SUB_FRAME_13A6','13C1':'FLOW_FRAME_13C1','13F2':'FLOW_FRAME_13F2','145A':'SUB_FRAME_145A','147C':'SUB_FRAME_147C','148C':'FLOW_FRAME_148C','14A0':'SUB_FRAME_14A0','14A8':'FLOW_FRAME_14A8','14AE':'FLOW_FRAME_14AE','154C':'FLOW_OBJECT_154C','155E':'FLOW_OBJECT_155E','16F0':'CHECK_START_INPUT_EDGE','17A7':'FLOW_GAME_17A7','17D6':'FLOW_GAME_17D6','17DC':'FLOW_GAME_17DC','17EC':'FLOW_GAME_17EC','17FF':'FLOW_GAME_17FF','188C':'SUB_GAME_188C','189F':'FLOW_GAME_189F','18A9':'SUB_GAME_18A9','18B6':'SUB_GAME_18B6','18C0':'FLOW_GAME_18C0','18C7':'FLOW_GAME_18C7','18D8':'FLOW_GAME_18D8','18E7':'FLOW_GAME_18E7','18EC':'FLOW_GAME_18EC','18F2':'FLOW_GAME_18F2','190F':'FLOW_GAME_190F','19AF':'FLOW_GAME_19AF','19CD':'FLOW_GAME_19CD','19E0':'FLOW_GAME_19E0','19F6':'SUB_GAME_19F6','1A06':'RENDER_WORD_PACKET','1A22':'READ_HIGH_BIT_TERMINATED_TEXT','1C22':'FLOW_GAME_1C22','1C2D':'FLOW_GAME_1C2D','1C35':'FLOW_GAME_1C35','1C43':'FLOW_GAME_1C43','1C5E':'FLOW_GAME_1C5E','1C69':'FLOW_GAME_1C69','1C7C':'FLOW_GAME_1C7C','1C9B':'FLOW_GAME_1C9B','1CB2':'FLOW_GAME_1CB2','1CC9':'FLOW_GAME_1CC9','1CD2':'FLOW_GAME_1CD2','1CDB':'FLOW_GAME_1CDB','1CE4':'FLOW_GAME_1CE4','1CEA':'FLOW_GAME_1CEA','1CFD':'FLOW_GAME_1CFD','1D0F':'FLOW_GAME_1D0F','1D1C':'FLOW_GAME_1D1C','1D36':'FLOW_GAME_1D36','1D4B':'FLOW_GAME_1D4B','1D58':'FLOW_GAME_1D58','1D60':'FLOW_GAME_1D60','1D64':'FLOW_GAME_1D64','1D6E':'FLOW_GAME_1D6E','1D77':'FLOW_GAME_1D77','1D8D':'FLOW_GAME_1D8D','1D95':'FLOW_GAME_1D95','1DBA':'FLOW_GAME_1DBA','1DC7':'FLOW_GAME_1DC7','1DCF':'FLOW_GAME_1DCF','1DEA':'FLOW_GAME_1DEA','1DF7':'FLOW_GAME_1DF7','1DF9':'FLOW_GAME_1DF9','1E0B':'FLOW_GAME_1E0B','1E11':'SUB_GAME_1E11','1E46':'FLOW_GAME_1E46','01D0':'TEST_DISPLAY_AFTER_RAM_CLEAR','01D7':'TEST_DISPLAY_PIXEL_LOOP','01E4':'TEST_DISPLAY_WRITE_PATTERN','01FA':'TEST_DISPLAY_AFTER_FILL','0226':'TEST_DISPLAY_IO_POLL','023E':'TEST_DISPLAY_INPUT_HANDLE','0252':'TEST_DISPLAY_DELAY_LOOP','0260':'TEST_DISPLAY_CLEAR_RAM_LOOP','025D':'TEST_DISPLAY_PREPARE_RAM','11C3':'BOOT_SCRIPT_AFTER_VIDEO_CLEAR','11C9':'BOOT_PUSH_INTERPRETER_RETURN','11E0':'BYTECODE_VECTOR_INDEX'}
+FUNCTION_NOTES = {'1047':'Word $08: configure rendering and branch to second inline pointer.','0000':'Reset vector. Set native stack $2400 then test RAM and ROM.','0008':'IRQ $08 saves all general registers and enters game interrupt service.','0010':'IRQ $10 saves all general registers and enters second interrupt service.','0018':'Test RAM $2000–$3FFF patterns and ROM bank checksums.','00D9':'ROM-bank checksum reference list begins at $0121.','0132':'Draw compact encoded character/shape data to video memory.','01C7':'Stage the display diagnostic continuation in HL before clearing video memory.','01D0':'Display diagnostic resumes from clear-video helper; exercises screen RAM and hardware input.','025D':'Prepare diagnostic RAM for display test.','0404':'IRQ 08 native input/output service.','0456':'IRQ 10 native input/output service.','0F7B':'Word $0C: consume byte and two 16-bit pointers; transfer to drawing service.','0F8E':'Word $09: choose drawing continuation $0167.','0F94':'Word $01: choose drawing continuation $0132.','0FA2':'Word $02: write one byte to RAM $2031.','0FAC':'Word $03: store mode at $2030 and pointer at $2019.','0FBE':'Word $04: load inline script destination into RAM $2000.','0FC7':'Word $05: write immediate byte into inline 16-bit RAM address.','0FD3':'Word $06: clear video RAM via stack writes; resume at saved native continuation.','100E':'Word $07: initialize descriptor bytes in RAM $2040–$204A.','106D':'Word $0A: clear bit $08 in byte at inline address.','107A':'Word $0B: decrement round count and install script root $1676.','11BA':'Normal boot path stages $11C3 as continuation after video clear.','11C3':'Set script PC RAM $2000 to ROM $1633, push dispatcher return $11C9, enable IRQ and output port $04.','11D0':'Read script opcode via RAM $2000. Zero branches to frame scheduler; nonzero indexes vectors at $0F61.','11EA':'Run native frame services; conditional extra services depend on RAM $200D.','1A22':'Read text stream until high-bit-terminated character; select indexed string.'}
+DATA_REGIONS = [[15,16,'unused IRQ vector byte'],[23,24,'unused IRQ vector byte'],[289,306,'ROM checksum reference bytes'],[451,455,'diagnostic bit masks and constants'],[616,627,'display test bit-step and glyph lookup'],[648,1028,'8-bit digit and alphabet glyph bitmap rows'],[1275,1351,'position/screen-offset lookup bytes'],[1756,3937,'packed gun target / shape bitmap and drawing data'],[4270,4418,'object descriptor and movement-sequence bytes'],[5307,5379,'frame state, object and sound/pattern lookup bytes'],[5476,5504,'native object/motion pointer table'],[5504,5683,'object, motion and sprite command data'],[5683,5872,'ROM script and adjacent scene-data structures'],[6703,6752,'screen coordinate and text offsets'],[6752,7202,'high-bit-terminated screen message and token data'],[7759,8192,'ROM padding filled with $FF']]
+DATA_BOUNDARIES = tuple(sorted(set([x for lo,hi,_ in DATA_REGIONS for x in (lo,hi)])))
+def data_role(pc):
+    for lo,hi,role in DATA_REGIONS:
+        if lo <= pc < hi: return role
+    return "non-executable ROM data; consumer still to be traced"
+def symbolic_instruction(inst):
+    m = re.match(r"^(JP|CALL)(?: ([A-Z]+),| )\$([0-9A-F]{4})$", inst)
+    if not m: return inst
+    name = SEMANTIC_LABELS.get(m.group(3))
+    return m.group(1) + (" "+m.group(2)+"," if m.group(2) else " ") + name if name else inst
+
 def main():
     args=argparse.ArgumentParser()
     args.add_argument("game",choices=CFG.keys())
@@ -81,7 +96,7 @@ def main():
     mem=b"".join(parts);digest=hashlib.sha256(mem).hexdigest()
     vectors=[mem[3937+2*i]|mem[3937+2*i+1]<<8 for i in range(13)]
     assert all(v<len(mem) for v in vectors),vectors
-    code,owned,entries,edges=recover(mem,(0,8,16,4560,*vectors))
+    code,owned,entries,edges=recover(mem,(0,8,16,4560,0x01D0,0x11C3,*vectors))
     word_scan=audit(ROOT,game)
     word_names=["FRAME_HANDOFF","DRAW_MODE_A","SET_RAM_2031","SET_MODE_AND_PTR","BRANCH_SCRIPT","STORE_BYTE","CLEAR_DISPLAY","INIT_DESCRIPTOR","DRAW_AND_BRANCH","DRAW_MODE_B","CLEAR_FLAG_BIT3","RESET_ROUND","DRAW_PACKET"]
     word_aliases={}
@@ -115,6 +130,9 @@ def main():
          "; Original byte offsets are preserved; zmac v1.3 must rebuild exactly."]
     for part,name in enumerate(names):
         lo=part*size;hi=lo+size
+        # $17FF JP $0132 straddles two 2 KB chips. Its bytes are owned by that
+        # one instruction, emitted from the preceding ROM device.
+        if lo==0x1800: lo=0x1802
         asm.extend(["",f"        ORG ${lo:04X}",f"; Device {name}, SHA1 {hashlib.sha1(parts[part]).hexdigest()}"])
         pc=lo
         while pc<hi:
@@ -145,26 +163,29 @@ def main():
                 pc+=pkt["length"]
                 continue
             if pc in entries and pc in code:
+                label=SEMANTIC_LABELS.get(f"{pc:04X}",f"FLOW_{pc:04X}")
+                if f"{pc:04X}" in FUNCTION_NOTES: asm.append("; "+FUNCTION_NOTES[f"{pc:04X}"])
                 for index in word_aliases.get(pc,[]):
                     asm.append(f"NATIVE_WORD_{index:02X}_{word_names[index]}:")
                 if game=="desertgun" and pc==0x11EA:
                     asm.append("WORD_ZERO_FRAME_SCHEDULER:")
-                asm.append(f"NATIVE_{pc:04X}:")
-            if pc in code and pc+code[pc][1]<=hi:
+                asm.append(label+":")
+            if pc in code and pc+code[pc][1]<=len(mem):
                 inst,n,_,_=code[pc]
                 raw=mem[pc:pc+n].hex(" ").upper()
-                asm.append(f"        {inst}  ; ROM ${pc:04X}: {raw}")
+                asm.append(f"        {symbolic_instruction(inst)}  ; ROM ${pc:04X}: {raw}")
                 pc+=n
             else:
                 # Preserve all unclassified bytes, never misidentify as native code.
                 stop=min(hi,pc+12)
+                stop=min([stop]+[b for b in DATA_BOUNDARIES if pc < b < stop])
                 for p in range(pc+1,stop):
                     if p in code or p in entries or p in packet_begins or p in typed_rom_vectors or (packet_owner.get(p)!=packet_owner.get(pc)):stop=p;break
                 raw=mem[pc:stop]
                 category=("bytecode word "+packet_begins[packet_owner[pc]]["opcode"] if pc in packet_owner else
                           "native command/event vectors" if game=="gunfight" and 0x09AE<=pc<0x09EA else
                           "native command vectors" if game=="desertgun" and 0x0F61<=pc<0x0F7B else
-                          "unclassified")
+                          data_role(pc))
                 asm.append("        DB "+",".join(f"${b:02X}" for b in raw)+f" ; ROM ${pc:04X} {category}")
                 pc=stop
     (ROOT/"src"/(game+".asm")).write_text("\n".join(asm)+"\n")
