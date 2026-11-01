@@ -67,7 +67,12 @@ if __name__=="__main__":
   md+=["","## Gun Fight input-event destination pointers","",
        "Event pointers share the last native handler word at $09D6; the subsequent nine values are script targets, NOT more interpreter native words.",""]
   for i,addr in enumerate(result["event_vectors"]):md.append("- "+str(i)+": $"+addr+(" (native service)" if i==0 else " (bytecode stream)"))
- md+=["","Opcode $05 (Gun Fight) copies 15 inline bytes after a 16-bit destination; opcode $06 copies nine. They are not two-byte-only operands.","",
-      "This is static rooted decoding; it is not a complete emulation of interrupt-driven execution.",""]
+ if name=="gunfight":
+  md+=["","Gun Fight opcode $05 copies 15 inline bytes after a 16-bit destination;",
+       "opcode $06 copies nine. They are not two-byte-only operands."]
+ else:
+  md+=["","Desert Gun opcode $05 writes an immediate byte to an inline 16-bit",
+       "address; opcode $06 clears screen memory using no inline operands."]
+ md+=["","This is static rooted decoding; it is not a complete emulation of interrupt-driven execution.",""]
  (root/"docs"/"decoded-scripts.md").write_text("\n".join(md)+"\n")
  print(output)
