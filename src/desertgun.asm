@@ -250,7 +250,8 @@ FLOW_DRAW_0154:
         DEC A  ; ROM $0162: 3D
         JP NZ,DRAW_ENCODED_GRAPHIC  ; ROM $0163: C2 32 01
         RET  ; ROM $0166: C9
-SUB_DRAW_0167:
+; Draw alternate format/continuation using render state.
+DRAW_GRAPHIC_MODE_B:
         PUSH AF  ; ROM $0167: F5
         LD A,(HL)  ; ROM $0168: 7E
         SUB $30  ; ROM $0169: D6 30
@@ -305,9 +306,10 @@ FLOW_DRAW_0183:
         POP HL  ; ROM $01AA: E1
         POP AF  ; ROM $01AB: F1
         DEC A  ; ROM $01AC: 3D
-        JP NZ,SUB_DRAW_0167  ; ROM $01AD: C2 67 01
+        JP NZ,DRAW_GRAPHIC_MODE_B  ; ROM $01AD: C2 67 01
         RET  ; ROM $01B0: C9
-SUB_DRAW_01B1:
+; Shift DE right three bits, then adjust display high byte.
+SHIFT_VIDEO_ADDRESS_THREE:
         LD B,$03  ; ROM $01B1: 06 03
 FLOW_DRAW_01B3:
         XOR A  ; ROM $01B3: AF
@@ -389,7 +391,7 @@ TEST_DISPLAY_INPUT_HANDLE:
         LD C,A  ; ROM $023E: 4F
         LD A,($2015)  ; ROM $023F: 3A 15 20
         LD D,A  ; ROM $0242: 57
-        CALL SUB_DRAW_01B1  ; ROM $0243: CD B1 01
+        CALL SHIFT_VIDEO_ADDRESS_THREE  ; ROM $0243: CD B1 01
         LD HL,$0267  ; ROM $0246: 21 67 02
         ADD HL,BC  ; ROM $0249: 09
         LD A,(HL)  ; ROM $024A: 7E
@@ -468,10 +470,10 @@ FONT_8PX_GLYPHS:
         DB $3E,$3E,$3E,$3E,$3E,$3E,$7F,$7F ; ROM $03FC 8-bit digit and alphabet glyph bitmap rows | glyph 8px: ..#####. / ..#####. / ..#####. / ..#####.
 ; IRQ 08 native input/output service.
 IRQ_08_SERVICE:
-        CALL SUB_IO_05F6  ; ROM $0404: CD F6 05
-        CALL SUB_IO_063A  ; ROM $0407: CD 3A 06
-        CALL SUB_GAME_1E11  ; ROM $040A: CD 11 1E
-        CALL SUB_IO_0486  ; ROM $040D: CD 86 04
+        CALL SERVICE_TIMER_207C  ; ROM $0404: CD F6 05
+        CALL APPLY_RENDER_MODE_2031  ; ROM $0407: CD 3A 06
+        CALL SAMPLE_INPUT_BIT6_EDGE  ; ROM $040A: CD 11 1E
+        CALL IRQ_SERVICE_TIMER_201F  ; ROM $040D: CD 86 04
         EI  ; ROM $0410: FB
         LD HL,$2004  ; ROM $0411: 21 04 20
         INC (HL)  ; ROM $0414: 34
@@ -487,7 +489,7 @@ FLOW_IO_0424:
         AND A  ; ROM $0425: A7
         JP P,FLOW_IO_0481  ; ROM $0426: F2 81 04
         PUSH HL  ; ROM $0429: E5
-        CALL SUB_IO_0449  ; ROM $042A: CD 49 04
+        CALL IRQ_PROCESS_ACTIVE_OBJECT  ; ROM $042A: CD 49 04
         POP HL  ; ROM $042D: E1
         LD A,(HL)  ; ROM $042E: 7E
         AND A  ; ROM $042F: A7
@@ -500,19 +502,20 @@ FLOW_IO_0424:
 FLOW_IO_0441:
         LD A,(HL)  ; ROM $0441: 7E
         AND A  ; ROM $0442: A7
-        CALL M,SUB_IO_0449  ; ROM $0443: FC 49 04
+        CALL M,IRQ_PROCESS_ACTIVE_OBJECT  ; ROM $0443: FC 49 04
         JP FLOW_IO_0481  ; ROM $0446: C3 81 04
-SUB_IO_0449:
+; Save descriptor pointer and call native object update helpers.
+IRQ_PROCESS_ACTIVE_OBJECT:
         PUSH HL  ; ROM $0449: E5
         PUSH HL  ; ROM $044A: E5
-        CALL SUB_IO_05C8  ; ROM $044B: CD C8 05
+        CALL CLEAR_OBJECT_PENDING_BIT5  ; ROM $044B: CD C8 05
         POP HL  ; ROM $044E: E1
-        CALL SUB_IO_0547  ; ROM $044F: CD 47 05
+        CALL PROCESS_OBJECT_BIT6_FLAGS  ; ROM $044F: CD 47 05
         POP HL  ; ROM $0452: E1
         JP FLOW_IO_065A  ; ROM $0453: C3 5A 06
 ; IRQ 10 native input/output service.
 IRQ_10_SERVICE:
-        CALL SUB_IO_06B1  ; ROM $0456: CD B1 06
+        CALL ADVANCE_COUNTER_207F  ; ROM $0456: CD B1 06
         EI  ; ROM $0459: FB
         LD A,($2004)  ; ROM $045A: 3A 04 20
         RRA  ; ROM $045D: 1F
@@ -534,14 +537,15 @@ FLOW_IO_046C:
 FLOW_IO_047C:
         LD A,(HL)  ; ROM $047C: 7E
         AND A  ; ROM $047D: A7
-        CALL M,SUB_IO_0449  ; ROM $047E: FC 49 04
+        CALL M,IRQ_PROCESS_ACTIVE_OBJECT  ; ROM $047E: FC 49 04
 FLOW_IO_0481:
         POP HL  ; ROM $0481: E1
         POP DE  ; ROM $0482: D1
         POP BC  ; ROM $0483: C1
         POP AF  ; ROM $0484: F1
         RET  ; ROM $0485: C9
-SUB_IO_0486:
+; Check countdown RAM $201F and update secondary input state.
+IRQ_SERVICE_TIMER_201F:
         LD A,($201F)  ; ROM $0486: 3A 1F 20
         AND A  ; ROM $0489: A7
         RET Z  ; ROM $048A: C8
@@ -626,7 +630,8 @@ SCREEN_POSITION_LOOKUP:
         DB $17,$34,$3F,$34,$27,$35,$0D,$36,$31,$36,$11,$37 ; ROM $052B position/screen-offset lookup bytes
         DB $31,$37,$0F,$38,$2B,$38,$05,$39,$1D,$39,$35,$39 ; ROM $0537 position/screen-offset lookup bytes
         DB $0B,$3A,$21,$3A ; ROM $0543 position/screen-offset lookup bytes
-SUB_IO_0547:
+; Process object entry only when bit $40 is set; update activity flags.
+PROCESS_OBJECT_BIT6_FLAGS:
         LD A,(HL)  ; ROM $0547: 7E
         AND $40  ; ROM $0548: E6 40
         RET Z  ; ROM $054A: C8
@@ -654,7 +659,7 @@ SUB_IO_0547:
         CPL  ; ROM $0565: 2F
 FLOW_IO_0566:
         OUT ($01),A  ; ROM $0566: D3 01
-        CALL SUB_DRAW_01B1  ; ROM $0568: CD B1 01
+        CALL SHIFT_VIDEO_ADDRESS_THREE  ; ROM $0568: CD B1 01
         LD C,(HL)  ; ROM $056B: 4E
         INC HL  ; ROM $056C: 23
         LD B,(HL)  ; ROM $056D: 46
@@ -730,7 +735,8 @@ FLOW_IO_05AB:
         DEC D  ; ROM $05C3: 15
         JP NZ,FLOW_IO_05A9  ; ROM $05C4: C2 A9 05
         RET  ; ROM $05C7: C9
-SUB_IO_05C8:
+; Inspect and clear object flag bit $20 when active.
+CLEAR_OBJECT_PENDING_BIT5:
         LD A,(HL)  ; ROM $05C8: 7E
         AND $20  ; ROM $05C9: E6 20
         RET Z  ; ROM $05CB: C8
@@ -767,7 +773,8 @@ FLOW_IO_05E8:
         DEC B  ; ROM $05F1: 05
         JP NZ,FLOW_IO_05E6  ; ROM $05F2: C2 E6 05
         RET  ; ROM $05F5: C9
-SUB_IO_05F6:
+; Guard on RAM $207C and update game service counters.
+SERVICE_TIMER_207C:
         LD A,($207C)  ; ROM $05F6: 3A 7C 20
         AND A  ; ROM $05F9: A7
         RET NZ  ; ROM $05FA: C0
@@ -791,10 +798,11 @@ SUB_IO_05F6:
 FLOW_IO_061B:
         LD C,$01  ; ROM $061B: 0E 01
         LD HL,$2030  ; ROM $061D: 21 30 20
-        CALL SUB_IO_0627  ; ROM $0620: CD 27 06
+        CALL DECREMENT_NONZERO_TIMER_BYTE  ; ROM $0620: CD 27 06
         LD ($207C),A  ; ROM $0623: 32 7C 20
         RET  ; ROM $0626: C9
-SUB_IO_0627:
+; Decrement pointed timer if positive and advance game state.
+DECREMENT_NONZERO_TIMER_BYTE:
         LD A,(HL)  ; ROM $0627: 7E
         AND A  ; ROM $0628: A7
         JP Z,FLOW_IO_0631  ; ROM $0629: CA 31 06
@@ -807,23 +815,24 @@ FLOW_IO_0631:
         LD B,A  ; ROM $0633: 47
         INC HL  ; ROM $0634: 23
         DEC C  ; ROM $0635: 0D
-        JP NZ,SUB_IO_0627  ; ROM $0636: C2 27 06
+        JP NZ,DECREMENT_NONZERO_TIMER_BYTE  ; ROM $0636: C2 27 06
         RET  ; ROM $0639: C9
-SUB_IO_063A:
+; Check RAM $207D, then operate on render mode at $2031.
+APPLY_RENDER_MODE_2031:
         LD HL,$2031  ; ROM $063A: 21 31 20
         LD A,($207D)  ; ROM $063D: 3A 7D 20
         AND A  ; ROM $0640: A7
         RET NZ  ; ROM $0641: C0
         LD B,A  ; ROM $0642: 47
         LD C,$08  ; ROM $0643: 0E 08
-        CALL SUB_IO_0627  ; ROM $0645: CD 27 06
+        CALL DECREMENT_NONZERO_TIMER_BYTE  ; ROM $0645: CD 27 06
         LD ($207D),A  ; ROM $0648: 32 7D 20
         LD A,($207E)  ; ROM $064B: 3A 7E 20
         AND A  ; ROM $064E: A7
         RET NZ  ; ROM $064F: C0
         LD B,A  ; ROM $0650: 47
         LD C,$07  ; ROM $0651: 0E 07
-        CALL SUB_IO_0627  ; ROM $0653: CD 27 06
+        CALL DECREMENT_NONZERO_TIMER_BYTE  ; ROM $0653: CD 27 06
         LD ($207E),A  ; ROM $0656: 32 7E 20
         RET  ; ROM $0659: C9
 FLOW_IO_065A:
@@ -896,7 +905,8 @@ FLOW_IO_06AA:
         LD (HL),$00  ; ROM $06AB: 36 00
         INC HL  ; ROM $06AD: 23
         JP FLOW_IO_06A6  ; ROM $06AE: C3 A6 06
-SUB_IO_06B1:
+; Increment RAM $207F and update related state.
+ADVANCE_COUNTER_207F:
         LD HL,$207F  ; ROM $06B1: 21 7F 20
         INC (HL)  ; ROM $06B4: 34
         LD A,(HL)  ; ROM $06B5: 7E
@@ -1251,13 +1261,15 @@ CLEAR_VIDEO_PUSH_LOOP:
         JP NZ,CLEAR_VIDEO_PUSH_LOOP  ; ROM $0FED: C2 DC 0F
         LD SP,$2400  ; ROM $0FF0: 31 00 24
         JP (HL)  ; ROM $0FF3: E9
-SUB_TABLE_0FF4:
+; Read width/height bytes from HL and set up source/destination.
+COPY_SCREEN_ROW_DESCRIPTOR:
         LD C,(HL)  ; ROM $0FF4: 4E
         INC HL  ; ROM $0FF5: 23
         LD B,(HL)  ; ROM $0FF6: 46
         INC HL  ; ROM $0FF7: 23
         EX DE,HL  ; ROM $0FF8: EB
-SUB_TABLE_0FF9:
+; Copy C bytes per row, advance destination by $20 per row.
+COPY_SCREEN_ROW_LOOP:
         PUSH BC  ; ROM $0FF9: C5
         PUSH HL  ; ROM $0FFA: E5
 FLOW_TABLE_0FFB:
@@ -1275,7 +1287,7 @@ FLOW_TABLE_0FFB:
         ADD HL,BC  ; ROM $1007: 09
         POP BC  ; ROM $1008: C1
         DEC B  ; ROM $1009: 05
-        JP NZ,SUB_TABLE_0FF9  ; ROM $100A: C2 F9 0F
+        JP NZ,COPY_SCREEN_ROW_LOOP  ; ROM $100A: C2 F9 0F
         RET  ; ROM $100D: C9
 NATIVE_WORD_07_INIT_DESCRIPTOR:
 ; Word $07: initialize descriptor bytes in RAM $2040–$204A.
@@ -1304,7 +1316,8 @@ WORD_07_INIT_DESCRIPTOR_ENTRY:
         DEC HL  ; ROM $102F: 2B
         LD (HL),$CC  ; ROM $1030: 36 CC
         RET  ; ROM $1032: C9
-SUB_WORD_1033:
+; Rotate input nibble and update drawing descriptor state.
+DECODE_DESCRIPTOR_NIBBLE:
         LD A,(DE)  ; ROM $1033: 1A
         RRA  ; ROM $1034: 1F
         RRA  ; ROM $1035: 1F
@@ -1333,8 +1346,8 @@ WORD_08_DRAW_BRANCH_ENTRY:
         PUSH BC  ; ROM $104F: C5
         PUSH HL  ; ROM $1050: E5
         PUSH BC  ; ROM $1051: C5
-        CALL SUB_WORD_1033  ; ROM $1052: CD 33 10
-        CALL SUB_WORD_1033  ; ROM $1055: CD 33 10
+        CALL DECODE_DESCRIPTOR_NIBBLE  ; ROM $1052: CD 33 10
+        CALL DECODE_DESCRIPTOR_NIBBLE  ; ROM $1055: CD 33 10
         LD A,$30  ; ROM $1058: 3E 30
         LD (BC),A  ; ROM $105A: 02
         POP HL  ; ROM $105B: E1
@@ -1414,7 +1427,7 @@ RENDER_FRAME_DESCRIPTOR:
         PUSH BC  ; ROM $114D: C5
         PUSH BC  ; ROM $114E: C5
         PUSH BC  ; ROM $114F: C5
-        CALL SUB_WORD_1033  ; ROM $1150: CD 33 10
+        CALL DECODE_DESCRIPTOR_NIBBLE  ; ROM $1150: CD 33 10
         POP HL  ; ROM $1153: E1
         CALL NORMALIZE_RENDER_DESCRIPTOR  ; ROM $1154: CD AC 11
         POP HL  ; ROM $1157: E1
@@ -1450,8 +1463,8 @@ FLOW_WORD_1181:
         CALL DRAW_ENCODED_GRAPHIC  ; ROM $118F: CD 32 01
         LD DE,$2009  ; ROM $1192: 11 09 20
         POP BC  ; ROM $1195: C1
-        CALL SUB_WORD_1033  ; ROM $1196: CD 33 10
-        CALL SUB_WORD_1033  ; ROM $1199: CD 33 10
+        CALL DECODE_DESCRIPTOR_NIBBLE  ; ROM $1196: CD 33 10
+        CALL DECODE_DESCRIPTOR_NIBBLE  ; ROM $1199: CD 33 10
         LD A,$30  ; ROM $119C: 3E 30
         LD (BC),A  ; ROM $119E: 02
         POP HL  ; ROM $119F: E1
@@ -1512,9 +1525,9 @@ BYTECODE_ZERO_FRAME_HANDOFF:
         CALL FRAME_SERVICE_12B1  ; ROM $11ED: CD B1 12
         CALL FRAME_SERVICE_129E  ; ROM $11F0: CD 9E 12
         CALL FRAME_SERVICE_1936  ; ROM $11F3: CD 36 19
-        CALL SUB_FRAME_1232  ; ROM $11F6: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $11F6: CD 32 12
         CALL FRAME_REBUILD_OBJECTS  ; ROM $11F9: CD 03 15
-        CALL SUB_FRAME_124E  ; ROM $11FC: CD 4E 12
+        CALL UPDATE_OBJECT_PAIRS  ; ROM $11FC: CD 4E 12
         LD A,($200D)  ; ROM $11FF: 3A 0D 20
         AND A  ; ROM $1202: A7
         RET Z  ; ROM $1203: C8
@@ -1530,7 +1543,8 @@ FLOW_FRAME_1214:
         DEC A  ; ROM $1215: 3D
         JP P,FLOW_FRAME_1214  ; ROM $1216: F2 14 12
         RET  ; ROM $1219: C9
-SUB_FRAME_121A:
+; Visit object field at RAM $2085 with game-state parameters.
+UPDATE_OBJECT_FIELDS_2085:
         LD HL,$2085  ; ROM $121A: 21 85 20
         LD DE,$203B  ; ROM $121D: 11 3B 20
         LD BC,$0008  ; ROM $1220: 01 08 00
@@ -1541,13 +1555,15 @@ FLOW_FRAME_1223:
         AND A  ; ROM $1226: A7
         JP NZ,FLOW_FRAME_1223  ; ROM $1227: C2 23 12
         RET  ; ROM $122A: C9
-SUB_FRAME_122B:
+; OR register B into RAM $2080.
+OR_GAME_FLAGS_2080:
         LD DE,$2080  ; ROM $122B: 11 80 20
         LD A,(DE)  ; ROM $122E: 1A
         OR B  ; ROM $122F: B0
         LD (DE),A  ; ROM $1230: 12
         RET  ; ROM $1231: C9
-SUB_FRAME_1232:
+; Read game-state entry at RAM $201E and branch on flags.
+SERVICE_GAME_STATE_201E:
         PUSH HL  ; ROM $1232: E5
         LD HL,$201E  ; ROM $1233: 21 1E 20
         LD C,$00  ; ROM $1236: 0E 00
@@ -1568,13 +1584,15 @@ FLOW_FRAME_1246:
         LD (HL),A  ; ROM $124B: 77
         POP HL  ; ROM $124C: E1
         RET  ; ROM $124D: C9
-SUB_FRAME_124E:
+; Process object pairs $2040/$204F and $205E/$206D.
+UPDATE_OBJECT_PAIRS:
         LD HL,$2040  ; ROM $124E: 21 40 20
         LD DE,$204F  ; ROM $1251: 11 4F 20
-        CALL SUB_FRAME_125D  ; ROM $1254: CD 5D 12
+        CALL COMPARE_OBJECT_PAIR_FLAGS  ; ROM $1254: CD 5D 12
         LD HL,$205E  ; ROM $1257: 21 5E 20
         LD DE,$206D  ; ROM $125A: 11 6D 20
-SUB_FRAME_125D:
+; Test two linked object records before update.
+COMPARE_OBJECT_PAIR_FLAGS:
         LD A,(HL)  ; ROM $125D: 7E
         AND A  ; ROM $125E: A7
         RET P  ; ROM $125F: F0
@@ -1582,7 +1600,7 @@ SUB_FRAME_125D:
         AND A  ; ROM $1261: A7
         RET P  ; ROM $1262: F0
         PUSH DE  ; ROM $1263: D5
-        CALL SUB_FRAME_127E  ; ROM $1264: CD 7E 12
+        CALL SCAN_OBJECT_FIELD_FLAGS  ; ROM $1264: CD 7E 12
         POP HL  ; ROM $1267: E1
         INC HL  ; ROM $1268: 23
         INC HL  ; ROM $1269: 23
@@ -1604,7 +1622,8 @@ SUB_FRAME_125D:
         AND $EF  ; ROM $127A: E6 EF
         LD (HL),A  ; ROM $127C: 77
         RET  ; ROM $127D: C9
-SUB_FRAME_127E:
+; Advance through object fields and test record state.
+SCAN_OBJECT_FIELD_FLAGS:
         INC HL  ; ROM $127E: 23
         LD C,(HL)  ; ROM $127F: 4E
         INC HL  ; ROM $1280: 23
@@ -1739,13 +1758,13 @@ FLOW_FRAME_132E:
         AND A  ; ROM $133A: A7
         RET M  ; ROM $133B: F8
 FLOW_FRAME_133C:
-        CALL SUB_FRAME_1232  ; ROM $133C: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $133C: CD 32 12
         AND $3F  ; ROM $133F: E6 3F
         OR $20  ; ROM $1341: F6 20
         LD (HL),A  ; ROM $1343: 77
         RET  ; ROM $1344: C9
 FLOW_FRAME_1345:
-        CALL SUB_FRAME_1232  ; ROM $1345: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $1345: CD 32 12
         AND $3F  ; ROM $1348: E6 3F
         OR $20  ; ROM $134A: F6 20
         LD ($2035),A  ; ROM $134C: 32 35 20
@@ -1762,15 +1781,16 @@ FLOW_FRAME_1356:
         AND $02  ; ROM $135F: E6 02
         JP NZ,FLOW_FRAME_136C  ; ROM $1361: C2 6C 13
         PUSH HL  ; ROM $1364: E5
-        CALL SUB_FRAME_13A6  ; ROM $1365: CD A6 13
+        CALL CHECK_OBJECT_STATUS_LOW_BITS  ; ROM $1365: CD A6 13
         POP HL  ; ROM $1368: E1
-        CALL SUB_FRAME_1372  ; ROM $1369: CD 72 13
+        CALL UPDATE_GAME_TIMER_2032  ; ROM $1369: CD 72 13
 FLOW_FRAME_136C:
         POP AF  ; ROM $136C: F1
         DEC A  ; ROM $136D: 3D
         JP P,FLOW_FRAME_1356  ; ROM $136E: F2 56 13
         RET  ; ROM $1371: C9
-SUB_FRAME_1372:
+; Check enable RAM $200D and timer RAM $2032.
+UPDATE_GAME_TIMER_2032:
         LD A,($200D)  ; ROM $1372: 3A 0D 20
         AND A  ; ROM $1375: A7
         RET Z  ; ROM $1376: C8
@@ -1786,7 +1806,7 @@ SUB_FRAME_1372:
         CP $02  ; ROM $1387: FE 02
         RET M  ; ROM $1389: F8
 FLOW_FRAME_138A:
-        CALL SUB_FRAME_1232  ; ROM $138A: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $138A: CD 32 12
         RLA  ; ROM $138D: 17
         RET C  ; ROM $138E: D8
         LD A,(HL)  ; ROM $138F: 7E
@@ -1805,7 +1825,8 @@ FLOW_FRAME_138A:
         LD A,$0C  ; ROM $13A0: 3E 0C
         LD ($203B),A  ; ROM $13A2: 32 3B 20
         RET  ; ROM $13A5: C9
-SUB_FRAME_13A6:
+; Mask object status low three bits and compare with five.
+CHECK_OBJECT_STATUS_LOW_BITS:
         INC HL  ; ROM $13A6: 23
         LD A,(HL)  ; ROM $13A7: 7E
         AND $07  ; ROM $13A8: E6 07
@@ -1813,10 +1834,10 @@ SUB_FRAME_13A6:
         RET P  ; ROM $13AC: F0
         LD DE,$0005  ; ROM $13AD: 11 05 00
         ADD HL,DE  ; ROM $13B0: 19
-        CALL SUB_FRAME_1232  ; ROM $13B1: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $13B1: CD 32 12
         AND $03  ; ROM $13B4: E6 03
         LD (HL),A  ; ROM $13B6: 77
-        CALL SUB_FRAME_1232  ; ROM $13B7: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $13B7: CD 32 12
         RRA  ; ROM $13BA: 1F
         RET C  ; ROM $13BB: D8
         LD A,(HL)  ; ROM $13BC: 7E
@@ -1832,22 +1853,22 @@ FLOW_FRAME_13C1:
         LD A,(HL)  ; ROM $13C9: 7E
         AND A  ; ROM $13CA: A7
         RET M  ; ROM $13CB: F8
-        CALL SUB_FRAME_1422  ; ROM $13CC: CD 22 14
+        CALL INITIALIZE_OBJECT_TIMER_2032  ; ROM $13CC: CD 22 14
         ADD A,$0C  ; ROM $13CF: C6 0C
         LD DE,$14F3  ; ROM $13D1: 11 F3 14
-        CALL SUB_FRAME_1494  ; ROM $13D4: CD 94 14
+        CALL SET_OBJECT_FLAG_ACTIVE  ; ROM $13D4: CD 94 14
         LD (HL),$CC  ; ROM $13D7: 36 CC
-        CALL SUB_FRAME_1232  ; ROM $13D9: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $13D9: CD 32 12
         RRA  ; ROM $13DC: 1F
         RET C  ; ROM $13DD: D8
         LD HL,$204F  ; ROM $13DE: 21 4F 20
         LD A,(HL)  ; ROM $13E1: 7E
         AND A  ; ROM $13E2: A7
         RET M  ; ROM $13E3: F8
-        CALL SUB_FRAME_1422  ; ROM $13E4: CD 22 14
+        CALL INITIALIZE_OBJECT_TIMER_2032  ; ROM $13E4: CD 22 14
         ADD A,$0C  ; ROM $13E7: C6 0C
         LD DE,$14F3  ; ROM $13E9: 11 F3 14
-        CALL SUB_FRAME_14A0  ; ROM $13EC: CD A0 14
+        CALL SET_OBJECT_FROM_SHAPE_TABLE  ; ROM $13EC: CD A0 14
         LD (HL),$DC  ; ROM $13EF: 36 DC
         RET  ; ROM $13F1: C9
 FLOW_FRAME_13F2:
@@ -1858,30 +1879,31 @@ FLOW_FRAME_13F2:
         LD A,(HL)  ; ROM $13FA: 7E
         AND A  ; ROM $13FB: A7
         RET M  ; ROM $13FC: F8
-        CALL SUB_FRAME_1422  ; ROM $13FD: CD 22 14
+        CALL INITIALIZE_OBJECT_TIMER_2032  ; ROM $13FD: CD 22 14
         ADD A,$66  ; ROM $1400: C6 66
         LD DE,$14E3  ; ROM $1402: 11 E3 14
-        CALL SUB_FRAME_1494  ; ROM $1405: CD 94 14
+        CALL SET_OBJECT_FLAG_ACTIVE  ; ROM $1405: CD 94 14
         LD (HL),$CC  ; ROM $1408: 36 CC
-        CALL SUB_FRAME_1232  ; ROM $140A: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $140A: CD 32 12
         RET C  ; ROM $140D: D8
         LD HL,$206D  ; ROM $140E: 21 6D 20
         LD A,(HL)  ; ROM $1411: 7E
         AND A  ; ROM $1412: A7
         RET M  ; ROM $1413: F8
-        CALL SUB_FRAME_1422  ; ROM $1414: CD 22 14
+        CALL INITIALIZE_OBJECT_TIMER_2032  ; ROM $1414: CD 22 14
         ADD A,$66  ; ROM $1417: C6 66
         LD DE,$14E3  ; ROM $1419: 11 E3 14
-        CALL SUB_FRAME_14A0  ; ROM $141C: CD A0 14
+        CALL SET_OBJECT_FROM_SHAPE_TABLE  ; ROM $141C: CD A0 14
         LD (HL),$DC  ; ROM $141F: 36 DC
         RET  ; ROM $1421: C9
-SUB_FRAME_1422:
+; Set timer RAM $2032 to $3C and prepare object state.
+INITIALIZE_OBJECT_TIMER_2032:
         LD DE,$000A  ; ROM $1422: 11 0A 00
         ADD HL,DE  ; ROM $1425: 19
         PUSH HL  ; ROM $1426: E5
         LD A,$3C  ; ROM $1427: 3E 3C
         LD ($2032),A  ; ROM $1429: 32 32 20
-        CALL SUB_FRAME_1232  ; ROM $142C: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $142C: CD 32 12
         AND $0F  ; ROM $142F: E6 0F
         LD C,A  ; ROM $1431: 4F
         LD B,$00  ; ROM $1432: 06 00
@@ -1911,7 +1933,8 @@ FLOW_FRAME_1442:
         LD A,($201E)  ; ROM $1454: 3A 1E 20
         AND $3F  ; ROM $1457: E6 3F
         RET  ; ROM $1459: C9
-SUB_FRAME_145A:
+; Write object byte, then lookup associated table values.
+STORE_OBJECT_FIELD_AND_LOOKUP:
         LD (HL),A  ; ROM $145A: 77
         DEC HL  ; ROM $145B: 2B
         PUSH HL  ; ROM $145C: E5
@@ -1934,7 +1957,8 @@ SUB_FRAME_145A:
         LD (HL),E  ; ROM $146F: 73
         DEC HL  ; ROM $1470: 2B
         RET  ; ROM $1471: C9
-SUB_FRAME_1472:
+; Index graphics data from ROM $06DC.
+FETCH_GUN_SHAPE_TABLE_BYTE:
         EX DE,HL  ; ROM $1472: EB
         LD HL,$06DC  ; ROM $1473: 21 DC 06
         ADD HL,BC  ; ROM $1476: 09
@@ -1943,7 +1967,8 @@ SUB_FRAME_1472:
         EX DE,HL  ; ROM $1479: EB
         LD (HL),A  ; ROM $147A: 77
         DEC HL  ; ROM $147B: 2B
-SUB_FRAME_147C:
+; Read and compare RAM $2009 against three.
+BOUND_GAME_COUNTER_2009:
         LD A,($2009)  ; ROM $147C: 3A 09 20
         CP $03  ; ROM $147F: FE 03
         JP NC,FLOW_FRAME_1485  ; ROM $1481: D2 85 14
@@ -1959,15 +1984,17 @@ FLOW_FRAME_148C:
 FLOW_FRAME_1492:
         INC C  ; ROM $1492: 0C
         RET  ; ROM $1493: C9
-SUB_FRAME_1494:
-        CALL SUB_FRAME_145A  ; ROM $1494: CD 5A 14
+; Write flag $01 and update related object-field values.
+SET_OBJECT_FLAG_ACTIVE:
+        CALL STORE_OBJECT_FIELD_AND_LOOKUP  ; ROM $1494: CD 5A 14
         LD (HL),$01  ; ROM $1497: 36 01
         DEC HL  ; ROM $1499: 2B
-        CALL SUB_FRAME_147C  ; ROM $149A: CD 7C 14
+        CALL BOUND_GAME_COUNTER_2009  ; ROM $149A: CD 7C 14
         JP FLOW_FRAME_14A8  ; ROM $149D: C3 A8 14
-SUB_FRAME_14A0:
-        CALL SUB_FRAME_145A  ; ROM $14A0: CD 5A 14
-        CALL SUB_FRAME_1472  ; ROM $14A3: CD 72 14
+; Use object shape lookup to update corresponding field.
+SET_OBJECT_FROM_SHAPE_TABLE:
+        CALL STORE_OBJECT_FIELD_AND_LOOKUP  ; ROM $14A0: CD 5A 14
+        CALL FETCH_GUN_SHAPE_TABLE_BYTE  ; ROM $14A3: CD 72 14
         CPL  ; ROM $14A6: 2F
         INC A  ; ROM $14A7: 3C
 FLOW_FRAME_14A8:
@@ -2200,7 +2227,7 @@ CHECK_START_INPUT_EDGE:
         LD ($2036),A  ; ROM $1715: 32 36 20
 FLOW_GAME_1718:
         LD B,$04  ; ROM $1718: 06 04
-        CALL SUB_FRAME_122B  ; ROM $171A: CD 2B 12
+        CALL OR_GAME_FLAGS_2080  ; ROM $171A: CD 2B 12
         LD A,$18  ; ROM $171D: 3E 18
         OUT ($03),A  ; ROM $171F: D3 03
         LD A,$02  ; ROM $1721: 3E 02
@@ -2230,7 +2257,7 @@ FLOW_GAME_1748:
         LD E,A  ; ROM $175A: 5F
         PUSH DE  ; ROM $175B: D5
         PUSH AF  ; ROM $175C: F5
-        CALL SUB_DRAW_01B1  ; ROM $175D: CD B1 01
+        CALL SHIFT_VIDEO_ADDRESS_THREE  ; ROM $175D: CD B1 01
         EX DE,HL  ; ROM $1760: EB
         LD A,$07  ; ROM $1761: 3E 07
         LD DE,$0000  ; ROM $1763: 11 00 00
@@ -2254,7 +2281,7 @@ FLOW_GAME_1776:
         DEC A  ; ROM $177A: 3D
         JP NZ,FLOW_GAME_1769  ; ROM $177B: C2 69 17
         PUSH DE  ; ROM $177E: D5
-        CALL SUB_GAME_18B6  ; ROM $177F: CD B6 18
+        CALL CLAMP_GAME_STATE_TO_THREE  ; ROM $177F: CD B6 18
         POP HL  ; ROM $1782: E1
         POP AF  ; ROM $1783: F1
         AND $07  ; ROM $1784: E6 07
@@ -2289,7 +2316,7 @@ FLOW_GAME_17A7:
         LD ($20B7),A  ; ROM $17B5: 32 B7 20
         LD A,$10  ; ROM $17B8: 3E 10
         LD (HL),A  ; ROM $17BA: 77
-        CALL SUB_GAME_18A9  ; ROM $17BB: CD A9 18
+        CALL INCREMENT_PACKED_BCD_SCORE  ; ROM $17BB: CD A9 18
         LD A,$04  ; ROM $17BE: 3E 04
         LD ($2033),A  ; ROM $17C0: 32 33 20
         LD HL,$1922  ; ROM $17C3: 21 22 19
@@ -2302,9 +2329,9 @@ FLOW_GAME_17A7:
         EX DE,HL  ; ROM $17CC: EB
         LD DE,$0D03  ; ROM $17CD: 11 03 0D
         LD BC,$1002  ; ROM $17D0: 01 02 10
-        JP SUB_TABLE_0FF9  ; ROM $17D3: C3 F9 0F
+        JP COPY_SCREEN_ROW_LOOP  ; ROM $17D3: C3 F9 0F
 FLOW_GAME_17D6:
-        CALL SUB_GAME_18B6  ; ROM $17D6: CD B6 18
+        CALL CLAMP_GAME_STATE_TO_THREE  ; ROM $17D6: CD B6 18
         LD HL,$20B3  ; ROM $17D9: 21 B3 20
 FLOW_GAME_17DC:
         LD A,(HL)  ; ROM $17DC: 7E
@@ -2317,7 +2344,7 @@ FLOW_GAME_17DC:
         LD A,$0D  ; ROM $17EA: 3E 0D
 FLOW_GAME_17EC:
         CALL DRAW_ENCODED_GRAPHIC  ; ROM $17EC: CD 32 01
-        CALL SUB_FRAME_1232  ; ROM $17EF: CD 32 12
+        CALL SERVICE_GAME_STATE_201E  ; ROM $17EF: CD 32 12
         RRA  ; ROM $17F2: 1F
         LD HL,$1AAD  ; ROM $17F3: 21 AD 1A
         LD A,$05  ; ROM $17F6: 3E 05
@@ -2331,23 +2358,23 @@ FLOW_GAME_17FF:
 ; Device desertgu.e, SHA1 202433dfb174901bd3b91e843d9d697a8333ef9e
 FLOW_GAME_1802:
         LD HL,$2040  ; ROM $1802: 21 40 20
-        CALL SUB_GAME_188C  ; ROM $1805: CD 8C 18
+        CALL TEST_OBJECT_FLAG_BIT1  ; ROM $1805: CD 8C 18
         JP C,FLOW_GAME_1825  ; ROM $1808: DA 25 18
         LD HL,$204F  ; ROM $180B: 21 4F 20
-        CALL SUB_GAME_188C  ; ROM $180E: CD 8C 18
+        CALL TEST_OBJECT_FLAG_BIT1  ; ROM $180E: CD 8C 18
         JP C,FLOW_GAME_1825  ; ROM $1811: DA 25 18
         RET  ; ROM $1814: C9
 FLOW_GAME_1815:
         LD HL,$205E  ; ROM $1815: 21 5E 20
-        CALL SUB_GAME_188C  ; ROM $1818: CD 8C 18
+        CALL TEST_OBJECT_FLAG_BIT1  ; ROM $1818: CD 8C 18
         JP C,FLOW_GAME_1825  ; ROM $181B: DA 25 18
         LD HL,$206D  ; ROM $181E: 21 6D 20
-        CALL SUB_GAME_188C  ; ROM $1821: CD 8C 18
+        CALL TEST_OBJECT_FLAG_BIT1  ; ROM $1821: CD 8C 18
         RET NC  ; ROM $1824: D0
 FLOW_GAME_1825:
         PUSH HL  ; ROM $1825: E5
         PUSH DE  ; ROM $1826: D5
-        CALL SUB_FRAME_121A  ; ROM $1827: CD 1A 12
+        CALL UPDATE_OBJECT_FIELDS_2085  ; ROM $1827: CD 1A 12
         LD A,$03  ; ROM $182A: 3E 03
         LD (HL),A  ; ROM $182C: 77
         LD (DE),A  ; ROM $182D: 12
@@ -2386,7 +2413,7 @@ FLOW_GAME_1854:
         LD (HL),A  ; ROM $1857: 77
 FLOW_GAME_1858:
         EX (SP),HL  ; ROM $1858: E3
-        CALL SUB_DRAW_01B1  ; ROM $1859: CD B1 01
+        CALL SHIFT_VIDEO_ADDRESS_THREE  ; ROM $1859: CD B1 01
         LD (HL),C  ; ROM $185C: 71
         INC HL  ; ROM $185D: 23
         LD (HL),E  ; ROM $185E: 73
@@ -2398,9 +2425,9 @@ FLOW_GAME_1858:
         ADD HL,BC  ; ROM $1866: 09
         EX DE,HL  ; ROM $1867: EB
         LD A,(DE)  ; ROM $1868: 1A
-        CALL SUB_GAME_18A9  ; ROM $1869: CD A9 18
+        CALL INCREMENT_PACKED_BCD_SCORE  ; ROM $1869: CD A9 18
         POP BC  ; ROM $186C: C1
-        CALL SUB_WORD_1033  ; ROM $186D: CD 33 10
+        CALL DECODE_DESCRIPTOR_NIBBLE  ; ROM $186D: CD 33 10
         LD A,$30  ; ROM $1870: 3E 30
         LD (BC),A  ; ROM $1872: 02
         INC BC  ; ROM $1873: 03
@@ -2423,7 +2450,8 @@ FLOW_GAME_1858:
         OR $02  ; ROM $1888: F6 02
         LD (HL),A  ; ROM $188A: 77
         RET  ; ROM $188B: C9
-SUB_GAME_188C:
+; Inspect pointed object's sign and bit $02.
+TEST_OBJECT_FLAG_BIT1:
         LD A,(HL)  ; ROM $188C: 7E
         AND A  ; ROM $188D: A7
         RET P  ; ROM $188E: F0
@@ -2444,8 +2472,9 @@ FLOW_GAME_189F:
         LD A,$03  ; ROM $189F: 3E 03
         LD ($2034),A  ; ROM $18A1: 32 34 20
         LD B,$02  ; ROM $18A4: 06 02
-        JP SUB_FRAME_122B  ; ROM $18A6: C3 2B 12
-SUB_GAME_18A9:
+        JP OR_GAME_FLAGS_2080  ; ROM $18A6: C3 2B 12
+; Increment RAM score at $200A with DAA decimal adjust.
+INCREMENT_PACKED_BCD_SCORE:
         LD HL,$200A  ; ROM $18A9: 21 0A 20
         ADD A,(HL)  ; ROM $18AC: 86
         DAA  ; ROM $18AD: 27
@@ -2456,7 +2485,8 @@ SUB_GAME_18A9:
         DAA  ; ROM $18B3: 27
         LD (HL),A  ; ROM $18B4: 77
         RET  ; ROM $18B5: C9
-SUB_GAME_18B6:
+; Limit RAM $2014 to a maximum of three before continuing.
+CLAMP_GAME_STATE_TO_THREE:
         LD A,($2014)  ; ROM $18B6: 3A 14 20
         CP $03  ; ROM $18B9: FE 03
         JP NC,FLOW_GAME_18C0  ; ROM $18BB: D2 C0 18
@@ -2479,7 +2509,7 @@ FLOW_GAME_18D8:
         LD H,A  ; ROM $18D8: 67
         LD ($20B4),HL  ; ROM $18D9: 22 B4 20
         EX DE,HL  ; ROM $18DC: EB
-        CALL SUB_DRAW_01B1  ; ROM $18DD: CD B1 01
+        CALL SHIFT_VIDEO_ADDRESS_THREE  ; ROM $18DD: CD B1 01
         LD A,$0A  ; ROM $18E0: 3E 0A
         LD ($2039),A  ; ROM $18E2: 32 39 20
         LD B,$80  ; ROM $18E5: 06 80
@@ -2560,7 +2590,7 @@ FLOW_GAME_1951:
         LD D,(HL)  ; ROM $195B: 56
         INC HL  ; ROM $195C: 23
         EX (SP),HL  ; ROM $195D: E3
-        CALL SUB_TABLE_0FF4  ; ROM $195E: CD F4 0F
+        CALL COPY_SCREEN_ROW_DESCRIPTOR  ; ROM $195E: CD F4 0F
         POP HL  ; ROM $1961: E1
         JP FLOW_GAME_1951  ; ROM $1962: C3 51 19
 SPRITE_COPY_POINTER_PAIRS:
@@ -2606,18 +2636,18 @@ FLOW_GAME_19AF:
         LD BC,$2009  ; ROM $19AF: 01 09 20
         LD HL,$201C  ; ROM $19B2: 21 1C 20
         LD DE,$10F2  ; ROM $19B5: 11 F2 10
-        CALL SUB_GAME_19F6  ; ROM $19B8: CD F6 19
+        CALL COMPARE_TWO_BYTE_RECORD  ; ROM $19B8: CD F6 19
         JP C,FLOW_GAME_19CD  ; ROM $19BB: DA CD 19
         LD HL,$2006  ; ROM $19BE: 21 06 20
         LD DE,$110C  ; ROM $19C1: 11 0C 11
-        CALL SUB_GAME_19F6  ; ROM $19C4: CD F6 19
+        CALL COMPARE_TWO_BYTE_RECORD  ; ROM $19C4: CD F6 19
         JP C,FLOW_GAME_19CD  ; ROM $19C7: DA CD 19
         LD DE,$1128  ; ROM $19CA: 11 28 11
 FLOW_GAME_19CD:
         EX DE,HL  ; ROM $19CD: EB
         LD ($2012),HL  ; ROM $19CE: 22 12 20
         LD HL,$2006  ; ROM $19D1: 21 06 20
-        CALL SUB_GAME_19F6  ; ROM $19D4: CD F6 19
+        CALL COMPARE_TWO_BYTE_RECORD  ; ROM $19D4: CD F6 19
         JP C,FLOW_GAME_19E0  ; ROM $19D7: DA E0 19
         LD HL,($2009)  ; ROM $19DA: 2A 09 20
         LD ($2006),HL  ; ROM $19DD: 22 06 20
@@ -2631,7 +2661,8 @@ FLOW_GAME_19E0:
         LD HL,$0000  ; ROM $19EF: 21 00 00
         LD ($2009),HL  ; ROM $19F2: 22 09 20
         RET  ; ROM $19F5: C9
-SUB_GAME_19F6:
+; Compare two-byte record at BC against HL.
+COMPARE_TWO_BYTE_RECORD:
         LD A,(BC)  ; ROM $19F6: 0A
         CP (HL)  ; ROM $19F7: BE
         RET NZ  ; ROM $19F8: C0
@@ -2790,20 +2821,20 @@ FLOW_GAME_1C7C:
         LD HL,$1AB8  ; ROM $1C85: 21 B8 1A
         LD DE,$2804  ; ROM $1C88: 11 04 28
         LD A,$06  ; ROM $1C8B: 3E 06
-        CALL SUB_DRAW_0167  ; ROM $1C8D: CD 67 01
+        CALL DRAW_GRAPHIC_MODE_B  ; ROM $1C8D: CD 67 01
         LD HL,$1ABE  ; ROM $1C90: 21 BE 1A
         LD DE,$3406  ; ROM $1C93: 11 06 34
         LD A,$05  ; ROM $1C96: 3E 05
-        JP SUB_DRAW_0167  ; ROM $1C98: C3 67 01
+        JP DRAW_GRAPHIC_MODE_B  ; ROM $1C98: C3 67 01
 FLOW_GAME_1C9B:
         LD (HL),$00  ; ROM $1C9B: 36 00
         LD HL,$1A4B  ; ROM $1C9D: 21 4B 1A
         LD DE,$2804  ; ROM $1CA0: 11 04 28
         LD A,$06  ; ROM $1CA3: 3E 06
-        CALL SUB_DRAW_0167  ; ROM $1CA5: CD 67 01
+        CALL DRAW_GRAPHIC_MODE_B  ; ROM $1CA5: CD 67 01
         LD DE,$3406  ; ROM $1CA8: 11 06 34
         LD A,$05  ; ROM $1CAB: 3E 05
-        CALL SUB_DRAW_0167  ; ROM $1CAD: CD 67 01
+        CALL DRAW_GRAPHIC_MODE_B  ; ROM $1CAD: CD 67 01
         LD A,$03  ; ROM $1CB0: 3E 03
 FLOW_GAME_1CB2:
         PUSH AF  ; ROM $1CB2: F5
@@ -2895,7 +2926,7 @@ FLOW_GAME_1D36:
         INC A  ; ROM $1D40: 3C
         LD C,A  ; ROM $1D41: 4F
         EX DE,HL  ; ROM $1D42: EB
-        CALL SUB_DRAW_01B1  ; ROM $1D43: CD B1 01
+        CALL SHIFT_VIDEO_ADDRESS_THREE  ; ROM $1D43: CD B1 01
         LD B,$00  ; ROM $1D46: 06 00
         JP FLOW_GAME_18E7  ; ROM $1D48: C3 E7 18
 FLOW_GAME_1D4B:
@@ -2964,10 +2995,10 @@ FLOW_GAME_1D95:
         LD DE,$2310  ; ROM $1DA8: 11 10 23
         AND A  ; ROM $1DAB: A7
         JP Z,FLOW_GAME_1DBA  ; ROM $1DAC: CA BA 1D
-        CALL SUB_TABLE_0FF9  ; ROM $1DAF: CD F9 0F
+        CALL COPY_SCREEN_ROW_LOOP  ; ROM $1DAF: CD F9 0F
         LD DE,$0D23  ; ROM $1DB2: 11 23 0D
         LD B,$03  ; ROM $1DB5: 06 03
-        CALL SUB_TABLE_0FF9  ; ROM $1DB7: CD F9 0F
+        CALL COPY_SCREEN_ROW_LOOP  ; ROM $1DB7: CD F9 0F
 FLOW_GAME_1DBA:
         POP HL  ; ROM $1DBA: E1
         POP DE  ; ROM $1DBB: D1
@@ -2995,7 +3026,7 @@ FLOW_GAME_1DCF:
         LD A,$11  ; ROM $1DDF: 3E 11
         CALL DRAW_ENCODED_GRAPHIC  ; ROM $1DE1: CD 32 01
         LD A,$20  ; ROM $1DE4: 3E 20
-        JP SUB_GAME_18A9  ; ROM $1DE6: C3 A9 18
+        JP INCREMENT_PACKED_BCD_SCORE  ; ROM $1DE6: C3 A9 18
 NATIVE_RETURN_STUB_1DE9:
         RET  ; ROM $1DE9: C9
 FLOW_GAME_1DEA:
@@ -3023,7 +3054,8 @@ FLOW_GAME_1E0B:
         DEC A  ; ROM $1E0C: 3D
         JP P,FLOW_GAME_1DF9  ; ROM $1E0D: F2 F9 1D
         RET  ; ROM $1E10: C9
-SUB_GAME_1E11:
+; Detect changes in input-port $02 bit $40 and update RAM $2016.
+SAMPLE_INPUT_BIT6_EDGE:
         LD HL,$2016  ; ROM $1E11: 21 16 20
         IN A,($02)  ; ROM $1E14: DB 02
         CPL  ; ROM $1E16: 2F
