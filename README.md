@@ -26,7 +26,7 @@ See [per-word native effects and operand formats](docs/8080-WORD-SEMANTICS.md), 
 | Path | Purpose |
 |---|---|
 | `roms/original/desertgu.zip` | Original ROM devices; source of truth |
-| `src/desertgun.asm` | Annotated native reconstruction generated from original ROM |
+| `src/desertgun.asm` | Annotated native reconstruction, assembled directly by the build |
 | `build/desertgu.bin`, `build/desertgu.lst` | Temporary assembled image and zmac listing |
 | `tools/recover_8080.py` | Reset/IRQ, branch, and command-vector traced native 8080 recovery |
 | `tools/interpreter_lineage.py` | Native bytecode vector inventory |
@@ -37,7 +37,7 @@ See [per-word native effects and operand formats](docs/8080-WORD-SEMANTICS.md), 
 
 ## Build
 
-Linux: `./build.sh`; Windows: `build.bat`. Both regenerate source from the preserved original chips, assemble with the repository's bundled zmac 1.3, split the resulting binary into original chip devices, and fail if **any ROM byte differs**. Temporary assembled binary, listing and split ROM devices are written to root `build/`. The verified MAME-compatible archive is written to `roms/desertgu.zip`, while `roms/original/desertgu.zip` remains unchanged. Run with `mame desertgu -rompath roms -window -skip_gameinfo`.
+Linux: `./build.sh`; Windows: `build.bat`. Both assemble the checked-in native Intel 8080 source directly with zmac v1.3, split the resulting binary into four 2 KB ROM devices, and fail if **any device SHA-1 differs**. Python is reserved for independent RE and analysis, never the ROM build. Temporary assembled binary, listing and split ROM devices are written to root `build/`. The verified MAME-compatible archive is written to `roms/desertgu.zip`, while `roms/original/desertgu.zip` remains unchanged. Run with `mame desertgu -rompath roms -window -skip_gameinfo`.
 
 ## Research status
 
