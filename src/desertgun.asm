@@ -1398,7 +1398,7 @@ TEST_RENDER_FLAG_BIT2:
 
 COMPARE_GUN_SHAPE_TABLE_BYTE:
         PUSH HL
-        LD HL,$06DC
+        LD HL,GRAPHIC_RESOURCE_06DC
         ADD HL,BC
         CP (HL)
         POP HL
@@ -1488,195 +1488,366 @@ STORE_SHIFTED_INPUT_BYTE:
 ; Packed gun and target drawing records consumed by native renderers.
 ; Original bitmap patterns and sprite shape records, spanning the ROM boundary
 ; at $0800. Pixel data is not executable 8080 instruction code.
+; Original game artwork: indexed graphic resources referenced by the native
+; frame selector and object motion records. Pixel data and packed drawing codes
+; continue across the $07FF/$0800 ROM-device boundary without interruption.
+
+; Graphic resource $06DC (8 bytes).
 GUN_GRAPHICS_AND_SHAPE_DATA:
-        DB $F0,$E8,$E8,$E0,$E0,$E8,$E8,$F0,$02,$16,$01,$04
-        DB $08,$1E,$3C,$0F,$F8,$4F,$FC,$07,$FE,$07,$7F,$0F
-        DB $FE,$3F,$FC,$7F,$F0,$3F,$F9,$39,$F8,$7F,$D0,$3F
-        DB $FC,$0F,$FC,$47,$FE,$07,$FF,$0D,$E4,$1F,$C2,$3F
-        DB $C9,$77,$80,$03,$80,$21,$01,$0F,$20,$20,$10,$10
-        DB $09,$09,$0D,$0F,$0F,$1E,$16,$1C,$08,$08,$08,$03
-        DB $0C,$00,$1C,$00,$00,$2A,$00,$00,$1C,$00,$E0,$FF
-        DB $03,$10,$7F,$04,$08,$7F,$08,$04,$6B,$10,$04,$3E
-        DB $10,$04,$1C,$10,$04,$08,$10,$04,$08,$10,$00,$08
-        DB $00,$03,$0C,$00,$1C,$00,$00,$2A,$00,$7F,$1C,$7F
-        DB $C0,$FF,$01,$00,$7F,$00,$00,$7F,$00,$00,$6B,$00
-        DB $00,$3E,$00,$00,$1C,$00,$00,$08,$00,$00,$08,$00
-        DB $00,$08,$00,$03,$0C,$3F,$1C,$7E,$60,$2A,$03,$C0
-        DB $9C,$01,$80,$FF,$00,$00,$7F,$00,$00,$7F,$00,$00
-        DB $6B,$00,$00,$3E,$00,$00,$1C,$00,$00,$08,$00,$00
-        DB $08,$00,$00,$08,$00,$04,$16,$00,$00,$00,$61,$00
-        DB $00,$00,$63,$00,$00,$00,$63,$00,$00,$00,$63,$00
-        DB $00,$00,$22,$00,$00,$00,$7F,$00,$00,$80,$FF,$00
-        DB $00,$80,$EB,$00,$00,$80,$EB,$00,$00,$00,$7F,$00
-        DB $F0,$80,$3E,$00,$F8,$C3,$1D,$01,$FC,$FF,$09,$0E
-        DB $FF,$FF,$08,$F8,$F3,$FF,$00,$E0,$70,$FE,$00,$00
-        DB $38,$F0,$07,$00,$4C,$60,$04,$00,$44,$30,$04,$00
-        DB $C4,$18,$04,$00,$84,$08,$00,$00,$04,$04,$00,$04
-        DB $16,$00,$00,$00,$61,$00,$00,$00,$63,$00,$00,$00
-        DB $63,$00,$00,$00
+GRAPHIC_RESOURCE_06DC:
+; Eight-pixel-wide source pattern; # = set bit, . = clear bit.
+        DB $F0 ; ####....
+        DB $E8 ; ###.#...
+        DB $E8 ; ###.#...
+        DB $E0 ; ###.....
+        DB $E0 ; ###.....
+        DB $E8 ; ###.#...
+        DB $E8 ; ###.#...
+        DB $F0 ; ####....
+
+; Graphic resource $06E4 (46 bytes).
+GRAPHIC_RESOURCE_06E4:
+        DB $02,$16,$01,$04,$08,$1E,$3C,$0F,$F8,$4F,$FC,$07
+        DB $FE,$07,$7F,$0F,$FE,$3F,$FC,$7F,$F0,$3F,$F9,$39
+        DB $F8,$7F,$D0,$3F,$FC,$0F,$FC,$47,$FE,$07,$FF,$0D
+        DB $E4,$1F,$C2,$3F,$C9,$77,$80,$03,$80,$21
+
+; Graphic resource $0712 (17 bytes).
+GRAPHIC_RESOURCE_0712:
+        DB $01,$0F,$20,$20,$10,$10,$09,$09,$0D,$0F,$0F,$1E
+        DB $16,$1C,$08,$08,$08
+
+; Graphic resource $0723 (38 bytes).
+GRAPHIC_RESOURCE_0723:
+        DB $03,$0C,$00,$1C,$00,$00,$2A,$00,$00,$1C,$00,$E0
+        DB $FF,$03,$10,$7F,$04,$08,$7F,$08,$04,$6B,$10,$04
+        DB $3E,$10,$04,$1C,$10,$04,$08,$10,$04,$08,$10,$00
+        DB $08,$00
+
+; Graphic resource $0749 (38 bytes).
+GRAPHIC_RESOURCE_0749:
+        DB $03,$0C,$00,$1C,$00,$00,$2A,$00,$7F,$1C,$7F,$C0
+        DB $FF,$01,$00,$7F,$00,$00,$7F,$00,$00,$6B,$00,$00
+        DB $3E,$00,$00,$1C,$00,$00,$08,$00,$00,$08,$00,$00
+        DB $08,$00
+
+; Graphic resource $076F (38 bytes).
+GRAPHIC_RESOURCE_076F:
+        DB $03,$0C,$3F,$1C,$7E,$60,$2A,$03,$C0,$9C,$01,$80
+        DB $FF,$00,$00,$7F,$00,$00,$7F,$00,$00,$6B,$00,$00
+        DB $3E,$00,$00,$1C,$00,$00,$08,$00,$00,$08,$00,$00
+        DB $08,$00
+
+; Graphic resource $0795 (90 bytes).
+GRAPHIC_RESOURCE_0795:
+        DB $04,$16,$00,$00,$00,$61,$00,$00,$00,$63,$00,$00
+        DB $00,$63,$00,$00,$00,$63,$00,$00,$00,$22,$00,$00
+        DB $00,$7F,$00,$00,$80,$FF,$00,$00,$80,$EB,$00,$00
+        DB $80,$EB,$00,$00,$00,$7F,$00,$F0,$80,$3E,$00,$F8
+        DB $C3,$1D,$01,$FC,$FF,$09,$0E,$FF,$FF,$08,$F8,$F3
+        DB $FF,$00,$E0,$70,$FE,$00,$00,$38,$F0,$07,$00,$4C
+        DB $60,$04,$00,$44,$30,$04,$00,$C4,$18,$04,$00,$84
+        DB $08,$00,$00,$04,$04,$00
+
+; Graphic resource $07EF (17 bytes).
+GRAPHIC_RESOURCE_07EF:
+        DB $04,$16,$00,$00,$00,$61,$00,$00,$00,$63,$00,$00
+        DB $00,$63,$00,$00,$00
 
         ORG $0800
-; Continuation of the packed graphic records in 9316.1h.
-; ROM device 9316.1g, SHA1 8fb8e85844a8ec6c0722883013ecdd4eeaeb08c1
+; ROM device 9316.1g (second 2 KB device); packed artwork continues.
 
+; Graphic resource $0800 (73 bytes).
+GRAPHIC_RESOURCE_0800:
         DB $63,$00,$00,$00,$22,$00,$00,$00,$7F,$00,$00,$80
         DB $FF,$00,$00,$80,$FF,$00,$00,$80,$EB,$00,$00,$00
         DB $7F,$00,$F0,$80,$3E,$00,$F8,$C3,$1D,$01,$FC,$FF
         DB $09,$0E,$FF,$FF,$08,$F8,$F3,$FF,$00,$E0,$F0,$FC
         DB $00,$00,$70,$F0,$00,$00,$30,$60,$00,$00,$10,$20
         DB $00,$00,$10,$20,$00,$00,$10,$20,$00,$00,$10,$10
-        DB $00,$04,$16,$00,$00,$00,$61,$00,$00,$00,$63,$00
-        DB $00,$00,$63,$00,$00,$00,$63,$00,$00,$00,$22,$00
-        DB $00,$00,$7F,$00,$00,$80,$FF,$00,$00,$80,$EB,$00
-        DB $00,$80,$EB,$00,$00,$00,$7F,$00,$F0,$80,$3E,$00
-        DB $F8,$C3,$1D,$01,$FC,$FF,$09,$0E,$FF,$FF,$08,$F8
-        DB $F3,$FF,$00,$E0,$70,$FE,$00,$00,$F0,$F0,$00,$00
-        DB $E8,$C1,$01,$00,$8C,$23,$03,$00,$04,$12,$04,$00
-        DB $04,$0A,$02,$00,$00,$01,$01,$04,$0B,$00,$00,$F8
-        DB $F8,$00,$00,$88,$88,$00,$00,$C8,$9F,$00,$C0,$E1
-        DB $3F,$C0,$41,$63,$32,$00,$07,$66,$32,$0C,$06,$CE
-        DB $1F,$04,$0E,$BF,$0F,$0C,$CE,$7F,$07,$38,$FF,$3F
-        DB $02,$F0,$FF,$1F,$02,$03,$16,$00,$80,$00,$00,$00
-        DB $01,$00,$00,$02,$00,$00,$0C,$00,$00,$F6,$00,$00
-        DB $7E,$00,$00,$07,$00,$00,$03,$F0,$8F,$03,$F8,$FF
-        DB $01,$FD,$FF,$01,$FE,$FF,$00,$FE,$FF,$00,$FC,$7F
-        DB $00,$FC,$70,$00,$38,$20,$00,$30,$30,$00,$60,$10
-        DB $00,$40,$10,$00,$40,$08,$00,$40,$08,$00,$40,$04
-        DB $00,$03,$1A,$00,$20,$00,$00,$40,$00,$00,$80,$00
-        DB $00,$00,$03,$00,$80,$3D,$00,$80,$1F,$00,$80,$03
-        DB $00,$80,$03,$00,$80,$03,$00,$80,$03,$00,$F8,$01
-        DB $80,$FF,$01,$F8,$FF,$01,$F8,$FF,$01,$FC,$FF,$00
-        DB $FD,$DF,$00,$F8,$83,$01,$78,$00,$03,$38,$00,$02
-        DB $18,$00,$01,$0C,$80,$00,$02,$00,$00,$02,$00,$00
-        DB $02,$00,$00,$02,$00,$00,$02,$00,$00,$03,$12,$00
-        DB $80,$00,$00,$00,$01,$00,$00,$02,$00,$00,$0C,$00
-        DB $00,$F6,$00,$00,$7E,$00,$00,$07,$00,$80,$03,$F0
-        DB $FF,$03,$FC,$FF,$01,$FF,$FF,$01,$FE,$FF,$00,$FE
-        DB $FF,$00,$FE,$FF,$00,$FC,$E3,$00,$38,$80,$01,$30
-        DB $00,$03,$3F,$F0,$01,$03,$15,$00,$80,$00,$00,$00
-        DB $01,$00,$00,$02,$00,$00,$0C,$70,$00,$F6,$FD,$01
-        DB $7E,$FE,$07,$07,$FC,$FF,$03,$FC,$FF,$01,$F8,$FF
-        DB $00,$F8,$7F,$00,$1F,$3F,$00,$00,$1C,$00,$00,$04
-        DB $00,$00,$04,$00,$00,$04,$00,$00,$0C,$00,$00,$08
-        DB $00,$00,$08,$00,$00,$08,$00,$00,$08,$00,$03,$07
-        DB $00,$40,$00,$D0,$80,$00,$E0,$01,$01,$E0,$07,$06
-        DB $F0,$0F,$7B,$E0,$FF,$3F,$FF,$F8,$07,$02,$18,$80
-        DB $03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F,$F8,$3F,$FC
-        DB $3F,$CC,$33,$CC,$33,$CE,$33,$FE,$7F,$CE,$73,$FF
-        DB $7F,$F6,$7E,$F7,$DE,$F7,$DF,$F3,$DF,$FB,$CF,$F9
-        DB $CF,$F1,$9F,$F1,$8F,$61,$86,$40,$82,$78,$3E,$02
-        DB $1E,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F,$F8
-        DB $3F,$FC,$3F,$CC,$33,$FC,$3F,$CE,$33,$CE,$73,$CE
-        DB $73,$FE,$7F,$F6,$7E,$F7,$DE,$F7,$DF,$F3,$DF,$FB
-        DB $CF,$F9,$CF,$F1,$9F,$F1,$8F,$61,$86,$40,$82,$40
-        DB $02,$40,$02,$40,$02,$40,$02,$40,$02,$40,$02,$78
-        DB $3E,$02,$15,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8
-        DB $1F,$F8,$3F,$FC,$3F,$CC,$33,$CC,$33,$CE,$33,$CE
-        DB $73,$CE,$73,$FE,$7F,$FE,$7E,$F7,$DE,$F7,$DF,$F3
-        DB $BF,$F3,$CF,$61,$86,$41,$82,$79,$DE,$02,$0E,$E0
-        DB $07,$F0,$1F,$F8,$1F,$F8,$3F,$FC,$3F,$CC,$33,$CC
-        DB $33,$CE,$33,$CE,$F3,$CE,$F3,$FE,$FF,$6E,$9E,$42
-        DB $82,$7A,$BE,$02,$09,$E0,$07,$F0,$1F,$F8,$1F,$F8
-        DB $3F,$CC,$33,$CE,$F3,$7E,$9E,$42,$82,$7A,$BE,$03
-        DB $12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0,$FF
-        DB $00,$38,$C6,$01,$BC,$D6,$03,$BE,$D6,$07,$3F,$C6
-        DB $0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00,$04
-        DB $00,$00,$04,$00,$00,$04,$00,$00,$04,$00,$00,$04
-        DB $00,$00,$04,$00,$00,$1C,$00,$03,$12,$00,$0F,$00
-        DB $C0,$3F,$00,$E0,$7F,$00,$F0,$FF,$00,$38,$C6,$01
-        DB $3C,$C6,$03,$BE,$D6,$07,$3F,$C6,$0F,$FE,$FF,$07
-        DB $F8,$FF,$01,$80,$1F,$00,$00,$04,$00,$00,$0C,$00
-        DB $00,$1A,$00,$00,$31,$00,$00,$21,$00,$00,$21,$00
-        DB $00,$E7,$00,$03,$12,$00,$0F,$00,$C0,$3F,$00,$E0
-        DB $7F,$00,$F0,$FF,$00,$38,$C6,$01,$3C,$C6,$03,$3E
-        DB $C6,$07,$3F,$C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80
-        DB $1F,$00,$00,$04,$00,$00,$0A,$00,$00,$11,$00,$80
-        DB $20,$00,$40,$40,$00,$20,$80,$00,$E0,$80,$03,$03
-        DB $12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0,$FF
-        DB $00,$38,$C6,$01,$3C,$C6,$03,$BE,$D6,$07,$3F,$C6
-        DB $0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00,$04
-        DB $00,$00,$0A,$00,$00,$11,$00,$80,$10,$00,$40,$10
-        DB $00,$20,$10,$00,$E0,$70,$00,$02,$0F,$00,$20,$00
-        DB $38,$00,$3E,$00,$3F,$80,$3B,$C0,$31,$E0,$20,$F0
-        DB $31,$B8,$3B,$1C,$3F,$0C,$3E,$1C,$1F,$BC,$0F,$FE
-        DB $07,$FF,$03,$03,$0B,$80,$1F,$00,$F8,$FF,$01,$FE
-        DB $FF,$07,$3F,$C6,$0F,$7E,$EF,$07,$BC,$D6,$03,$78
-        DB $EF,$01,$F0,$FF,$00,$E0,$7F,$00,$C0,$3F,$00,$00
-        DB $0F,$00,$02,$0B,$C0,$01,$00,$01,$00,$01,$00,$01
-        DB $04,$01,$04,$01,$04,$01,$87,$07,$FD,$0F,$FF,$1F
-        DB $00,$07,$02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06
-        DB $01,$06,$0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03
-        DB $E0,$01,$80,$00,$80,$00,$80,$00,$80,$00,$80,$00
-        DB $80,$00,$80,$03,$02,$12,$00,$0E,$00,$0A,$00,$7E
-        DB $00,$06,$01,$06,$0E,$06,$3C,$06,$F8,$07,$F8,$07
-        DB $F0,$03,$E0,$01,$80,$00,$40,$01,$20,$02,$10,$02
-        DB $08,$02,$04,$02,$1C,$0E,$02,$12,$00,$0E,$00,$0A
-        DB $00,$7E,$00,$06,$01,$06,$0E,$06,$3C,$06,$F8,$07
-        DB $F8,$07,$F0,$03,$E0,$01,$80,$00,$40,$01,$20,$02
-        DB $10,$04,$08,$08,$04,$10,$1C,$70,$02,$12,$00,$0E
-        DB $00,$0A,$00,$7E,$00,$06,$01,$06,$0E,$06,$3C,$06
-        DB $F8,$07,$F8,$07,$F0,$03,$E0,$01,$80,$00,$80,$01
-        DB $40,$03,$20,$06,$20,$04,$20,$04,$E0,$1C,$01,$1B
-        DB $18,$18,$18,$3C,$3C,$7E,$7E,$FF,$FF,$FF,$FF,$FF
-        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$7E,$3C,$3C
-        DB $7E,$7E,$FF,$02,$10,$E0,$07,$C0,$03,$C0,$03,$F8
-        DB $1F,$FF,$FF,$FF,$FF,$FF,$FF,$1F,$F0,$8F,$F4,$2F
-        DB $F1,$4F,$F4,$0F,$F0,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        DB $FF,$01,$1A,$18,$18,$18,$18,$3C,$7E,$FF,$FF,$FF
+        DB $00
+
+; Graphic resource $0849 (38 bytes).
+GRAPHIC_RESOURCE_0849:
+        DB $04,$16,$00,$00,$00,$61,$00,$00,$00,$63,$00,$00
+        DB $00,$63,$00,$00,$00,$63,$00,$00,$00,$22,$00,$00
+        DB $00,$7F,$00,$00,$80,$FF,$00,$00,$80,$EB,$00,$00
+        DB $80,$EB
+
+; Graphic resource $086F (52 bytes).
+GRAPHIC_RESOURCE_086F:
+        DB $00,$00,$00,$7F,$00,$F0,$80,$3E,$00,$F8,$C3,$1D
+        DB $01,$FC,$FF,$09,$0E,$FF,$FF,$08,$F8,$F3,$FF,$00
+        DB $E0,$70,$FE,$00,$00,$F0,$F0,$00,$00,$E8,$C1,$01
+        DB $00,$8C,$23,$03,$00,$04,$12,$04,$00,$04,$0A,$02
+        DB $00,$00,$01,$01
+
+; Graphic resource $08A3 (46 bytes).
+GRAPHIC_RESOURCE_08A3:
+        DB $04,$0B,$00,$00,$F8,$F8,$00,$00,$88,$88,$00,$00
+        DB $C8,$9F,$00,$C0,$E1,$3F,$C0,$41,$63,$32,$00,$07
+        DB $66,$32,$0C,$06,$CE,$1F,$04,$0E,$BF,$0F,$0C,$CE
+        DB $7F,$07,$38,$FF,$3F,$02,$F0,$FF,$1F,$02
+
+; Graphic resource $08D1 (68 bytes).
+GRAPHIC_RESOURCE_08D1:
+        DB $03,$16,$00,$80,$00,$00,$00,$01,$00,$00,$02,$00
+        DB $00,$0C,$00,$00,$F6,$00,$00,$7E,$00,$00,$07,$00
+        DB $00,$03,$F0,$8F,$03,$F8,$FF,$01,$FD,$FF,$01,$FE
+        DB $FF,$00,$FE,$FF,$00,$FC,$7F,$00,$FC,$70,$00,$38
+        DB $20,$00,$30,$30,$00,$60,$10,$00,$40,$10,$00,$40
+        DB $08,$00,$40,$08,$00,$40,$04,$00
+
+; Graphic resource $0915 (80 bytes).
+GRAPHIC_RESOURCE_0915:
+        DB $03,$1A,$00,$20,$00,$00,$40,$00,$00,$80,$00,$00
+        DB $00,$03,$00,$80,$3D,$00,$80,$1F,$00,$80,$03,$00
+        DB $80,$03,$00,$80,$03,$00,$80,$03,$00,$F8,$01,$80
+        DB $FF,$01,$F8,$FF,$01,$F8,$FF,$01,$FC,$FF,$00,$FD
+        DB $DF,$00,$F8,$83,$01,$78,$00,$03,$38,$00,$02,$18
+        DB $00,$01,$0C,$80,$00,$02,$00,$00,$02,$00,$00,$02
+        DB $00,$00,$02,$00,$00,$02,$00,$00
+
+; Graphic resource $0965 (56 bytes).
+GRAPHIC_RESOURCE_0965:
+        DB $03,$12,$00,$80,$00,$00,$00,$01,$00,$00,$02,$00
+        DB $00,$0C,$00,$00,$F6,$00,$00,$7E,$00,$00,$07,$00
+        DB $80,$03,$F0,$FF,$03,$FC,$FF,$01,$FF,$FF,$01,$FE
+        DB $FF,$00,$FE,$FF,$00,$FE,$FF,$00,$FC,$E3,$00,$38
+        DB $80,$01,$30,$00,$03,$3F,$F0,$01
+
+; Graphic resource $099D (65 bytes).
+GRAPHIC_RESOURCE_099D:
+        DB $03,$15,$00,$80,$00,$00,$00,$01,$00,$00,$02,$00
+        DB $00,$0C,$70,$00,$F6,$FD,$01,$7E,$FE,$07,$07,$FC
+        DB $FF,$03,$FC,$FF,$01,$F8,$FF,$00,$F8,$7F,$00,$1F
+        DB $3F,$00,$00,$1C,$00,$00,$04,$00,$00,$04,$00,$00
+        DB $04,$00,$00,$0C,$00,$00,$08,$00,$00,$08,$00,$00
+        DB $08,$00,$00,$08,$00
+
+; Graphic resource $09DE (23 bytes).
+GRAPHIC_RESOURCE_09DE:
+        DB $03,$07,$00,$40,$00,$D0,$80,$00,$E0,$01,$01,$E0
+        DB $07,$06,$F0,$0F,$7B,$E0,$FF,$3F,$FF,$F8,$07
+
+; Graphic resource $09F5 (50 bytes).
+GRAPHIC_RESOURCE_09F5:
+        DB $02,$18,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F
+        DB $F8,$3F,$FC,$3F,$CC,$33,$CC,$33,$CE,$33,$FE,$7F
+        DB $CE,$73,$FF,$7F,$F6,$7E,$F7,$DE,$F7,$DF,$F3,$DF
+        DB $FB,$CF,$F9,$CF,$F1,$9F,$F1,$8F,$61,$86,$40,$82
+        DB $78,$3E
+
+; Graphic resource $0A27 (62 bytes).
+GRAPHIC_RESOURCE_0A27:
+        DB $02,$1E,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F
+        DB $F8,$3F,$FC,$3F,$CC,$33,$FC,$3F,$CE,$33,$CE,$73
+        DB $CE,$73,$FE,$7F,$F6,$7E,$F7,$DE,$F7,$DF,$F3,$DF
+        DB $FB,$CF,$F9,$CF,$F1,$9F,$F1,$8F,$61,$86,$40,$82
+        DB $40,$02,$40,$02,$40,$02,$40,$02,$40,$02,$40,$02
+        DB $78,$3E
+
+; Graphic resource $0A65 (44 bytes).
+GRAPHIC_RESOURCE_0A65:
+        DB $02,$15,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F
+        DB $F8,$3F,$FC,$3F,$CC,$33,$CC,$33,$CE,$33,$CE,$73
+        DB $CE,$73,$FE,$7F,$FE,$7E,$F7,$DE,$F7,$DF,$F3,$BF
+        DB $F3,$CF,$61,$86,$41,$82,$79,$DE
+
+; Graphic resource $0A91 (30 bytes).
+GRAPHIC_RESOURCE_0A91:
+        DB $02,$0E,$E0,$07,$F0,$1F,$F8,$1F,$F8,$3F,$FC,$3F
+        DB $CC,$33,$CC,$33,$CE,$33,$CE,$F3,$CE,$F3,$FE,$FF
+        DB $6E,$9E,$42,$82,$7A,$BE
+
+; Graphic resource $0AAF (20 bytes).
+GRAPHIC_RESOURCE_0AAF:
+        DB $02,$09,$E0,$07,$F0,$1F,$F8,$1F,$F8,$3F,$CC,$33
+        DB $CE,$F3,$7E,$9E,$42,$82,$7A,$BE
+
+; Graphic resource $0AC3 (56 bytes).
+GRAPHIC_RESOURCE_0AC3:
+        DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
+        DB $FF,$00,$38,$C6,$01,$BC,$D6,$03,$BE,$D6,$07,$3F
+        DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
+        DB $04,$00,$00,$04,$00,$00,$04,$00,$00,$04,$00,$00
+        DB $04,$00,$00,$04,$00,$00,$1C,$00
+
+; Graphic resource $0AFB (56 bytes).
+GRAPHIC_RESOURCE_0AFB:
+        DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
+        DB $FF,$00,$38,$C6,$01,$3C,$C6,$03,$BE,$D6,$07,$3F
+        DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
+        DB $04,$00,$00,$0C,$00,$00,$1A,$00,$00,$31,$00,$00
+        DB $21,$00,$00,$21,$00,$00,$E7,$00
+
+; Graphic resource $0B33 (56 bytes).
+GRAPHIC_RESOURCE_0B33:
+        DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
+        DB $FF,$00,$38,$C6,$01,$3C,$C6,$03,$3E,$C6,$07,$3F
+        DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
+        DB $04,$00,$00,$0A,$00,$00,$11,$00,$80,$20,$00,$40
+        DB $40,$00,$20,$80,$00,$E0,$80,$03
+
+; Graphic resource $0B6B (56 bytes).
+GRAPHIC_RESOURCE_0B6B:
+        DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
+        DB $FF,$00,$38,$C6,$01,$3C,$C6,$03,$BE,$D6,$07,$3F
+        DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
+        DB $04,$00,$00,$0A,$00,$00,$11,$00,$80,$10,$00,$40
+        DB $10,$00,$20,$10,$00,$E0,$70,$00
+
+; Graphic resource $0BA3 (32 bytes).
+GRAPHIC_RESOURCE_0BA3:
+        DB $02,$0F,$00,$20,$00,$38,$00,$3E,$00,$3F,$80,$3B
+        DB $C0,$31,$E0,$20,$F0,$31,$B8,$3B,$1C,$3F,$0C,$3E
+        DB $1C,$1F,$BC,$0F,$FE,$07,$FF,$03
+
+; Graphic resource $0BC3 (35 bytes).
+GRAPHIC_RESOURCE_0BC3:
+        DB $03,$0B,$80,$1F,$00,$F8,$FF,$01,$FE,$FF,$07,$3F
+        DB $C6,$0F,$7E,$EF,$07,$BC,$D6,$03,$78,$EF,$01,$F0
+        DB $FF,$00,$E0,$7F,$00,$C0,$3F,$00,$00,$0F,$00
+
+; Graphic resource $0BE6 (24 bytes).
+GRAPHIC_RESOURCE_0BE6:
+        DB $02,$0B,$C0,$01,$00,$01,$00,$01,$00,$01,$04,$01
+        DB $04,$01,$04,$01,$87,$07,$FD,$0F,$FF,$1F,$00,$07
+
+; Graphic resource $0BFE (38 bytes).
+GRAPHIC_RESOURCE_0BFE:
+        DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
+        DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
+        DB $80,$00,$80,$00,$80,$00,$80,$00,$80,$00,$80,$00
+        DB $80,$03
+
+; Graphic resource $0C24 (38 bytes).
+GRAPHIC_RESOURCE_0C24:
+        DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
+        DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
+        DB $80,$00,$40,$01,$20,$02,$10,$02,$08,$02,$04,$02
+        DB $1C,$0E
+
+; Graphic resource $0C4A (38 bytes).
+GRAPHIC_RESOURCE_0C4A:
+        DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
+        DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
+        DB $80,$00,$40,$01,$20,$02,$10,$04,$08,$08,$04,$10
+        DB $1C,$70
+
+; Graphic resource $0C70 (38 bytes).
+GRAPHIC_RESOURCE_0C70:
+        DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
+        DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
+        DB $80,$00,$80,$01,$40,$03,$20,$06,$20,$04,$20,$04
+        DB $E0,$1C
+
+; Graphic resource $0C96 (29 bytes).
+GRAPHIC_RESOURCE_0C96:
+        DB $01,$1B,$18,$18,$18,$3C,$3C,$7E,$7E,$FF,$FF,$FF
+        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$7E
+        DB $3C,$3C,$7E,$7E,$FF
+
+; Graphic resource $0CB3 (34 bytes).
+GRAPHIC_RESOURCE_0CB3:
+        DB $02,$10,$E0,$07,$C0,$03,$C0,$03,$F8,$1F,$FF,$FF
+        DB $FF,$FF,$FF,$FF,$1F,$F0,$8F,$F4,$2F,$F1,$4F,$F4
+        DB $0F,$F0,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+
+; Graphic resource $0CD5 (28 bytes).
+GRAPHIC_RESOURCE_0CD5:
+        DB $01,$1A,$18,$18,$18,$18,$3C,$7E,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-        DB $FF,$FF,$FF,$FF,$FF,$01,$10,$3C,$3C,$18,$18,$FF
-        DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$80
-        DB $00,$02,$00,$48,$00,$28,$00,$18,$00,$9B,$00,$1E
-        DB $00,$3C,$00,$79,$00,$DC,$00,$1E,$00,$3F,$00,$4C
-        DB $00,$40,$00,$C4,$00,$D2,$00,$30,$00,$6C,$00,$FA
-        DB $00,$03,$0D,$00,$70,$00,$00,$F8,$01,$00,$FC,$03
-        DB $00,$3C,$0F,$00,$1E,$1E,$08,$1E,$BE,$18,$3F,$FF
-        DB $3C,$3F,$EF,$BC,$FF,$C3,$FE,$FF,$80,$3F,$63,$00
-        DB $1E,$42,$00,$0F,$C6,$00,$04,$0E,$00,$00,$7C,$00
-        DB $00,$80,$FF,$01,$02,$F0,$FF,$03,$04,$FF,$3F,$8F
-        DB $E8,$FF,$1F,$FE,$F2,$FF,$9F,$FE,$E8,$FF,$3F,$FF
-        DB $04,$FF,$FF,$8F,$02,$FC,$FF,$00,$00,$FC,$FF,$00
-        DB $00,$0C,$63,$00,$00,$18,$C1,$00,$00,$10,$81,$00
-        DB $00,$30,$83,$01,$04,$0E,$00,$00,$7C,$00,$00,$80
-        DB $FF,$01,$02,$F0,$FF,$03,$04,$FF,$3F,$0F,$E8,$FF
-        DB $1F,$BE,$F2,$FF,$5F,$FE,$E8,$FF,$3F,$FF,$04,$FF
-        DB $FF,$CF,$02,$FC,$FF,$83,$00,$FC,$FF,$00,$00,$0C
-        DB $63,$00,$00,$84,$21,$00,$00,$84,$20,$00,$00,$8C
-        DB $61,$00,$04,$0E,$00,$00,$7C,$00,$00,$80,$FF,$01
-        DB $02,$F0,$FF,$03,$04,$FF,$3F,$8F,$E8,$FF,$9F,$FE
-        DB $F2,$FF,$1F,$FE,$E8,$FF,$3F,$FF,$04,$FF,$FF,$8F
-        DB $02,$FC,$FF,$03,$00,$FC,$FF,$00,$00,$8C,$61,$00
-        DB $00,$06,$33,$00,$00,$02,$12,$00,$00,$06,$36,$00
+        DB $FF,$FF,$FF,$FF
+
+; Graphic resource $0CF1 (18 bytes).
+GRAPHIC_RESOURCE_0CF1:
+        DB $01,$10,$3C,$3C,$18,$18,$FF,$FF,$FF,$FF,$FF,$FF
+        DB $FF,$FF,$FF,$FF,$FF,$FF
+
+; Graphic resource $0D03 (32 bytes).
+GRAPHIC_RESOURCE_0D03:
+        DB $80,$00,$02,$00,$48,$00,$28,$00,$18,$00,$9B,$00
+        DB $1E,$00,$3C,$00,$79,$00,$DC,$00,$1E,$00,$3F,$00
+        DB $4C,$00,$40,$00,$C4,$00,$D2,$00
+
+; Graphic resource $0D23 (6 bytes).
+GRAPHIC_RESOURCE_0D23:
+        DB $30,$00,$6C,$00,$FA,$00
+
+; Graphic resource $0D29 (41 bytes).
+GRAPHIC_RESOURCE_0D29:
+        DB $03,$0D,$00,$70,$00,$00,$F8,$01,$00,$FC,$03,$00
+        DB $3C,$0F,$00,$1E,$1E,$08,$1E,$BE,$18,$3F,$FF,$3C
+        DB $3F,$EF,$BC,$FF,$C3,$FE,$FF,$80,$3F,$63,$00,$1E
+        DB $42,$00,$0F,$C6,$00
+
+; Graphic resource $0D52 (58 bytes).
+GRAPHIC_RESOURCE_0D52:
+        DB $04,$0E,$00,$00,$7C,$00,$00,$80,$FF,$01,$02,$F0
+        DB $FF,$03,$04,$FF,$3F,$8F,$E8,$FF,$1F,$FE,$F2,$FF
+        DB $9F,$FE,$E8,$FF,$3F,$FF,$04,$FF,$FF,$8F,$02,$FC
+        DB $FF,$00,$00,$FC,$FF,$00,$00,$0C,$63,$00,$00,$18
+        DB $C1,$00,$00,$10,$81,$00,$00,$30,$83,$01
+
+; Graphic resource $0D8C (58 bytes).
+GRAPHIC_RESOURCE_0D8C:
+        DB $04,$0E,$00,$00,$7C,$00,$00,$80,$FF,$01,$02,$F0
+        DB $FF,$03,$04,$FF,$3F,$0F,$E8,$FF,$1F,$BE,$F2,$FF
+        DB $5F,$FE,$E8,$FF,$3F,$FF,$04,$FF,$FF,$CF,$02,$FC
+        DB $FF,$83,$00,$FC,$FF,$00,$00,$0C,$63,$00,$00,$84
+        DB $21,$00,$00,$84,$20,$00,$00,$8C,$61,$00
+
+; Graphic resource $0DC6 (58 bytes).
+GRAPHIC_RESOURCE_0DC6:
+        DB $04,$0E,$00,$00,$7C,$00,$00,$80,$FF,$01,$02,$F0
+        DB $FF,$03,$04,$FF,$3F,$8F,$E8,$FF,$9F,$FE,$F2,$FF
+        DB $1F,$FE,$E8,$FF,$3F,$FF,$04,$FF,$FF,$8F,$02,$FC
+        DB $FF,$03,$00,$FC,$FF,$00,$00,$8C,$61,$00,$00,$06
+        DB $33,$00,$00,$02,$12,$00,$00,$06,$36,$00
+
+; Graphic resource $0E00 (44 bytes).
+GRAPHIC_RESOURCE_0E00:
         DB $03,$0E,$80,$3F,$3F,$80,$F0,$23,$80,$F8,$23,$80
         DB $FE,$23,$00,$DE,$22,$80,$F3,$23,$E0,$C1,$01,$F0
         DB $C3,$00,$F8,$CF,$00,$F8,$0F,$00,$FA,$0F,$00,$FF
-        DB $07,$00,$E3,$03,$00,$F2,$7F,$00,$03,$25,$00,$18
-        DB $00,$00,$38,$00,$00,$38,$38,$00,$38,$38,$00,$70
-        DB $08,$00,$70,$0C,$00,$70,$0C,$00,$60,$0C,$00,$60
-        DB $06,$00,$E0,$07,$00,$E0,$07,$00,$A0,$05,$00,$E0
-        DB $07,$00,$C0,$03,$00,$F0,$03,$00,$B8,$01,$00,$3C
-        DB $01,$00,$1E,$00,$00,$3F,$00,$80,$FF,$03,$C0,$07
-        DB $03,$C0,$07,$03,$E0,$07,$00,$E0,$03,$00,$E0,$03
-        DB $00,$F0,$03,$00,$F0,$01,$00,$F6,$01,$00,$FF,$03
-        DB $00,$C6,$07,$00,$80,$07,$00,$00,$07,$00,$00,$03
-        DB $00,$80,$01,$00,$C0,$01,$00,$C0,$00,$00,$E0,$0F
-        DB $00,$03,$21,$00,$18,$00,$00,$38,$00,$00,$38,$78
-        DB $00,$38,$78,$00,$70,$48,$00,$70,$0C,$00,$70,$0C
-        DB $00,$60,$0C,$00,$60,$06,$00,$E0,$07,$00,$E0,$07
-        DB $00,$A0,$05,$00,$E0,$07,$00,$E0,$03,$00,$B0,$03
-        DB $00,$B8,$01,$00,$3C,$01,$00,$1E,$00,$00,$3F,$00
-        DB $80,$FF,$1F,$C0,$07,$00,$C0,$07,$00,$E0,$07,$00
-        DB $E0,$03,$00,$E0,$0F,$00,$F0,$1F,$00,$F0,$1F,$00
-        DB $F6,$1F,$00,$1F,$0C,$00,$06,$06,$00,$00,$07,$00
-        DB $00,$03,$00,$80,$3F,$00,$03,$1F,$00,$18,$00,$00
-        DB $38,$00,$00,$38,$38,$00,$38,$38,$00,$70,$08,$00
-        DB $70,$0C,$00,$70,$0C,$00,$60,$0C,$00,$60,$06,$00
-        DB $E0,$07,$00,$E0,$07,$00,$A0,$05,$00,$E0,$07,$00
-        DB $E0,$03,$00,$B0,$03,$00,$B8,$01,$00,$3C,$01,$00
-        DB $1E,$00,$00,$3F,$00,$80,$FF,$03,$C0,$07,$03,$C0
-        DB $07,$03,$E0,$07,$00,$E0,$03,$00,$E0,$07,$00,$F0
-        DB $1F,$00,$E0,$1F,$00,$F6,$1F,$00,$FF,$0F,$00,$C6
-        DB $07,$00,$E0,$FF,$00
+        DB $07,$00,$E3,$03,$00,$F2,$7F,$00
+
+; Graphic resource $0E2C (113 bytes).
+GRAPHIC_RESOURCE_0E2C:
+        DB $03,$25,$00,$18,$00,$00,$38,$00,$00,$38,$38,$00
+        DB $38,$38,$00,$70,$08,$00,$70,$0C,$00,$70,$0C,$00
+        DB $60,$0C,$00,$60,$06,$00,$E0,$07,$00,$E0,$07,$00
+        DB $A0,$05,$00,$E0,$07,$00,$C0,$03,$00,$F0,$03,$00
+        DB $B8,$01,$00,$3C,$01,$00,$1E,$00,$00,$3F,$00,$80
+        DB $FF,$03,$C0,$07,$03,$C0,$07,$03,$E0,$07,$00,$E0
+        DB $03,$00,$E0,$03,$00,$F0,$03,$00,$F0,$01,$00,$F6
+        DB $01,$00,$FF,$03,$00,$C6,$07,$00,$80,$07,$00,$00
+        DB $07,$00,$00,$03,$00,$80,$01,$00,$C0,$01,$00,$C0
+        DB $00,$00,$E0,$0F,$00
+
+; Graphic resource $0E9D (101 bytes).
+GRAPHIC_RESOURCE_0E9D:
+        DB $03,$21,$00,$18,$00,$00,$38,$00,$00,$38,$78,$00
+        DB $38,$78,$00,$70,$48,$00,$70,$0C,$00,$70,$0C,$00
+        DB $60,$0C,$00,$60,$06,$00,$E0,$07,$00,$E0,$07,$00
+        DB $A0,$05,$00,$E0,$07,$00,$E0,$03,$00,$B0,$03,$00
+        DB $B8,$01,$00,$3C,$01,$00,$1E,$00,$00,$3F,$00,$80
+        DB $FF,$1F,$C0,$07,$00,$C0,$07,$00,$E0,$07,$00,$E0
+        DB $03,$00,$E0,$0F,$00,$F0,$1F,$00,$F0,$1F,$00,$F6
+        DB $1F,$00,$1F,$0C,$00,$06,$06,$00,$00,$07,$00,$00
+        DB $03,$00,$80,$3F,$00
+
+; Graphic resource $0F02 (95 bytes).
+GRAPHIC_RESOURCE_0F02:
+        DB $03,$1F,$00,$18,$00,$00,$38,$00,$00,$38,$38,$00
+        DB $38,$38,$00,$70,$08,$00,$70,$0C,$00,$70,$0C,$00
+        DB $60,$0C,$00,$60,$06,$00,$E0,$07,$00,$E0,$07,$00
+        DB $A0,$05,$00,$E0,$07,$00,$E0,$03,$00,$B0,$03,$00
+        DB $B8,$01,$00,$3C,$01,$00,$1E,$00,$00,$3F,$00,$80
+        DB $FF,$03,$C0,$07,$03,$C0,$07,$03,$E0,$07,$00,$E0
+        DB $03,$00,$E0,$07,$00,$F0,$1F,$00,$E0,$1F,$00,$F6
+        DB $1F,$00,$FF,$0F,$00,$C6,$07,$00,$E0,$FF,$00
 ; Indexed-command vector table. Twelve native handlers; $00 enters scheduler directly.
 ; $00 FRAME_HANDOFF: Zero command branches to frame scheduler $11EA; table entry is bypassed.
 WORD_VECTOR_00_FRAME_HANDOFF:
@@ -2239,7 +2410,7 @@ SCAN_OBJECT_FIELD_FLAGS:
         LD B,$00
         INC HL
         EX DE,HL
-        LD HL,$06DC
+        LD HL,GRAPHIC_RESOURCE_06DC
         ADD HL,BC
         LD A,(HL)
         SUB $80
@@ -2579,7 +2750,7 @@ STORE_OBJECT_FIELD_AND_LOOKUP:
 ; Index graphics data from ROM $06DC.
 FETCH_GUN_SHAPE_TABLE_BYTE:
         EX DE,HL
-        LD HL,$06DC
+        LD HL,GRAPHIC_RESOURCE_06DC
         ADD HL,BC
         LD A,(HL)
         DEC A
@@ -2645,14 +2816,14 @@ FRAME_PATTERN_TABLE:
         DB $06,$06,$07,$07 ; sixteen frame-state indices
 
 FRAME_GRAPHIC_RESOURCE_POINTERS:
-        DW $0BFE ; frame graphic 0
-        DW $0723 ; frame graphic 1
-        DW $0AC3 ; frame graphic 2
-        DW $0795 ; frame graphic 3
-        DW $0D52 ; frame graphic 4
-        DW $0E2C ; frame graphic 5
-        DW $08D1 ; frame graphic 6
-        DW $09F5 ; frame graphic 7
+        DW GRAPHIC_RESOURCE_0BFE ; frame graphic 0
+        DW GRAPHIC_RESOURCE_0723 ; frame graphic 1
+        DW GRAPHIC_RESOURCE_0AC3 ; frame graphic 2
+        DW GRAPHIC_RESOURCE_0795 ; frame graphic 3
+        DW GRAPHIC_RESOURCE_0D52 ; frame graphic 4
+        DW GRAPHIC_RESOURCE_0E2C ; frame graphic 5
+        DW GRAPHIC_RESOURCE_08D1 ; frame graphic 6
+        DW GRAPHIC_RESOURCE_09F5 ; frame graphic 7
 
 FRAME_CONTROL_PARAMETERS:
         DB $01,$01,$01,$01,$01,$04,$02,$03 ; eight frame-control bytes
@@ -2799,158 +2970,158 @@ OBJECT_MOTION_THRESHOLDS_ALTERNATE:
 MOTION_SEQUENCE_1592:
         DW $1E14 ; initial resource address
         DB $05 ; selector
-        DW $0D52 ; graphic address
+        DW GRAPHIC_RESOURCE_0D52 ; graphic address
         DB $0A ; selector
-        DW $0D8C ; graphic address
+        DW GRAPHIC_RESOURCE_0D8C ; graphic address
         DB $0F ; selector
-        DW $0DC6 ; graphic address
+        DW GRAPHIC_RESOURCE_0DC6 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $159E: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_159E:
-        DW $0D8C ; initial resource address
+        DW GRAPHIC_RESOURCE_0D8C ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15A4: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15A4:
-        DW $0D29 ; initial resource address
+        DW GRAPHIC_RESOURCE_0D29 ; initial resource address
         DB $06 ; selector
-        DW $0E2C ; graphic address
+        DW GRAPHIC_RESOURCE_0E2C ; graphic address
         DB $0A ; selector
-        DW $0E9D ; graphic address
+        DW GRAPHIC_RESOURCE_0E9D ; graphic address
         DB $0F ; selector
-        DW $0F02 ; graphic address
+        DW GRAPHIC_RESOURCE_0F02 ; graphic address
         DB $13 ; selector
-        DW $0E9D ; graphic address
+        DW GRAPHIC_RESOURCE_0E9D ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15B3: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15B3:
-        DW $0E2C ; initial resource address
+        DW GRAPHIC_RESOURCE_0E2C ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15B9: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15B9:
-        DW $0E00 ; initial resource address
+        DW GRAPHIC_RESOURCE_0E00 ; initial resource address
         DB $02 ; selector
-        DW $0AC3 ; graphic address
+        DW GRAPHIC_RESOURCE_0AC3 ; graphic address
         DB $04 ; selector
-        DW $0AFB ; graphic address
+        DW GRAPHIC_RESOURCE_0AFB ; graphic address
         DB $06 ; selector
-        DW $0B33 ; graphic address
+        DW GRAPHIC_RESOURCE_0B33 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15C5: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15C5:
-        DW $0B6B ; initial resource address
+        DW GRAPHIC_RESOURCE_0B6B ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $0F ; selector
-        DW $0BA3 ; graphic address
+        DW GRAPHIC_RESOURCE_0BA3 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15CE: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15CE:
-        DW $0BC3 ; initial resource address
+        DW GRAPHIC_RESOURCE_0BC3 ; initial resource address
         DB $01 ; selector
-        DW $0BFE ; graphic address
+        DW GRAPHIC_RESOURCE_0BFE ; graphic address
         DB $02 ; selector
-        DW $0C24 ; graphic address
+        DW GRAPHIC_RESOURCE_0C24 ; graphic address
         DB $03 ; selector
-        DW $0C4A ; graphic address
+        DW GRAPHIC_RESOURCE_0C4A ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15DA: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15DA:
-        DW $0C70 ; initial resource address
+        DW GRAPHIC_RESOURCE_0C70 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15E0: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15E0:
-        DW $0BE6 ; initial resource address
+        DW GRAPHIC_RESOURCE_0BE6 ; initial resource address
         DB $05 ; selector
-        DW $0965 ; graphic address
+        DW GRAPHIC_RESOURCE_0965 ; graphic address
         DB $19 ; selector
-        DW $099D ; graphic address
+        DW GRAPHIC_RESOURCE_099D ; graphic address
         DB $1E ; selector
-        DW $08D1 ; graphic address
+        DW GRAPHIC_RESOURCE_08D1 ; graphic address
         DB $37 ; selector
-        DW $0915 ; graphic address
+        DW GRAPHIC_RESOURCE_0915 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15EF: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15EF:
-        DW $0965 ; initial resource address
+        DW GRAPHIC_RESOURCE_0965 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15F5: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15F5:
-        DW $09DE ; initial resource address
+        DW GRAPHIC_RESOURCE_09DE ; initial resource address
         DB $0E ; selector
-        DW $0A27 ; graphic address
+        DW GRAPHIC_RESOURCE_0A27 ; graphic address
         DB $19 ; selector
-        DW $09F5 ; graphic address
+        DW GRAPHIC_RESOURCE_09F5 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15FE: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_15FE:
-        DW $0A27 ; initial resource address
+        DW GRAPHIC_RESOURCE_0A27 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $0F ; selector
-        DW $09F5 ; graphic address
+        DW GRAPHIC_RESOURCE_09F5 ; graphic address
         DB $14 ; selector
-        DW $0A65 ; graphic address
+        DW GRAPHIC_RESOURCE_0A65 ; graphic address
         DB $19 ; selector
-        DW $0A91 ; graphic address
+        DW GRAPHIC_RESOURCE_0A91 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $160D: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_160D:
-        DW $0AAF ; initial resource address
+        DW GRAPHIC_RESOURCE_0AAF ; initial resource address
         DB $03 ; selector
-        DW $0795 ; graphic address
+        DW GRAPHIC_RESOURCE_0795 ; graphic address
         DB $06 ; selector
-        DW $07EF ; graphic address
+        DW GRAPHIC_RESOURCE_07EF ; graphic address
         DB $09 ; selector
-        DW $0849 ; graphic address
+        DW GRAPHIC_RESOURCE_0849 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $1619: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_1619:
-        DW $07EF ; initial resource address
+        DW GRAPHIC_RESOURCE_07EF ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $161F: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_161F:
-        DW $08A3 ; initial resource address
+        DW GRAPHIC_RESOURCE_08A3 ; initial resource address
         DB $02 ; selector
-        DW $0749 ; graphic address
+        DW GRAPHIC_RESOURCE_0749 ; graphic address
         DB $04 ; selector
-        DW $076F ; graphic address
+        DW GRAPHIC_RESOURCE_076F ; graphic address
         DB $06 ; selector
-        DW $0749 ; graphic address
+        DW GRAPHIC_RESOURCE_0749 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $162B: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_162B:
-        DW $0723 ; initial resource address
+        DW GRAPHIC_RESOURCE_0723 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; graphic address
+        DW GRAPHIC_RESOURCE_06E4 ; graphic address
         DB $FF ; sequence terminator
 ; Additional original graphic reference following the final $FF.
 MOTION_TRAILING_GRAPHIC_POINTER:
-        DW $0712
+        DW GRAPHIC_RESOURCE_0712
 
 CMD_1633_CLEAR_DISPLAY:
         DB $06 ; CLEAR_DISPLAY
@@ -3322,7 +3493,7 @@ ADVANCE_OBJECT_BOUNDARY_COUNTER:
         INC HL
         LD D,(HL)
         EX DE,HL
-        LD DE,$0D03
+        LD DE,GRAPHIC_RESOURCE_0D03
         LD BC,$1002
         JP COPY_SCREEN_ROW_LOOP
 
@@ -3612,13 +3783,13 @@ READ_SCENE_POINTER_ENTRY:
         JP READ_SCENE_POINTER_ENTRY
 
 SPRITE_COPY_POINTER_PAIRS:
-        DW $0C96
+        DW GRAPHIC_RESOURCE_0C96
         DW $3B24
-        DW $0CB3
+        DW GRAPHIC_RESOURCE_0CB3
         DW $3C8C
-        DW $0CD5
+        DW GRAPHIC_RESOURCE_0CD5
         DW $3B54
-        DW $0CF1
+        DW GRAPHIC_RESOURCE_0CF1
         DW $3C9C
         DW $0000
 
@@ -4090,7 +4261,7 @@ PROCESS_GAME_ANIMATION_BYTE:
         AND A
         JP Z,ADVANCE_ANIMATION_RECORD
         CALL COPY_SCREEN_ROW_LOOP
-        LD DE,$0D23
+        LD DE,GRAPHIC_RESOURCE_0D23
         LD B,$03
         CALL COPY_SCREEN_ROW_LOOP
 
