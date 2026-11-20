@@ -4530,86 +4530,88 @@ MESSAGE_SCREEN_COORDINATE_POINTERS:
         DB $40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40
         DB $40,$40,$40,$40,$40,$40,$40
 ; The game title starts here; its first two characters precede $1A60.
+; Original 8-character title continues across the label at $1A60:
+; 'DE' + 'SERT' + $40 + 'GUN' = 'DESERT GUN' in game encoding.
 TEXT_GAME_TITLE_DESERT_GUN:
-        DB $44,$45
+        DB 'DE'
 
 SCREEN_MESSAGE_TEXT:
 ; ROM $1A60 text pool: game title, bonus phrases and localized menu text.
 ; Language directory points at a high-bit delimiter byte preceding each list.
-        DB $53,$45,$52,$54,$40,$47,$55,$4E,$00,$40,$40,$40 ; SERT GUN     200 BONUS     100 UGHJBUFJARGJPOWJZOWJBOPJWAMJBAMJMISSED AG
-        DB $40,$40,$32,$30,$30,$40,$42,$4F,$4E,$55,$53,$40
-        DB $40,$40,$40,$40,$31,$30,$30,$40,$55,$47,$48,$4A
-        DB $42,$55,$46,$4A,$41,$52,$47,$4A,$50,$4F,$57,$4A
-        DB $5A,$4F,$57,$4A,$42,$4F,$50,$4A,$57,$41,$4D,$4A
-        DB $42,$41,$4D,$4A,$4D,$49,$53,$53,$45,$44,$40,$41
-        DB $47,$41,$49,$4E,$40,$44,$55,$4D,$4D,$59,$54,$55
-        DB $52,$4B,$45,$59,$52,$45,$4C,$4F,$41,$44,$43,$59
-        DB $43,$4C,$45
+        DB 'SERT',$40,'GUN',$00,$40,$40,$40 ; SERT GUN     200 BONUS     100 UGHJBUFJARGJPOWJZOWJBOPJWAMJBAMJMISSED AG
+        DB $40,$40,'200',$40,'BONUS',$40
+        DB $40,$40,$40,$40,'100',$40,'UGHJ'
+        DB 'BUFJARGJPOWJ'
+        DB 'ZOWJBOPJWAMJ'
+        DB 'BAMJMISSED',$40,'A'
+        DB 'GAIN',$40,'DUMMYTU'
+        DB 'RKEYRELOADCY'
+        DB 'CLE'
 
 ; Language-list delimiter $1AC3
 ENGLISH_MESSAGES_ANCHOR:
         DB $84
-        DB $47,$41,$4D,$45,$84 ; GAME
-        DB $4F,$56,$45,$52,$8B ; OVER
-        DB $49,$4E,$53,$45,$52,$54,$40,$43,$4F,$49,$4E,$84 ; INSERT COIN
-        DB $54,$49,$4D,$45,$85 ; TIME
-        DB $53,$43,$4F,$52,$45,$8A ; SCORE
-        DB $48,$49,$47,$48,$40,$53,$43,$4F,$52,$45,$89 ; HIGH SCORE
-        DB $4C,$41,$53,$54,$40,$47,$41,$4D,$45,$8D ; LAST GAME
-        DB $45,$58,$54,$45,$4E,$44,$45,$44,$40,$54,$49,$4D ; EXTENDED TIME
-        DB $45,$89
-        DB $47,$45,$54,$40,$52,$45,$41,$44,$59,$89 ; GET READY
-        DB $40,$40,$53,$48,$4F,$4F,$54,$40,$40 ; SHOOT
+        DB 'GAME',$84 ; GAME
+        DB 'OVER',$8B ; OVER
+        DB 'INSERT',$40,'COIN',$84 ; INSERT COIN
+        DB 'TIME',$85 ; TIME
+        DB 'SCORE',$8A ; SCORE
+        DB 'HIGH',$40,'SCORE',$89 ; HIGH SCORE
+        DB 'LAST',$40,'GAME',$8D ; LAST GAME
+        DB 'EXTENDED',$40,'TIM' ; EXTENDED TIME
+        DB 'E',$89
+        DB 'GET',$40,'READY',$89 ; GET READY
+        DB $40,$40,'SHOOT',$40,$40 ; SHOOT
 
 ; Language-list delimiter $1B1B
 GERMAN_MESSAGES_ANCHOR:
         DB $84
-        DB $47,$41,$4D,$45,$84 ; GAME
-        DB $4F,$56,$45,$52,$89 ; OVER
-        DB $45,$49,$4E,$57,$45,$52,$46,$45,$4E,$84 ; EINWERFEN
-        DB $5A,$45,$49,$54,$86 ; ZEIT
-        DB $50,$55,$4E,$4B,$54,$45,$86 ; PUNKTE
-        DB $52,$45,$4B,$4F,$52,$44,$88 ; REKORD
-        DB $45,$4E,$44,$53,$50,$49,$45,$4C,$91 ; ENDSPIEL
-        DB $5A,$45,$49,$54,$56,$45,$52,$4C,$41,$45,$4E,$47 ; ZEITVERLAENGERUNG
-        DB $45,$52,$55,$4E,$47,$8D
-        DB $46,$45,$52,$54,$49,$47,$40,$4D,$41,$43,$48,$45 ; FERTIG MACHEN
-        DB $4E,$8D
-        DB $40,$40,$53,$43,$48,$49,$45,$53,$53,$45,$4E,$40 ; SCHIESSEN
+        DB 'GAME',$84 ; GAME
+        DB 'OVER',$89 ; OVER
+        DB 'EINWERFEN',$84 ; EINWERFEN
+        DB 'ZEIT',$86 ; ZEIT
+        DB 'PUNKTE',$86 ; PUNKTE
+        DB 'REKORD',$88 ; REKORD
+        DB 'ENDSPIEL',$91 ; ENDSPIEL
+        DB 'ZEITVERLAENG' ; ZEITVERLAENGERUNG
+        DB 'ERUNG',$8D
+        DB 'FERTIG',$40,'MACHE' ; FERTIG MACHEN
+        DB 'N',$8D
+        DB $40,$40,'SCHIESSEN',$40 ; SCHIESSEN
         DB $40
 
 ; Language-list delimiter $1B79
 FRENCH_MESSAGES_ANCHOR:
         DB $83
-        DB $46,$49,$4E,$81 ; FIN
+        DB 'FIN',$81 ; FIN
         DB $40,$8C
-        DB $4D,$45,$54,$54,$45,$5A,$40,$50,$49,$45,$43,$45 ; METTEZ PIECE
+        DB 'METTEZ',$40,'PIECE' ; METTEZ PIECE
         DB $85
-        DB $54,$45,$4D,$50,$53,$85 ; TEMPS
-        DB $53,$43,$4F,$52,$45,$8A ; SCORE
-        DB $48,$49,$47,$48,$40,$53,$43,$4F,$52,$45,$8C ; HIGH SCORE
-        DB $44,$45,$52,$4E,$49,$45,$52,$40,$43,$4F,$55,$50 ; DERNIER COUP
+        DB 'TEMPS',$85 ; TEMPS
+        DB 'SCORE',$8A ; SCORE
+        DB 'HIGH',$40,'SCORE',$8C ; HIGH SCORE
+        DB 'DERNIER',$40,'COUP' ; DERNIER COUP
         DB $8C
-        DB $50,$52,$4F,$4C,$4F,$4E,$47,$41,$54,$49,$4F,$4E ; PROLONGATION
+        DB 'PROLONGATION' ; PROLONGATION
         DB $8D
-        DB $50,$52,$45,$50,$41,$52,$45,$5A,$40,$56,$4F,$55 ; PREPAREZ VOUS
-        DB $53,$8D
-        DB $40,$40,$40,$40,$53,$48,$4F,$4F,$54,$40,$40,$40 ; SHOOT
+        DB 'PREPAREZ',$40,'VOU' ; PREPAREZ VOUS
+        DB 'S',$8D
+        DB $40,$40,$40,$40,'SHOOT',$40,$40,$40 ; SHOOT
         DB $40
 
 ; Language-list delimiter $1BD9
 DANISH_MESSAGES_ANCHOR:
         DB $84
-        DB $53,$50,$49,$4C,$84 ; SPIL
-        DB $53,$4C,$55,$54,$87 ; SLUT
-        DB $49,$4E,$44,$4B,$41,$53,$54,$83 ; INDKAST
-        DB $54,$49,$44,$85 ; TID
-        DB $50,$4F,$49,$4E,$54,$89 ; POINT
-        DB $54,$4F,$50,$40,$50,$4F,$49,$4E,$54,$8B ; TOP POINT
-        DB $53,$49,$44,$53,$54,$45,$40,$53,$50,$49,$4C,$8A ; SIDSTE SPIL
-        DB $45,$4B,$53,$54,$52,$41,$40,$54,$49,$44,$85 ; EKSTRA TID
-        DB $50,$41,$52,$41,$54,$85 ; PARAT
-        DB $40,$53,$4B,$59,$44 ; SKYD
+        DB 'SPIL',$84 ; SPIL
+        DB 'SLUT',$87 ; SLUT
+        DB 'INDKAST',$83 ; INDKAST
+        DB 'TID',$85 ; TID
+        DB 'POINT',$89 ; POINT
+        DB 'TOP',$40,'POINT',$8B ; TOP POINT
+        DB 'SIDSTE',$40,'SPIL',$8A ; SIDSTE SPIL
+        DB 'EKSTRA',$40,'TID',$85 ; EKSTRA TID
+        DB 'PARAT',$85 ; PARAT
+        DB $40,'SKYD' ; SKYD
 
 RESTORE_SCRIPT_POINTER_FROM_RENDER_STATE:
         XOR A
