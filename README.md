@@ -27,16 +27,17 @@ See [per-word native effects and operand formats](docs/8080-WORD-SEMANTICS.md), 
 |---|---|
 | `roms/original/desertgu.zip` | Original ROM devices; source of truth |
 | `src/desertgun.asm` | Annotated native reconstruction generated from original ROM |
-| `src/zout/desertgun.lst` | zmac assembler listing |
+| `build/desertgu.bin`, `build/desertgu.lst` | Temporary assembled image and zmac listing |
 | `tools/recover_8080.py` | Reset/IRQ, branch, and command-vector traced native 8080 recovery |
 | `tools/interpreter_lineage.py` | Native bytecode vector inventory |
-| `tools/verify_rom.py` | Byte-for-byte rebuilt ROM verification, SHA hashes and MAME ROM ZIP |
+| `tools/verify_rom.py` | Byte-for-byte ROM verification, SHA hashes and MAME-compatible ZIP packaging |
+| `roms/desertgu.zip` | Verified MAME-compatible ROM archive |
 | `docs/memory-map.svg` | Dark-theme device/region map with evidence caveats |
 | `build.sh`, `build.bat` | Linux and Windows reproducible build scripts using bundled zmac 1.3 |
 
 ## Build
 
-Linux: `./build.sh`; Windows: `build.bat`. Both regenerate source from the preserved original chips, assemble with the repository's bundled zmac 1.3, split the resulting binary into original chip devices, and fail if **any ROM byte differs**. Built ROM devices and the MAME ZIP are written to `roms/build/`.
+Linux: `./build.sh`; Windows: `build.bat`. Both regenerate source from the preserved original chips, assemble with the repository's bundled zmac 1.3, split the resulting binary into original chip devices, and fail if **any ROM byte differs**. Temporary assembled binary, listing and split ROM devices are written to root `build/`. The verified MAME-compatible archive is written to `roms/desertgu.zip`, while `roms/original/desertgu.zip` remains unchanged. Run with `mame desertgu -rompath roms -window -skip_gameinfo`.
 
 ## Research status
 
