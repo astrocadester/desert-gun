@@ -6,7 +6,7 @@
 
 | ID | Priority | Status | Work and required acceptance evidence |
 | --- | --- | --- | --- |
-| RE-001 | P0 | IN PROGRESS | **Byte-exact build:** zmac v1.3 assembly of current `src/desertgun.asm`; all four SHA-1s match original ROM devices; MAME executes; Windows build reproduces them. Reported third ROM failure `9316.1f` SHA-1 `5214eea1685abc191a8df12b86817d0faf191156` requires verified correction. |
+| RE-001 | P0 | IN PROGRESS | **Byte-exact build:** zmac v1.3 assembly of current `src/desertgun.asm`; all four SHA-1s match original ROM devices; MAME executes; Windows build reproduces them. Previous third ROM mismatch was traced to the large set of long, overlapping-prefix symbolic names. Source now uses unique short label names; source-level address/data comparisons PASS. **Latest zmac/ROM SHA-1 and MAME run still require confirmation.** |
 | RE-002 | P0 | OPEN | **Complete interpreter frame lifecycle:** trace zero-command frame handoffs, resumption, and real reachability of 39 linearly parsed post-$1678 commands; record script-PC changes and reachable command counts. |
 | RE-003 | P0 | OPEN | **Motion record consumer:** trace $1564/$1574 pointer lookup, sixteen object-motion streams, selector behavior, address field semantics, $FF processing, object flags, and transitions. |
 | RE-004 | P1 | OPEN | **Graphic record encoding:** resolve the formats, dimensions and rendering semantics of 47 source-referenced packed graphic records; add representative inline bitmaps with byte-address confirmation. |
@@ -24,8 +24,15 @@
 | ENG-003 | P1 | COMPLETE | **Single task tracker:** this file contains all remaining RE progress, verification, debt, priorities and acceptance gates; none of those belong in the README or research text. |
 | ENG-004 | P1 | COMPLETE | **Remove generated JSON from Git:** remove `interpreter.json`, `word-audit.json`, `recovery.json`, redirect any retained RE tool's outputs to ignored `build/recovery/`. |
 | ENG-005 | P1 | COMPLETE | **Remove unused Python:** remove obsolete generators and Python verifier from the repository. Retain only RE tools that have a continuing investigative function, never in the build. |
-| ENG-006 | P1 | IN PROGRESS | **Reference consistency:** README, ASM, tech reference, single SVG and current utilities describe the same software; update any stale links, labels, numbers and commands. |
+| ENG-006 | P1 | COMPLETE | **Reference consistency:** README, ASM, tech reference, single SVG and current utilities describe the same software; update any stale links, labels, numbers and commands. |
 | ENG-007 | P1 | OPEN | **Clean reproducible builds:** Linux/Windows produce only ignored intermediates and MAME ZIP; original ROM archive unchanged, Git working tree clean. |
+
+## Build issue and resolution record
+
+- **Reported failure:** bank `9316.1f` returned SHA-1 `5214eea1685abc191a8df12b86817d0faf191156` while the first two banks passed.
+- **Source issue corrected:** overlapping long symbol prefixes, notably `GRAPHIC_RESOURCE_*` and `MOTION_SEQUENCE_*`, were replaced with short unique symbolic names throughout the ASM. All current labels have distinct first 16 characters; branch instructions and pointer tables continue to use meaningful symbolic operands.
+- **Static validation:** 2,311 native instruction addresses unchanged; all 4,296 typed data bytes match their original 8 KB positions; 251 symbolic instruction targets match the original encoded addresses.
+- **Outstanding acceptance test:** assemble the latest commit locally using bundled `tools/zmac`, check all four SHA-1s, and run MAME. An unexecuted code change is not recorded as a passing build.
 
 ## Completed evidence checkpoints
 
