@@ -992,7 +992,7 @@ IRQ_08_SERVICE:
         CALL SERVICE_TIMER_207C
         CALL APPLY_RENDER_MODE_2031
         CALL SAMPLE_INPUT_BIT6_EDGE
-        CALL IRQ_SERVICE_TIMER_201F
+        CALL AUDIO_SERVICE_TIMER_201F
         EI
         LD HL,$2004
         INC (HL)
@@ -1069,43 +1069,43 @@ IRQ10_PROCESS_TIMER_STATE:
         POP AF
         RET
 ; Check countdown RAM $201F and update secondary input state.
-IRQ_SERVICE_TIMER_201F:
+AUDIO_SERVICE_TIMER_201F:
         LD A,($201F)
         AND A
         RET Z
         LD HL,$200F
         LD A,(HL)
         AND A
-        JP Z,IRQ10_SERVICE_NEXT_TIMER
+        JP Z,AUDIO_SERVICE_NEXT_TIMER
         DEC (HL)
         RET
 
-IRQ10_SERVICE_NEXT_TIMER:
+AUDIO_SERVICE_NEXT_TIMER:
         INC HL
         LD A,(HL)
         AND A
-        JP Z,IRQ10_UPDATE_OBJECT_TIMER
+        JP Z,AUDIO_SERVICE_NOTE_COUNTDOWN
         DEC (HL)
         DEC HL
         LD A,($200E)
         LD (HL),A
         RET
 
-IRQ10_UPDATE_OBJECT_TIMER:
+AUDIO_SERVICE_NOTE_COUNTDOWN:
         INC HL
         LD A,(HL)
         AND A
-        JP Z,IRQ10_ADVANCE_GAME_STATE
+        JP Z,AUDIO_FETCH_NEXT_EVENT
         DEC (HL)
         XOR A
         OUT ($05),A
         RET
 
-IRQ10_ADVANCE_GAME_STATE:
+AUDIO_FETCH_NEXT_EVENT:
         LD HL,($2012)
         LD A,(HL)
         AND A
-        JP NZ,IRQ10_PROCESS_OBJECT_STATE
+        JP NZ,AUDIO_DECODE_EVENT_PREFIX
         XOR A
         OUT ($05),A
         LD ($201F),A
@@ -1115,26 +1115,26 @@ IRQ10_ADVANCE_GAME_STATE:
         OUT ($03),A
         RET
 
-IRQ10_PROCESS_OBJECT_STATE:
-        JP P,IRQ10_COMPLETE_INPUT_SERVICE
+AUDIO_DECODE_EVENT_PREFIX:
+        JP P,AUDIO_SET_EVENT_DURATION
         AND $7F
         LD ($200E),A
         INC HL
         LD A,(HL)
 
-IRQ10_COMPLETE_INPUT_SERVICE:
+AUDIO_SET_EVENT_DURATION:
         LD ($2010),A
         INC HL
         LD A,($200E)
         LD B,A
         LD A,(HL)
         AND A
-        JP M,IRQ10_EXIT_SERVICE
+        JP M,AUDIO_EMIT_NOTE_FREQUENCY
         LD A,$01
         LD ($2011),A
         DEC B
 
-IRQ10_EXIT_SERVICE:
+AUDIO_EMIT_NOTE_FREQUENCY:
         LD A,B
         LD ($200F),A
         LD A,(HL)
@@ -1143,7 +1143,7 @@ IRQ10_EXIT_SERVICE:
         AND $7F
         LD C,A
         LD B,$00
-        LD HL,$04FB
+        LD HL,AUDIO_NOTE_FREQUENCY_PAIRS
         ADD HL,BC
         ADD HL,BC
         LD A,(HL)
@@ -1153,7 +1153,9 @@ IRQ10_EXIT_SERVICE:
         OUT ($06),A
         RET
 
-SCREEN_POSITION_LOOKUP:
+; Two-byte sound-generator register values indexed by the note/event selector.
+; The interrupt writes each selected pair to output ports $05 and $06.
+AUDIO_NOTE_FREQUENCY_PAIRS:
         DB $00,$00,$3F,$13,$1D,$16,$33,$18,$3F,$1A,$05,$1D
         DB $01,$1F,$39,$20,$27,$22,$11,$24,$35,$25,$13,$27
         DB $2B,$28,$3F,$29,$0F,$2B,$19,$2C,$1F,$2D,$21,$2E
@@ -2159,28 +2161,43 @@ WORD_0B_RESET_SCENE_ENTRY:
         LD A,$08
         OUT ($03),A
         LD ($201F),A
-        LD HL,$10B2
+        LD HL,MUSIC_SEQUENCE_MAIN
         LD ($2012),HL
         RET
 
-; Object sequence data: selection/control header followed by event/count pairs.
-; High-bit control markers $84/$85 separate sequence groups; $00 terminates groups.
-OBJECT_SEQUENCE_TABLE:
-        DB $43,$53,$63,$73,$84 ; sequence-selection header
-        DB $01,$08,$01,$0D,$01,$11,$01
+; Timed sound sequence consumed by interrupt service; $2012 is the sound
+; event pointer. Event bytes index paired sound registers at $04FB; high-bit
+; bytes update the interval/control fields in RAM $200E–$2011.
+; Sound-event stream $10B2: timed note and duration codes.
+MUSIC_SEQUENCE_MAIN:
+        DB $43,$53,$63,$73,$84,$01,$08,$01,$0D,$01,$11,$01 ; high-bit value = duration/control prefix
         DB $08,$01,$0D,$01,$11,$01,$08,$01,$0D,$02,$11,$02
         DB $00,$01,$12,$01,$11,$01,$00,$01,$11,$01,$0F,$01
-        DB $00,$01,$0F,$03,$0D,$00,$85,$01,$00,$01,$0C,$02
-        DB $0F,$01,$0C,$01,$0D,$02,$0F,$01,$00,$01,$0C,$02
-        DB $0F,$01,$0C,$01,$0D,$03,$0F,$00,$85,$02,$08,$02
-        DB $0D,$02,$0F,$02,$12,$08,$11,$02,$08,$02,$0D,$02
-        DB $0F,$01,$12,$01,$11,$01,$0F,$07,$11,$00,$85,$02
-        DB $0A,$01,$0A,$02,$0A,$01,$0A,$02,$0A,$01,$0A,$02
-        DB $11,$01,$0E,$02,$11,$01,$0E,$02,$11,$01,$0E,$03
-        DB $0A,$00,$85,$04,$0D,$03,$0C,$01,$0D,$02,$0A,$03
-        DB $0D,$01,$00,$02,$0F,$02,$10,$02,$11,$02,$12,$02
-        DB $13,$04,$14,$00
+        DB $00,$01
 
+; Sound-event stream $10D8: timed note and duration codes.
+MUSIC_SEQUENCE_GAME_OVER:
+        DB $0F,$03,$0D,$00,$85,$01,$00,$01,$0C,$02,$0F,$01 ; high-bit value = duration/control prefix
+        DB $0C,$01,$0D,$02,$0F,$01,$00,$01,$0C,$02,$0F,$01
+        DB $0C,$01
+
+; Sound-event stream $10F2: timed note and duration codes.
+MUSIC_SEQUENCE_HIGH_SCORE:
+        DB $0D,$03,$0F,$00,$85,$02,$08,$02,$0D,$02,$0F,$02 ; high-bit value = duration/control prefix
+        DB $12,$08,$11,$02,$08,$02,$0D,$02,$0F,$01,$12,$01
+        DB $11,$01
+
+; Sound-event stream $110C: timed note and duration codes.
+MUSIC_SEQUENCE_ROUND_END:
+        DB $0F,$07,$11,$00,$85,$02,$0A,$01,$0A,$02,$0A,$01 ; high-bit value = duration/control prefix
+        DB $0A,$02,$0A,$01,$0A,$02,$11,$01,$0E,$02,$11,$01
+        DB $0E,$02,$11,$01
+
+; Sound-event stream $1128: timed note and duration codes.
+MUSIC_SEQUENCE_BONUS:
+        DB $0E,$03,$0A,$00,$85,$04,$0D,$03,$0C,$01,$0D,$02 ; high-bit value = duration/control prefix
+        DB $0A,$03,$0D,$01,$00,$02,$0F,$02,$10,$02,$11,$02
+        DB $12,$02,$13,$04,$14,$00
 RENDER_FRAME_DESCRIPTOR:
         LD DE,$2008
         LD BC,$2083
@@ -3819,7 +3836,7 @@ INCREMENT_GAME_SEQUENCE_COUNTER:
         LD A,(HL)
         LD ($2008),A
         LD ($201F),A
-        LD HL,$10D8
+        LD HL,MUSIC_SEQUENCE_GAME_OVER
         LD ($2012),HL
         LD C,$07
         CALL RENDER_WORD_PACKET
@@ -3828,14 +3845,14 @@ INCREMENT_GAME_SEQUENCE_COUNTER:
 COMPARE_PRIMARY_GAME_SCORE_RECORD:
         LD BC,$2009
         LD HL,$201C
-        LD DE,$10F2
+        LD DE,MUSIC_SEQUENCE_HIGH_SCORE
         CALL COMPARE_TWO_BYTE_RECORD
         JP C,COMPARE_SECONDARY_GAME_SCORE_RECORD
         LD HL,$2006
-        LD DE,$110C
+        LD DE,MUSIC_SEQUENCE_ROUND_END
         CALL COMPARE_TWO_BYTE_RECORD
         JP C,COMPARE_SECONDARY_GAME_SCORE_RECORD
-        LD DE,$1128
+        LD DE,MUSIC_SEQUENCE_BONUS
 
 COMPARE_SECONDARY_GAME_SCORE_RECORD:
         EX DE,HL
