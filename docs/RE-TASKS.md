@@ -9,9 +9,9 @@
 | RE-001 | P0 | COMPLETE (Linux/MAME) | **Byte-exact build verified 2026-11-20:** user ran `./build.sh` with bundled zmac v1.3; all four 2 KB ROM SHA-1 hashes matched originals, `roms/desertgu.zip` packaged, and `mame desertgu -rompath roms -window -skip_gameinfo` ran successfully. Windows build validation remains a separate ENG-007 check. |
 | RE-002 | P0 | OPEN | **Complete interpreter frame lifecycle:** trace zero-command frame handoffs, resumption, and real reachability of 39 linearly parsed post-$1678 commands; record script-PC changes and reachable command counts. |
 | RE-003 | P0 | OPEN | **Motion record consumer:** trace $1564/$1574 pointer lookup, sixteen object-motion streams, selector behavior, address field semantics, $FF processing, object flags, and transitions. |
-| RE-004 | P1 | OPEN | **Graphic record encoding:** resolve the formats, dimensions and rendering semantics of 47 source-referenced packed graphic records; add representative inline bitmaps with byte-address confirmation. |
+| RE-004 | P1 | IN PROGRESS | **Graphic record encoding:** 40 complete bitmap records now have exact width/height geometry and inline raster comments; two additional bitmaps cross internal entry labels; $0D03/$0D23 are typed word tables. **Remaining:** associate bitmap variants with on-screen objects and fully trace renderer encoding. |
 | RE-005 | P1 | OPEN | **Audio:** trace timed event encoding and durations of five sound streams, indexed sound-generator values at $04FB, and output ports $05/$06; verify against actual sound behavior. |
-| RE-006 | P1 | OPEN | **Frame/object table semantics:** determine precise uses of the 16 frame indices, eight graphic pointers, motion thresholds, and control-parameter fields from their native consumers. |
+| RE-006 | P1 | IN PROGRESS | **Frame/object table semantics:** Sixteen frame indices, eight graphic pointers, and both eight-entry packed object-descriptor tables at $14E3/$14F3 are typed and traced to RAM-field writes. **Remaining:** correlate game-state selectors and motion thresholds to concrete object behavior. |
 | RE-007 | P1 | OPEN | **Hardware:** verify RAM mirrors, framebuffer, stack video-clear, I/O, DIP and input bits, and unmapped regions against original board documentation/MAME. |
 | RE-008 | P2 | OPEN | **DNA interpreter lineage:** confirm byte-exact shared dispatch-tail implementations, native-word ABI differences, and verified cross-game chronology. |
 
@@ -23,7 +23,7 @@
 | ENG-002 | P1 | COMPLETE | **Single technical research reference:** merge and reconcile research into `DESERT-GUN-TECHNICAL-REFERENCE.md`; remove superseded reports after checking preservation. |
 | ENG-003 | P1 | COMPLETE | **Single task tracker:** this file contains all remaining RE progress, verification, debt, priorities and acceptance gates; none of those belong in the README or research text. |
 | ENG-004 | P1 | COMPLETE | **Remove generated JSON from Git:** remove `interpreter.json`, `word-audit.json`, `recovery.json`, redirect any retained RE tool's outputs to ignored `build/recovery/`. |
-| ENG-005 | P1 | COMPLETE | **Remove unused Python:** remove obsolete generators and Python verifier from the repository. Retain only RE tools that have a continuing investigative function, never in the build. |
+| ENG-005 | P1 | COMPLETE | **Remove unused Python:** all optional Python RE/disassembly generators have been deleted; the builds rely solely on bundled zmac and shell/Windows scripts. |
 | ENG-006 | P1 | COMPLETE | **Reference consistency:** README, ASM, tech reference, single SVG and current utilities describe the same software; update any stale links, labels, numbers and commands. |
 | ENG-007 | P1 | OPEN | **Clean reproducible builds:** Linux/Windows produce only ignored intermediates and MAME ZIP; original ROM archive unchanged, Git working tree clean. |
 
