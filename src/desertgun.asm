@@ -2704,7 +2704,7 @@ COMPARE_OBJECT_FIELD_PAIR:
         LD A,(HL)
         POP HL
         CP (HL)
-        JP NC,SELECT_OBJECT_NATIVE_POINTER_TABLE
+        JP NC,SELECT_OBJECT_MOTION_POINTER_TABLE
         LD (HL),$00
         EX (SP),HL
         LD A,(HL)
@@ -2717,15 +2717,15 @@ COMPARE_OBJECT_FIELD_PAIR:
 RESTORE_OBJECT_POINTER_FROM_STACK:
         EX (SP),HL
 
-SELECT_OBJECT_NATIVE_POINTER_TABLE:
+SELECT_OBJECT_MOTION_POINTER_TABLE:
         EX DE,HL
         LD A,H
         LD HL,$1564
         AND $02
-        JP Z,FETCH_OBJECT_NATIVE_HANDLER_POINTER
+        JP Z,FETCH_OBJECT_MOTION_DATA_POINTER
         LD HL,$1574
 
-FETCH_OBJECT_NATIVE_HANDLER_POINTER:
+FETCH_OBJECT_MOTION_DATA_POINTER:
         ADD HL,BC
         ADD HL,BC
         LD A,(HL)
@@ -2760,6 +2760,7 @@ ADVANCE_OBJECT_SCAN:
 
 ; Fourteen object-state selectors address motion records in ROM $1580–$1632.
 ; Entries are DATA pointers, not native Intel 8080 routine addresses.
+; Primary object-state animation pointer table: eight 16-bit entries at $1564.
 OBJECT_MOTION_SCRIPT_POINTERS:
         DW MOTION_SEQUENCE_15CE ; state $00
         DW MOTION_SEQUENCE_161F ; state $01
@@ -2769,6 +2770,9 @@ OBJECT_MOTION_SCRIPT_POINTERS:
         DW MOTION_SEQUENCE_15A4 ; state $05
         DW MOTION_SEQUENCE_15E0 ; state $06
         DW MOTION_SEQUENCE_15F5 ; state $07
+
+; Alternate object-state table selected by game object flag bit $02 ($1574).
+OBJECT_MOTION_ALT_POINTERS:
         DW MOTION_SEQUENCE_15DA ; state $08
         DW MOTION_SEQUENCE_162B ; state $09
         DW MOTION_SEQUENCE_15C5 ; state $0A
@@ -2781,8 +2785,15 @@ OBJECT_MOTION_SCRIPT_POINTERS:
 ; contain a byte selector and a little-endian 16-bit graphic pointer.
 ; $FF ends a sequence; native object code processes the byte stream.
 OBJECT_MOTION_DATA:
-        DW MOTION_SEQUENCE_15EF,MOTION_SEQUENCE_15FE ; two animation-sequence references
-        DB $04,$08,$08,$0C,$14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19 ; compact animation index/control bytes
+        DW MOTION_SEQUENCE_15EF,MOTION_SEQUENCE_15FE ; initial animation references
+
+; Eight object motion comparison thresholds (index from BC).
+OBJECT_MOTION_THRESHOLDS_PRIMARY:
+        DB $04,$08,$08,$0C,$14,$17,$3A,$25
+
+; Six alternate comparison thresholds, selected by object bit $02.
+OBJECT_MOTION_THRESHOLDS_ALTERNATE:
+        DB $14,$14,$0F,$14,$19,$19
 
 ; ROM $1592: resource address + animation event/bitmap pairs.
 MOTION_SEQUENCE_1592:
