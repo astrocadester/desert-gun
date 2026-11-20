@@ -72,11 +72,11 @@ The boot continuation at **`$11C3–$11CF`** was previously misclassified as `DB
 | `0B` | `107A` | 0 | Conditional round/reset service; installs resume script $1676 and sets outputs |
 | `0C` | `0F7B` | 5 | One-byte drawing parameter followed by two 16-bit addresses; dispatches renderer $0132 |
 
-The names are behavior descriptions, not claimed original DNA source spellings. The complete observed per-word behavior is recorded in the ABI table below. Every word has a concrete vector; script scans establish **20 statically reachable command packets** at two entry roots. This is not a claim to have discovered every runtime-generated execution path.
+The names are behavior descriptions, not claimed original DNA source spellings. The complete observed per-word behavior is recorded in the ABI table below. Every word has a concrete vector; script scans establish **20 packets within the two original bounded roots** at two entry roots. This is not a claim to have discovered every runtime-generated execution path.
 
 ### Initial ROM script
 
-The original script begins at **`$1633`**:
+The initial script begins at **`$1633`**:
 
 ```text
 $1633  06                 CLEAR_DISPLAY_MEMORY
@@ -195,6 +195,193 @@ Distinct statically decoded packet sites: 20
 Desert Gun opcode $05 writes an immediate byte to an inline 16-bit address; opcode $06 clears screen memory using no inline operands.
 
 This is static rooted decoding; it is not a complete emulation of interrupt-driven execution.
+
+
+
+### Native handler entry listings (first instructions only)
+
+These are bounded instruction-entry excerpts, not complete control-flow traces. The names are descriptive and the zero-index table entry is bypassed by the interpreter.
+
+#### $00 — Bypassed return stub ($0FAB)
+
+2 known ROM command packet site(s). Handler:
+
+```asm
+RET
+```
+
+#### $01 — DRAW_MODE_A ($0F94)
+
+4 known ROM command packet site(s). Handler:
+
+```asm
+LD HL,$0132
+```
+
+#### $02 — SET_RAM_2031 ($0FA2)
+
+2 known ROM command packet site(s). Handler:
+
+```asm
+EX DE,HL
+LD A,(HL)
+LD ($2031),A
+INC HL
+LD ($2000),HL
+```
+
+#### $03 — SET_MODE_AND_PTR ($0FAC)
+
+1 known ROM command packet site(s). Handler:
+
+```asm
+EX DE,HL
+LD A,(HL)
+LD ($2030),A
+INC HL
+LD E,(HL)
+INC HL
+LD D,(HL)
+INC HL
+LD ($2000),HL
+EX DE,HL
+LD ($2019),HL
+RET
+```
+
+#### $04 — BRANCH_SCRIPT ($0FBE)
+
+0 known ROM command packet site(s). Handler:
+
+```asm
+EX DE,HL
+LD E,(HL)
+INC HL
+LD D,(HL)
+EX DE,HL
+LD ($2000),HL
+RET
+```
+
+#### $05 — STORE_BYTE ($0FC7)
+
+4 known ROM command packet site(s). Handler:
+
+```asm
+EX DE,HL
+LD A,(HL)
+INC HL
+LD E,(HL)
+INC HL
+LD D,(HL)
+INC HL
+LD ($2000),HL
+LD (DE),A
+RET
+```
+
+#### $06 — CLEAR_DISPLAY ($0FD3)
+
+1 known ROM command packet site(s). Handler:
+
+```asm
+POP HL
+LD SP,$4030
+```
+
+#### $07 — INIT_DESCRIPTOR ($100E)
+
+1 known ROM command packet site(s). Handler:
+
+```asm
+LD HL,$204A
+LD BC,$0BFE
+LD (HL),B
+DEC HL
+LD (HL),C
+DEC HL
+LD (HL),$00
+DEC HL
+LD (HL),$30
+DEC HL
+LD (HL),$01
+DEC HL
+```
+
+#### $08 — DRAW_AND_BRANCH ($1047)
+
+3 known ROM command packet site(s). Handler:
+
+```asm
+EX DE,HL
+LD E,(HL)
+INC HL
+LD D,(HL)
+INC HL
+LD BC,$2083
+PUSH BC
+PUSH HL
+PUSH BC
+CALL $1033
+CALL $1033
+LD A,$30
+```
+
+#### $09 — DRAW_MODE_B ($0F8E)
+
+0 known ROM command packet site(s). Handler:
+
+```asm
+LD HL,$0167
+JP $0F97
+```
+
+#### $0A — CLEAR_FLAG_BIT3 ($106D)
+
+0 known ROM command packet site(s). Handler:
+
+```asm
+EX DE,HL
+LD E,(HL)
+INC HL
+LD D,(HL)
+INC HL
+LD ($2000),HL
+LD A,(DE)
+AND $F7
+LD (DE),A
+RET
+```
+
+#### $0B — RESET_ROUND ($107A)
+
+1 known ROM command packet site(s). Handler:
+
+```asm
+LD HL,$2018
+LD A,(HL)
+AND A
+RET Z
+```
+
+#### $0C — DRAW_PACKET ($0F7B)
+
+1 known ROM command packet site(s). Handler:
+
+```asm
+EX DE,HL
+LD A,(HL)
+INC HL
+LD E,(HL)
+INC HL
+LD D,(HL)
+INC HL
+PUSH DE
+LD E,(HL)
+INC HL
+LD D,(HL)
+INC HL
+```
 
 
 
