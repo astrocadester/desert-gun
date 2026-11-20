@@ -50,7 +50,7 @@ for i in 0 1 2 3; do
             echo "First byte differences (device offset is decimal, values are octal):" >&2
             echo "  offset  original  assembled" >&2
             cmp -l <(unzip -p roms/original/desertgu.zip "$name") "build/$name" |
-                awk 'NR<=30 {printf "  %6d  %8s  %9s\\n", $1-1, $2, $3} END {printf "  Total differing bytes: %d\\n", NR}' >&2 || true
+                awk 'NR<=30 {printf "  %6d  %8s  %9s\n", $1-1, $2, $3} END {printf "  Total differing bytes: %d\n", NR}' >&2 || true
         fi
         fail "ROM verification failed; original ROM archive and generated bank remain available"
     fi
