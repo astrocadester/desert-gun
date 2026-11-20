@@ -2836,16 +2836,176 @@ CMD_1676_SET_MODE:
         DB $1E ; inline B
 CMD_1678_FRAME_SCHEDULER:
         DB $00 ; FRAME_SCHEDULER
-        DB $06,$01,$08,$02,$78,$00,$01,$09,$02,$3C,$00,$0C
-        DB $0D,$4B,$1A,$09,$30,$05,$06,$B9,$20,$05,$01,$0D
-        DB $20,$05,$01,$81,$20,$05,$01,$35,$20,$00,$05,$00
-        DB $0D,$20,$05,$00,$37,$20,$05,$00,$38,$20,$0C,$10
-        DB $4B,$1A,$00,$24,$0C,$10,$4B,$1A,$10,$24,$0C,$10
-        DB $4B,$1A,$A0,$3E,$0C,$10,$4B,$1A,$B0,$3E,$08,$06
-        DB $20,$A0,$3E,$01,$05,$08,$0B,$20,$00,$24,$01,$06
-        DB $01,$04,$08,$1C,$20,$1B,$24,$02,$1E,$00,$0A,$40
-        DB $20,$0A,$4F,$20,$0A,$5E,$20,$0A,$6D,$20,$02,$0F
-        DB $00,$09,$00,$09,$01,$02,$F0,$00,$04,$33,$16
+; Decoded $1679 round-control script. Each command includes its inline operands.
+; Word and operand widths are traced from the native interpreter handlers.
+CMD_1679_CLEAR_DISPLAY:
+        DB $06 ; clear display
+
+CMD_167A_DRAW_MODE_A:
+        DB $01 ; draw mode a
+        DB $08 ; immediate parameter
+
+CMD_167C_SET_RENDER_MODE:
+        DB $02 ; set render mode
+        DB $78 ; immediate parameter
+
+CMD_167E_FRAME_HANDOFF:
+        DB $00 ; frame handoff
+
+CMD_167F_DRAW_MODE_A:
+        DB $01 ; draw mode a
+        DB $09 ; immediate parameter
+
+CMD_1681_SET_RENDER_MODE:
+        DB $02 ; set render mode
+        DB $3C ; immediate parameter
+
+CMD_1683_FRAME_HANDOFF:
+        DB $00 ; frame handoff
+
+CMD_1684_DRAW_PACKET:
+        DB $0C ; draw packet
+        DB $0D ; draw length
+        DW $1A4B ; source
+        DW $3009 ; video destination
+
+CMD_168A_STORE_IMMEDIATE:
+        DB $05 ; store immediate
+        DB $06 ; value
+        DW $20B9 ; destination
+
+CMD_168E_STORE_IMMEDIATE:
+        DB $05 ; store immediate
+        DB $01 ; value
+        DW $200D ; destination
+
+CMD_1692_STORE_IMMEDIATE:
+        DB $05 ; store immediate
+        DB $01 ; value
+        DW $2081 ; destination
+
+CMD_1696_STORE_IMMEDIATE:
+        DB $05 ; store immediate
+        DB $01 ; value
+        DW $2035 ; destination
+
+CMD_169A_FRAME_HANDOFF:
+        DB $00 ; frame handoff
+
+CMD_169B_STORE_IMMEDIATE:
+        DB $05 ; store immediate
+        DB $00 ; value
+        DW $200D ; destination
+
+CMD_169F_STORE_IMMEDIATE:
+        DB $05 ; store immediate
+        DB $00 ; value
+        DW $2037 ; destination
+
+CMD_16A3_STORE_IMMEDIATE:
+        DB $05 ; store immediate
+        DB $00 ; value
+        DW $2038 ; destination
+
+CMD_16A7_DRAW_PACKET:
+        DB $0C ; draw packet
+        DB $10 ; draw length
+        DW $1A4B ; source
+        DW $2400 ; video destination
+
+CMD_16AD_DRAW_PACKET:
+        DB $0C ; draw packet
+        DB $10 ; draw length
+        DW $1A4B ; source
+        DW $2410 ; video destination
+
+CMD_16B3_DRAW_PACKET:
+        DB $0C ; draw packet
+        DB $10 ; draw length
+        DW $1A4B ; source
+        DW $3EA0 ; video destination
+
+CMD_16B9_DRAW_PACKET:
+        DB $0C ; draw packet
+        DB $10 ; draw length
+        DW $1A4B ; source
+        DW $3EB0 ; video destination
+
+CMD_16BF_INIT_DRAW_BRANCH:
+        DB $08 ; init draw branch
+        DW $2006 ; descriptor source
+        DW $3EA0 ; render destination
+
+CMD_16C4_DRAW_MODE_A:
+        DB $01 ; draw mode a
+        DB $05 ; immediate parameter
+
+CMD_16C6_INIT_DRAW_BRANCH:
+        DB $08 ; init draw branch
+        DW $200B ; descriptor source
+        DW $2400 ; render destination
+
+CMD_16CB_DRAW_MODE_A:
+        DB $01 ; draw mode a
+        DB $06 ; immediate parameter
+
+CMD_16CD_DRAW_MODE_A:
+        DB $01 ; draw mode a
+        DB $04 ; immediate parameter
+
+CMD_16CF_INIT_DRAW_BRANCH:
+        DB $08 ; init draw branch
+        DW $201C ; descriptor source
+        DW $241B ; render destination
+
+CMD_16D4_SET_RENDER_MODE:
+        DB $02 ; set render mode
+        DB $1E ; immediate parameter
+
+CMD_16D6_FRAME_HANDOFF:
+        DB $00 ; frame handoff
+
+CMD_16D7_CLEAR_FLAG_BIT3:
+        DB $0A ; clear flag bit3
+        DW $2040 ; RAM flag address
+
+CMD_16DA_CLEAR_FLAG_BIT3:
+        DB $0A ; clear flag bit3
+        DW $204F ; RAM flag address
+
+CMD_16DD_CLEAR_FLAG_BIT3:
+        DB $0A ; clear flag bit3
+        DW $205E ; RAM flag address
+
+CMD_16E0_CLEAR_FLAG_BIT3:
+        DB $0A ; clear flag bit3
+        DW $206D ; RAM flag address
+
+CMD_16E3_SET_RENDER_MODE:
+        DB $02 ; set render mode
+        DB $0F ; immediate parameter
+
+CMD_16E5_FRAME_HANDOFF:
+        DB $00 ; frame handoff
+
+CMD_16E6_DRAW_MODE_B:
+        DB $09 ; draw mode b
+        DB $00 ; immediate parameter
+
+CMD_16E8_DRAW_MODE_B:
+        DB $09 ; draw mode b
+        DB $01 ; immediate parameter
+
+CMD_16EA_SET_RENDER_MODE:
+        DB $02 ; set render mode
+        DB $F0 ; immediate parameter
+
+CMD_16EC_FRAME_HANDOFF:
+        DB $00 ; frame handoff
+
+CMD_16ED_GOTO_SCRIPT:
+        DB $04 ; goto script
+        DW $1633 ; script destination
 
 CHECK_START_INPUT_EDGE:
         LD HL,$20B2
