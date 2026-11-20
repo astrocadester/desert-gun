@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="940" height="930" viewBox="0 0 940 930" role="img" aria-label="Desert Gun 8080 memory map">
-<rect width="940" height="930" fill="#0d1621"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="940" height="845" viewBox="0 0 940 845" role="img" aria-label="Desert Gun 8080 memory map">
+<rect width="940" height="845" fill="#0d1621"/>
 <image x="822" y="9" width="93" height="63" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAAA/CAYAAACCTcSSAAABAUlEQVR42u3bSw6DMBAEUSbK/a/sbCPCAmviD/arNbGlVlNiTIhSyoEfvkOJxG+Pq3Ve8u2P0AfwFkFT1Wg6vQgdQhc6hC50CN1wtPygdIfQdHqhF9Sro3ZNR7v0Qi9orS9NpxehQ+hCh9CFDqEbjqqGiBPx8KydvdALvQzXSE/ttP7LsjdH9EIv0yplNkWUyus1nV4218tfbpmBt/+QAedIfCyg6fSyB3H6pNH3jXmdajq94HI4isZPIK3X13QIfVq9ZLTQ883Onb2KpkPoT9DLkCEiuVftkaym0wum0stsSsmoJjSdXrC6XmLRvTSdXoQOoQsdOwxHyzyxaLrQ9+MD4L0emIRNyj0AAAAASUVORK5CYII="/>
 <text x="34" y="47" font-family="DejaVu Sans,Arial,sans-serif" font-size="29" fill="#ffffff">Desert Gun</text>
 <text x="34" y="74" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#9fb8d3">DNA / MIDWAY / 1977 INTEL 8080 ADDRESS SPACE</text>
@@ -37,7 +37,7 @@
 <text x="60" y="519" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$2000–$2001  Interpreted script program counter</text>
 <text x="60" y="538" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$2019         Render pointer; $2030–$2031 render state</text>
 <text x="60" y="557" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$2040 onward  Descriptor and object working records</text>
-<rect x="26" y="592" width="888" height="318" rx="15" fill="#895337" stroke="#a4b6c8" stroke-width="1.2"/>
+<rect x="26" y="592" width="888" height="240" rx="15" fill="#895337" stroke="#a4b6c8" stroke-width="1.2"/>
 <text x="44" y="620" font-family="DejaVu Sans,Arial,sans-serif" font-size="17" fill="#e8eff8">$0000–$1FFF</text>
 <text x="290" y="620" font-family="DejaVu Sans,Arial,sans-serif" font-size="20" fill="#ffffff">Program ROM</text>
 <rect x="811" y="603" width="82" height="26" rx="13" fill="#091725" stroke="#b6c8d9"/>
