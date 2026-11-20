@@ -1895,7 +1895,7 @@ WORD_VECTOR_0A_CLEAR_FLAG_BIT3:
 
 ; $0B RESET_ROUND: Reset round/game state and select script $1676.
 WORD_VECTOR_0B_RESET_ROUND:
-        DW WORD_0B_RESET_ROUND_ENTRY
+        DW WORD_0B_RESET_SCENE_ENTRY
 
 ; $0C DRAW_PACKET: Read byte and two address16 values; jump to renderer.
 WORD_VECTOR_0C_DRAW_PACKET:
