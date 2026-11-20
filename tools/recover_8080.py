@@ -4,12 +4,81 @@ Root native traversal includes reset/IRQ, bytecode vectors and proven stack/HL
 continuations. Genuine ROM image/text/script data stay typed, never guessed code.
 """
 import argparse,hashlib,json,re,zipfile
-from audit_words import audit
 from pathlib import Path
 from collections import deque,Counter
 
 ROOT=Path(__file__).resolve().parents[1]
 CFG={"desertgun":("desertgu.zip",("9316.1h","9316.1g","9316.1f","desertgu.e"),2048)}
+def audit(root, game):
+    """Bounded interpreter packet inventory for the original Desert Gun ROM.
+
+    Returns findings in memory. This analysis writes no tracked files.
+    """
+    from collections import Counter
+    if game != "desertgun":
+        raise ValueError("This RE utility supports Desert Gun only")
+    archive, names, chip_size = CFG[game]
+    with zipfile.ZipFile(root / "roms" / "original" / archive) as z:
+        chips = [z.read(name) for name in names]
+    assert all(len(chip) == chip_size for chip in chips), "ROM device size mismatch"
+    image = b"".join(chips)
+    base = 0x0F61
+    widths = (0,1,1,3,2,3,0,0,4,1,2,0,5)
+    vectors = [
+        {"index": f"{i:02X}",
+         "native_address": f"{int.from_bytes(image[base+2*i:base+2*i+2], 'little'):04X}",
+         "known_operand_width": widths[i]}
+        for i in range(13)
+    ]
+    counts = Counter()
+    unique = {}
+    streams = []
+    for start in (0x1633, 0x1676):
+        pc = start
+        seen = set()
+        packets = []
+        for _ in range(2048):
+            if pc in seen:
+                reason = "cycle"
+                break
+            if pc in unique and pc != start:
+                reason = "joins-known-script"
+                break
+            seen.add(pc)
+            if pc >= len(image) or image[pc] >= len(widths):
+                reason = "outside-ROM-or-unknown-opcode"
+                break
+            op = image[pc]
+            width = widths[op]
+            if pc + width >= len(image):
+                reason = "truncated"
+                break
+            payload = image[pc+1:pc+1+width]
+            packet = {"pc":f"{pc:04X}", "opcode":f"{op:02X}",
+                      "operand":payload.hex().upper(), "length":width+1}
+            unique[pc] = packet
+            packets.append(packet)
+            counts[f"{op:02X}"] += 1
+            if op == 0:
+                reason = "zero-frame-handoff"
+                break
+            if op == 4:
+                pc = int.from_bytes(payload, "little")
+            else:
+                pc += width + 1
+        else:
+            reason = "2048-packet-limit"
+        streams.append({"root":f"{start:04X}", "packets":packets,
+                        "stop_pc":f"{pc:04X}", "stop_reason":reason})
+    frequency = Counter(packet["opcode"] for packet in unique.values())
+    return {"game":game, "sha256":hashlib.sha256(image).hexdigest(),
+            "vector_base":f"{base:04X}", "vector_entries":vectors,
+            "streams":streams, "packet_counts":dict(sorted(counts.items())),
+            "distinct_packet_count":len(unique),
+            "unique_packets":[unique[k] for k in sorted(unique)],
+            "opcode_frequency":dict(sorted(frequency.items())),
+            "event_vectors":[]}
+
 REG="B C D E H L (HL) A".split()
 PAIR=("BC","DE","HL","SP")
 STACK=("BC","DE","HL","AF")
