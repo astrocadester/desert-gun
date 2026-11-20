@@ -2154,7 +2154,7 @@ WORD_0B_RESET_SCENE_ENTRY:
         AND $03
         LD C,A
         LD B,$00
-        LD HL,$10AE
+        LD HL,SOUND_SELECT_VALUES
         ADD HL,BC
         LD A,(HL)
         LD ($2008),A
@@ -2168,9 +2168,15 @@ WORD_0B_RESET_SCENE_ENTRY:
 ; Timed sound sequence consumed by interrupt service; $2012 is the sound
 ; event pointer. Event bytes index paired sound registers at $04FB; high-bit
 ; bytes update the interval/control fields in RAM $200E–$2011.
+; Four-byte selection table at $10AE, indexed by the low two bits of
+; input port $02 in WORD_0B_RESET_SCENE_ENTRY. This precedes the audio stream.
+SOUND_SELECT_VALUES:
+        DB $43,$53,$63,$73
+
 ; Sound-event stream $10B2: timed note and duration codes.
+; Its first byte $84 is a high-bit duration/control prefix.
 MUSIC_SEQUENCE_MAIN:
-        DB $43,$53,$63,$73,$84,$01,$08,$01,$0D,$01,$11,$01 ; high-bit value = duration/control prefix
+        DB $84,$01,$08,$01,$0D,$01,$11,$01 ; high-bit value = duration/control prefix
         DB $08,$01,$0D,$01,$11,$01,$08,$01,$0D,$02,$11,$02
         DB $00,$01,$12,$01,$11,$01,$00,$01,$11,$01,$0F,$01
         DB $00,$01
