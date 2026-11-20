@@ -19,12 +19,12 @@
 
 | ID | Priority | Status | Work and acceptance evidence |
 | --- | --- | --- | --- |
-| ENG-001 | P0 | IN PROGRESS | **Remove obsolete GitHub Actions reconstruction:** the workflow stages generated ROM/source, uses Python and references an abandoned branch. No build-generated artifacts may be tracked. |
-| ENG-002 | P1 | IN PROGRESS | **Single technical research reference:** merge and reconcile research into `DESERT-GUN-TECHNICAL-REFERENCE.md`; remove superseded reports after checking preservation. |
-| ENG-003 | P1 | IN PROGRESS | **Single task tracker:** this file contains all remaining RE progress, verification, debt, priorities and acceptance gates; none of those belong in the README or research text. |
-| ENG-004 | P1 | IN PROGRESS | **Remove generated JSON from Git:** remove `interpreter.json`, `word-audit.json`, `recovery.json`, redirect any retained RE tool's outputs to ignored `build/recovery/`. |
-| ENG-005 | P1 | IN PROGRESS | **Remove unused Python:** remove obsolete generators and Python verifier from the repository. Retain only RE tools that have a continuing investigative function, never in the build. |
-| ENG-006 | P1 | OPEN | **Reference consistency:** README, ASM, tech reference, single SVG and current utilities describe the same software; update any stale links, labels, numbers and commands. |
+| ENG-001 | P0 | COMPLETE | **Remove obsolete GitHub Actions reconstruction:** the workflow stages generated ROM/source, uses Python and references an abandoned branch. No build-generated artifacts may be tracked. |
+| ENG-002 | P1 | COMPLETE | **Single technical research reference:** merge and reconcile research into `DESERT-GUN-TECHNICAL-REFERENCE.md`; remove superseded reports after checking preservation. |
+| ENG-003 | P1 | COMPLETE | **Single task tracker:** this file contains all remaining RE progress, verification, debt, priorities and acceptance gates; none of those belong in the README or research text. |
+| ENG-004 | P1 | COMPLETE | **Remove generated JSON from Git:** remove `interpreter.json`, `word-audit.json`, `recovery.json`, redirect any retained RE tool's outputs to ignored `build/recovery/`. |
+| ENG-005 | P1 | COMPLETE | **Remove unused Python:** remove obsolete generators and Python verifier from the repository. Retain only RE tools that have a continuing investigative function, never in the build. |
+| ENG-006 | P1 | IN PROGRESS | **Reference consistency:** README, ASM, tech reference, single SVG and current utilities describe the same software; update any stale links, labels, numbers and commands. |
 | ENG-007 | P1 | OPEN | **Clean reproducible builds:** Linux/Windows produce only ignored intermediates and MAME ZIP; original ROM archive unchanged, Git working tree clean. |
 
 ## Completed evidence checkpoints
