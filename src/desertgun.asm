@@ -4558,8 +4558,7 @@ ENGLISH_MESSAGES_ANCHOR:
         DB 'SCORE',$8A ; SCORE
         DB 'HIGH',$40,'SCORE',$89 ; HIGH SCORE
         DB 'LAST',$40,'GAME',$8D ; LAST GAME
-        DB 'EXTENDED',$40,'TIM' ; EXTENDED TIME
-        DB 'E',$89
+        DB 'EXTENDED',$40,'TIME',$89 ; EXTENDED TIME
         DB 'GET',$40,'READY',$89 ; GET READY
         DB $40,$40,'SHOOT',$40,$40 ; SHOOT
 
@@ -4573,31 +4572,23 @@ GERMAN_MESSAGES_ANCHOR:
         DB 'PUNKTE',$86 ; PUNKTE
         DB 'REKORD',$88 ; REKORD
         DB 'ENDSPIEL',$91 ; ENDSPIEL
-        DB 'ZEITVERLAENG' ; ZEITVERLAENGERUNG
-        DB 'ERUNG',$8D
-        DB 'FERTIG',$40,'MACHE' ; FERTIG MACHEN
-        DB 'N',$8D
-        DB $40,$40,'SCHIESSEN',$40 ; SCHIESSEN
-        DB $40
+        DB 'ZEITVERLAENGERUNG',$8D ; ZEITVERLAENGERUNG
+        DB 'FERTIG',$40,'MACHEN',$8D ; FERTIG MACHEN
+        DB $40,$40,'SCHIESSEN',$40,$40 ; SCHIESSEN
 
 ; Language-list delimiter $1B79
 FRENCH_MESSAGES_ANCHOR:
         DB $83
         DB 'FIN',$81 ; FIN
         DB $40,$8C
-        DB 'METTEZ',$40,'PIECE' ; METTEZ PIECE
-        DB $85
+        DB 'METTEZ',$40,'PIECE',$85 ; METTEZ PIECE
         DB 'TEMPS',$85 ; TEMPS
         DB 'SCORE',$8A ; SCORE
         DB 'HIGH',$40,'SCORE',$8C ; HIGH SCORE
-        DB 'DERNIER',$40,'COUP' ; DERNIER COUP
-        DB $8C
-        DB 'PROLONGATION' ; PROLONGATION
-        DB $8D
-        DB 'PREPAREZ',$40,'VOU' ; PREPAREZ VOUS
-        DB 'S',$8D
-        DB $40,$40,$40,$40,'SHOOT',$40,$40,$40 ; SHOOT
-        DB $40
+        DB 'DERNIER',$40,'COUP',$8C ; DERNIER COUP
+        DB 'PROLONGATION',$8D ; PROLONGATION
+        DB 'PREPAREZ',$40,'VOUS',$8D ; PREPAREZ VOUS
+        DB $40,$40,$40,$40,'SHOOT',$40,$40,$40,$40 ; SHOOT
 
 ; Language-list delimiter $1BD9
 DANISH_MESSAGES_ANCHOR:
