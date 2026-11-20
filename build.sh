@@ -44,7 +44,16 @@ for i in 0 1 2 3; do
     size=$(stat -c %s "build/$name")
     (( size == 2048 )) || fail "$name is $size bytes; expected 2048"
     actual=$(sha1sum "build/$name"); actual=${actual%% *}
-    [[ "$actual" == "${rom_sha1[i]}" ]] || fail "$name SHA1 mismatch: expected ${rom_sha1[i]}, got $actual"
+    if [[ "$actual" != "${rom_sha1[i]}" ]]; then
+        echo "ERROR: $name SHA1 mismatch: expected ${rom_sha1[i]}, got $actual" >&2
+        if command -v unzip >/dev/null 2>&1 && command -v cmp >/dev/null 2>&1; then
+            echo "First byte differences (device offset is decimal, values are octal):" >&2
+            echo "  offset  original  assembled" >&2
+            cmp -l <(unzip -p roms/original/desertgu.zip "$name") "build/$name" |
+                awk 'NR<=30 {printf "  %6d  %8s  %9s\\n", $1-1, $2, $3} END {printf "  Total differing bytes: %d\\n", NR}' >&2 || true
+        fi
+        fail "ROM verification failed; original ROM archive and generated bank remain available"
+    fi
     echo "  $name  OK  $actual"
 done
 
