@@ -1,96 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="940" height="1070" viewBox="0 0 940 1070" role="img" aria-label="Desert Gun Intel 8080 memory map">
-<rect width="940" height="1070" fill="#0d1621"/>
-<g transform="translate(847 19) scale(0.64)"><path d="M43 2 L85 42 L43 82 L1 42 Z" fill="#bf8738" stroke="#eadab5" stroke-width="3"/><path d="M43 10 L77 42 L43 74 L9 42 Z" fill="#366b46" stroke="#f5e1b6" stroke-width="2"/><circle cx="43" cy="42" r="12" fill="#f7f0dc" stroke="#b94b45"/></g>
-<text x="44" y="48" font-family="DejaVu Sans,Arial,sans-serif" font-size="28" fill="#f8fbff">Desert Gun</text>
-<text x="45" y="76" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#9fb3c9">DNA  /  MIDWAY  /  1977     INTEL 8080 ADDRESS SPACE</text>
-<path d="M22 99 H918" stroke="#8da0b5" stroke-width="1.5"/>
-<rect x="22" y="115" width="896" height="110" rx="15" fill="#415767" stroke="#a9b8c5" stroke-width="1.2"/>
-<text x="44" y="149" font-family="DejaVu Sans,Arial,sans-serif" font-size="18" fill="#dbe7f2">$6000–$7FFF</text>
-<text x="260" y="150" font-family="DejaVu Sans,Arial,sans-serif" font-size="22" fill="#ffffff">RAM / video mirror</text>
-<rect x="800" y="129" width="95" height="26" rx="14" fill="#0b1722" stroke="#a8bbcd"/>
-<text x="827" y="147" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#f1f5fa">8 KB</text>
-<text x="44" y="177" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" fill="#e6edf5">High-address mirror of game and framebuffer RAM</text>
-<rect x="43" y="190" width="854" height="20" rx="9" fill="#08141f" stroke="#8196a9"/>
-<text x="59" y="214" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$6000–$63FF   Working RAM mirror     $6400–$7FFF   Video RAM mirror</text>
-<rect x="22" y="236" width="896" height="65" rx="15" fill="#545d66" stroke="#a9b8c5" stroke-width="1.2"/>
-<text x="44" y="270" font-family="DejaVu Sans,Arial,sans-serif" font-size="18" fill="#dbe7f2">$4000–$5FFF</text>
-<text x="260" y="271" font-family="DejaVu Sans,Arial,sans-serif" font-size="22" fill="#ffffff">Non-ROM address space</text>
-<rect x="800" y="250" width="95" height="26" rx="14" fill="#0b1722" stroke="#a8bbcd"/>
-<text x="827" y="268" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#f1f5fa">8 KB</text>
-<text x="44" y="298" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" fill="#e6edf5">No program ROM device occupies this region</text>
-<rect x="22" y="312" width="896" height="163" rx="15" fill="#1d6c85" stroke="#a9b8c5" stroke-width="1.2"/>
-<text x="44" y="346" font-family="DejaVu Sans,Arial,sans-serif" font-size="18" fill="#dbe7f2">$2400–$3FFF</text>
-<text x="260" y="347" font-family="DejaVu Sans,Arial,sans-serif" font-size="22" fill="#ffffff">Video RAM</text>
-<rect x="800" y="326" width="95" height="26" rx="14" fill="#0b1722" stroke="#a8bbcd"/>
-<text x="827" y="344" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#f1f5fa">7 KB</text>
-<text x="44" y="374" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" fill="#e6edf5">Bitmap framebuffer; 32 bytes per 256-pixel scanline</text>
-<rect x="43" y="387" width="854" height="73" rx="9" fill="#08141f" stroke="#8196a9"/>
-<text x="59" y="411" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">Video display routines write directly to the framebuffer.</text>
-<text x="59" y="432" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">ROM $0FD3 / $0FD7 provides a stack-based clear routine.</text>
-<rect x="22" y="486" width="896" height="163" rx="15" fill="#24674f" stroke="#a9b8c5" stroke-width="1.2"/>
-<text x="44" y="520" font-family="DejaVu Sans,Arial,sans-serif" font-size="18" fill="#dbe7f2">$2000–$23FF</text>
-<text x="260" y="521" font-family="DejaVu Sans,Arial,sans-serif" font-size="22" fill="#ffffff">Working RAM</text>
-<rect x="800" y="500" width="95" height="26" rx="14" fill="#0b1722" stroke="#a8bbcd"/>
-<text x="827" y="518" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#f1f5fa">1 KB</text>
-<text x="44" y="548" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" fill="#e6edf5">Interpreter pointer, game state, timers and render descriptors</text>
-<rect x="43" y="561" width="854" height="73" rx="9" fill="#08141f" stroke="#8196a9"/>
-<text x="59" y="585" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$2000–$2001   Interpreted script program counter</text>
-<text x="59" y="606" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$2019          Rendering pointer; $2030–$2031 render state</text>
-<text x="59" y="627" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$2040 onward   Descriptor and object working records</text>
-<rect x="22" y="660" width="896" height="365" rx="15" fill="#8b5033" stroke="#a9b8c5" stroke-width="1.2"/>
-<text x="44" y="694" font-family="DejaVu Sans,Arial,sans-serif" font-size="18" fill="#dbe7f2">$0000–$1FFF</text>
-<text x="260" y="695" font-family="DejaVu Sans,Arial,sans-serif" font-size="22" fill="#ffffff">Main program ROM</text>
-<rect x="800" y="674" width="95" height="26" rx="14" fill="#0b1722" stroke="#a8bbcd"/>
-<text x="827" y="692" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#f1f5fa">8 KB</text>
-<text x="44" y="722" font-family="DejaVu Sans,Arial,sans-serif" font-size="14" fill="#e6edf5">Native 8080, indexed commands, graphics and text</text>
-<rect x="48" y="735" width="199" height="74" rx="10" fill="#0a1623" stroke="#c5a174"/>
-<text x="68" y="762" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#eef4fe">9316.1h</text>
-<text x="68" y="786" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#7bc9f4">$0000–$07FF</text>
-<rect x="43" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="246" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="43" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="246" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="43" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="246" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="43" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="246" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="259" y="735" width="199" height="74" rx="10" fill="#0a1623" stroke="#c5a174"/>
-<text x="279" y="762" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#eef4fe">9316.1g</text>
-<text x="279" y="786" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#7bc9f4">$0800–$0FFF</text>
-<rect x="254" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="457" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="254" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="457" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="254" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="457" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="254" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="457" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="470" y="735" width="199" height="74" rx="10" fill="#0a1623" stroke="#c5a174"/>
-<text x="490" y="762" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#eef4fe">9316.1f</text>
-<text x="490" y="786" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#7bc9f4">$1000–$17FF</text>
-<rect x="465" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="668" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="465" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="668" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="465" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="668" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="465" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="668" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="681" y="735" width="199" height="74" rx="10" fill="#0a1623" stroke="#c5a174"/>
-<text x="701" y="762" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#eef4fe">desertgu.e</text>
-<text x="701" y="786" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#7bc9f4">$1800–$1FFF</text>
-<rect x="676" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="879" y="744" width="6" height="8" fill="#d9bc84"/>
-<rect x="676" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="879" y="759" width="6" height="8" fill="#d9bc84"/>
-<rect x="676" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="879" y="774" width="6" height="8" fill="#d9bc84"/>
-<rect x="676" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="879" y="789" width="6" height="8" fill="#d9bc84"/>
-<rect x="43" y="823" width="854" height="187" rx="9" fill="#08141f" stroke="#8196a9"/>
-<text x="59" y="847" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$0000–$0017   Reset and interrupt vectors</text>
-<text x="59" y="868" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$0F61–$0F7A   Thirteen native word vectors</text>
-<text x="59" y="889" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$11D0         Interpreter dispatch; $11EA scheduler</text>
-<text x="59" y="910" font-family="DejaVu Sans Mono,monospace" font-size="13" fill="#c4d5e5">$1633         Initial script; $1676 round script</text>
-<text x="44" y="1050" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#9fb3c9">ROM device order and interpreter entry points verified against original ROM bytes.</text>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="940" height="930" viewBox="0 0 940 930" role="img" aria-label="Desert Gun 8080 memory map">
+<rect width="940" height="930" fill="#0d1621"/>
+<image x="822" y="9" width="93" height="63" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAF0AAAA/CAYAAACCTcSSAAABAUlEQVR42u3bSw6DMBAEUSbK/a/sbCPCAmviD/arNbGlVlNiTIhSyoEfvkOJxG+Pq3Ve8u2P0AfwFkFT1Wg6vQgdQhc6hC50CN1wtPygdIfQdHqhF9Sro3ZNR7v0Qi9orS9NpxehQ+hCh9CFDqEbjqqGiBPx8KydvdALvQzXSE/ttP7LsjdH9EIv0yplNkWUyus1nV4218tfbpmBt/+QAedIfCyg6fSyB3H6pNH3jXmdajq94HI4isZPIK3X13QIfVq9ZLTQ883Onb2KpkPoT9DLkCEiuVftkaym0wum0stsSsmoJjSdXrC6XmLRvTSdXoQOoQsdOwxHyzyxaLrQ9+MD4L0emIRNyj0AAAAASUVORK5CYII="/>
+<text x="34" y="47" font-family="DejaVu Sans,Arial,sans-serif" font-size="29" fill="#ffffff">Desert Gun</text>
+<text x="34" y="74" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#9fb8d3">DNA / MIDWAY / 1977 INTEL 8080 ADDRESS SPACE</text>
+<path d="M26 88H914" stroke="#9cb2c6" stroke-width="1.5"/>
+<rect x="26" y="104" width="888" height="112" rx="15" fill="#41596a" stroke="#a4b6c8" stroke-width="1.2"/>
+<text x="44" y="132" font-family="DejaVu Sans,Arial,sans-serif" font-size="17" fill="#e8eff8">$6000–$7FFF</text>
+<text x="290" y="132" font-family="DejaVu Sans,Arial,sans-serif" font-size="20" fill="#ffffff">RAM / video mirror</text>
+<rect x="811" y="115" width="82" height="26" rx="13" fill="#091725" stroke="#b6c8d9"/>
+<text x="837" y="133" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#e8eff8">8 KB</text>
+<text x="44" y="154" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#e8eff8">High-address mirror of game and framebuffer RAM</text>
+<rect x="45" y="164" width="848" height="37" rx="8" fill="#061624" stroke="#8ba4bc"/>
+<text x="60" y="187" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$6000–$63FF  Working RAM mirror     $6400–$7FFF  Video RAM mirror</text>
+<rect x="26" y="225" width="888" height="65" rx="15" fill="#4b5763" stroke="#a4b6c8" stroke-width="1.2"/>
+<text x="44" y="253" font-family="DejaVu Sans,Arial,sans-serif" font-size="17" fill="#e8eff8">$4000–$5FFF</text>
+<text x="290" y="253" font-family="DejaVu Sans,Arial,sans-serif" font-size="20" fill="#ffffff">Unmapped</text>
+<rect x="811" y="236" width="82" height="26" rx="13" fill="#091725" stroke="#b6c8d9"/>
+<text x="837" y="254" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#e8eff8">8 KB</text>
+<text x="44" y="275" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#e8eff8">No program ROM device occupies this region</text>
+<rect x="26" y="299" width="888" height="128" rx="15" fill="#246783" stroke="#a4b6c8" stroke-width="1.2"/>
+<text x="44" y="327" font-family="DejaVu Sans,Arial,sans-serif" font-size="17" fill="#e8eff8">$2400–$3FFF</text>
+<text x="290" y="327" font-family="DejaVu Sans,Arial,sans-serif" font-size="20" fill="#ffffff">Video RAM</text>
+<rect x="811" y="310" width="82" height="26" rx="13" fill="#091725" stroke="#b6c8d9"/>
+<text x="837" y="328" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#e8eff8">7 KB</text>
+<text x="44" y="349" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#e8eff8">Bitmap framebuffer; 32 bytes per 256-pixel scanline</text>
+<rect x="45" y="359" width="848" height="56" rx="8" fill="#061624" stroke="#8ba4bc"/>
+<text x="60" y="382" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">Video display routines write directly to the framebuffer.</text>
+<text x="60" y="401" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">ROM $0FD3 / $0FD7: stack-based display clear.</text>
+<rect x="26" y="436" width="888" height="147" rx="15" fill="#26634d" stroke="#a4b6c8" stroke-width="1.2"/>
+<text x="44" y="464" font-family="DejaVu Sans,Arial,sans-serif" font-size="17" fill="#e8eff8">$2000–$23FF</text>
+<text x="290" y="464" font-family="DejaVu Sans,Arial,sans-serif" font-size="20" fill="#ffffff">Working RAM</text>
+<rect x="811" y="447" width="82" height="26" rx="13" fill="#091725" stroke="#b6c8d9"/>
+<text x="837" y="465" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#e8eff8">1 KB</text>
+<text x="44" y="486" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#e8eff8">Interpreter pointer, game state, timers and render descriptors</text>
+<rect x="45" y="496" width="848" height="75" rx="8" fill="#061624" stroke="#8ba4bc"/>
+<text x="60" y="519" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$2000–$2001  Interpreted script program counter</text>
+<text x="60" y="538" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$2019         Render pointer; $2030–$2031 render state</text>
+<text x="60" y="557" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$2040 onward  Descriptor and object working records</text>
+<rect x="26" y="592" width="888" height="318" rx="15" fill="#895337" stroke="#a4b6c8" stroke-width="1.2"/>
+<text x="44" y="620" font-family="DejaVu Sans,Arial,sans-serif" font-size="17" fill="#e8eff8">$0000–$1FFF</text>
+<text x="290" y="620" font-family="DejaVu Sans,Arial,sans-serif" font-size="20" fill="#ffffff">Program ROM</text>
+<rect x="811" y="603" width="82" height="26" rx="13" fill="#091725" stroke="#b6c8d9"/>
+<text x="837" y="621" font-family="DejaVu Sans,Arial,sans-serif" font-size="12" fill="#e8eff8">8 KB</text>
+<text x="44" y="642" font-family="DejaVu Sans,Arial,sans-serif" font-size="13" fill="#e8eff8">8080 code, indexed commands, graphics and display text</text>
+<rect x="47" y="655" width="198" height="62" rx="8" fill="#071726" stroke="#cbac73"/>
+<text x="61" y="679" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#f6f8fb">9316.1h</text>
+<text x="61" y="698" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#85cdeb">$0000–$07FF</text>
+<rect x="260" y="655" width="198" height="62" rx="8" fill="#071726" stroke="#cbac73"/>
+<text x="274" y="679" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#f6f8fb">9316.1g</text>
+<text x="274" y="698" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#85cdeb">$0800–$0FFF</text>
+<rect x="473" y="655" width="198" height="62" rx="8" fill="#071726" stroke="#cbac73"/>
+<text x="487" y="679" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#f6f8fb">9316.1f</text>
+<text x="487" y="698" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#85cdeb">$1000–$17FF</text>
+<rect x="686" y="655" width="198" height="62" rx="8" fill="#071726" stroke="#cbac73"/>
+<text x="700" y="679" font-family="DejaVu Sans Mono,monospace" font-size="16" fill="#f6f8fb">desertgu.e</text>
+<text x="700" y="698" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#85cdeb">$1800–$1FFF</text>
+<rect x="45" y="728" width="848" height="94" rx="8" fill="#061624" stroke="#8ba4bc"/>
+<text x="60" y="751" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$0000–$0017  Reset and interrupt vectors</text>
+<text x="60" y="770" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$0F61–$0F7A  Thirteen interpreter word vectors</text>
+<text x="60" y="789" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$11D0        Command dispatch; $11EA frame scheduler</text>
+<text x="60" y="808" font-family="DejaVu Sans Mono,monospace" font-size="12" fill="#d3e5f3">$1633        Initial script; $1676 round script</text>
 </svg>
