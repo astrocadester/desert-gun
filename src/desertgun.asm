@@ -2534,7 +2534,7 @@ INITIALIZE_OBJECT_TIMER_2032:
         LD ($2081),A
 
 LOOKUP_OBJECT_TABLE_POINTER:
-        LD HL,$14CB
+        LD HL,FRAME_GRAPHIC_RESOURCE_POINTERS
         ADD HL,BC
         ADD HL,BC
         LD E,(HL)
@@ -2638,16 +2638,44 @@ CHECK_OBJECT_UPDATE_LOCK:
         LD ($203A),A
         RET
 
-; Frame-animation selection indices, followed by pointer/parameter records.
-; The first 16 bytes enumerate eight frame states; $FE marks a transition.
+; Frame animation data at $14BB: a 16-entry frame-index lookup, followed by
+; eight 16-bit graphic-resource addresses at $14CB and parameter groups.
 FRAME_PATTERN_TABLE:
         DB $00,$00,$00,$01,$01,$01,$02,$02,$03,$03,$04,$05
-        DB $06,$06,$07,$07 ; 16-entry frame-state lookup
-        DB $FE,$0B,$23,$07,$C3,$0A,$95,$07
-        DB $52,$0D,$2C,$0E,$D1,$08,$F5,$09,$01,$01,$01,$01
-        DB $01,$04,$02,$03,$66,$A4,$66,$A7,$66,$96,$66,$A0
-        DB $66,$A8,$66,$97,$66,$A0,$66,$9E,$0C,$4A,$0C,$4D
-        DB $0C,$3C,$0C,$46,$0C,$4E,$0C,$3D,$0C,$46,$0C,$44
+        DB $06,$06,$07,$07 ; sixteen frame-state indices
+
+FRAME_GRAPHIC_RESOURCE_POINTERS:
+        DW $0BFE ; frame graphic 0
+        DW $0723 ; frame graphic 1
+        DW $0AC3 ; frame graphic 2
+        DW $0795 ; frame graphic 3
+        DW $0D52 ; frame graphic 4
+        DW $0E2C ; frame graphic 5
+        DW $08D1 ; frame graphic 6
+        DW $09F5 ; frame graphic 7
+
+FRAME_CONTROL_PARAMETERS:
+        DB $01,$01,$01,$01,$01,$04,$02,$03 ; eight frame-control bytes
+
+FRAME_OBJECT_KEY_PAIRS:
+        DB $66,$A4 ; object key 0
+        DB $66,$A7 ; object key 1
+        DB $66,$96 ; object key 2
+        DB $66,$A0 ; object key 3
+        DB $66,$A8 ; object key 4
+        DB $66,$97 ; object key 5
+        DB $66,$A0 ; object key 6
+        DB $66,$9E ; object key 7
+
+FRAME_DRAW_OFFSET_PAIRS:
+        DB $0C,$4A ; draw offset 0
+        DB $0C,$4D ; draw offset 1
+        DB $0C,$3C ; draw offset 2
+        DB $0C,$46 ; draw offset 3
+        DB $0C,$4E ; draw offset 4
+        DB $0C,$3D ; draw offset 5
+        DB $0C,$46 ; draw offset 6
+        DB $0C,$44 ; draw offset 7
 
 FRAME_REBUILD_OBJECTS:
         LD A,$03
@@ -2909,7 +2937,9 @@ MOTION_SEQUENCE_162B:
         DB $05 ; selector
         DW $06E4 ; graphic address
         DB $FF ; sequence terminator
-        DB $12,$07 ; additional trailing record bytes
+; Additional original graphic reference following the final $FF.
+MOTION_TRAILING_GRAPHIC_POINTER:
+        DW $0712
 
 CMD_1633_CLEAR_DISPLAY:
         DB $06 ; CLEAR_DISPLAY
