@@ -12,7 +12,6 @@ Desert Gun uses a DNA indexed-command engine. Its interpreter fetches program by
 | [Graphics and text](#graphics-and-text) | Individually labeled 8x10 font glyphs, target artwork, drawing records and message data. |
 | [Sound](#sound) | Timed audio event streams, note/frequency register pairs and sound-port interrupt service. |
 | [RAM and I/O](#ram-and-io) | Script pointer, object descriptors, game state, display RAM and interrupt-driven hardware services. |
-| [Reverse engineering](#reverse-engineering-status) | Recovered native continuations, ROM-spanning jump, semantic handler names and DNA interpreter lineage. |
 
 ## Project layout
 
@@ -35,10 +34,10 @@ Verified MAME-compatible ROM archive produced by the build.
 Native assembly, device splitting, SHA-1 comparison and ZIP packaging.
 
 `tools/`  
-Separate reverse-engineering and inspection utilities; Python is used for analysis, not the build.
+Bundled zmac assemblers and separate, optional ROM RE tooling; Python is never invoked by the build.
 
 `docs/`  
-Native architecture, interpreted language, ROM inventory, reverse-engineering notes and research evidence.
+Standalone technical reference, separate RE/engineering task tracker, original manual.
 
 `images/`  
 Game imagery, the canonical Intel 8080 memory map and a transparent native SVG fox mascot.
@@ -131,20 +130,14 @@ Five source-addressed sound streams begin at `$10B2`, `$10D8`, `$10F2`, `$110C` 
 
 Native services handle periodic interrupts, input ports, object/game timers, drawing and display operations. The game uses the Intel 8080 stack for selected graphics and control transfers.
 
-## Reverse-engineering status
+## Technical documentation
 
-The reconstruction identifies 2,311 native instruction starts accounting for 3,896 instruction bytes, including boot/display continuations at `$01D0–$0267`, `$11C3–$11CF` and the return stub at `$1DE9`. It also identifies a jump crossing the ROM boundary at `$17FF/$1800` and the interpreter's native word table.
+The complete interpreter and software investigation is consolidated in [Desert Gun — Technical Reference](docs/DESERT-GUN-TECHNICAL-REFERENCE.md).
 
-The maintained assembly follows the Extra Inning source style. The latest pass resolves the command ABI, 39-command round script, source-referenced graphic records, frame lookup table, primary/alternate object motion directories, timed sound sequences and multilingual text. `DB` is retained for genuine byte data; `DW` identifies verified two-byte pointers and encoded addresses. “Native” refers specifically to Intel 8080 machine instructions executed by the CPU, as distinguished from the game's interpreted bytecode.
-
-The ROM also carries an original checksum-balancing value, `$4E`, at `$1FFF`. The fourth 2 KB ROM device sums to `$68`; the startup checksum seed `$97` from `$0127` produces `$FF`, which the checksum routine increments to zero for a successful test.
-
-The structural ROM audit preserves **2,311 instruction locations and all 8,192 byte positions**, with 4,296 typed-data bytes verified against the original and 251 symbolic machine-code references resolving to their original destinations. A fresh local zmac ROM build and MAME run are the final executable acceptance checks.
+All outstanding reverse-engineering work, progress, engineering debt and acceptance criteria are maintained separately in [RE Tasks](docs/RE-TASKS.md).
 
 ## References
 
-- [Hard RE and DNA interpreter lineage](docs/hard-re-interpreter-lineage.md)
-- [Native indexed-command word semantics](docs/8080-WORD-SEMANTICS.md)
-- [Interpreter and vector inventory](docs/interpreter.md)
-- [Original ROM memory map notes](docs/memory-map.md)
+- [Technical reference](docs/DESERT-GUN-TECHNICAL-REFERENCE.md)
+- [Desert Gun reference manual](docs/DesertGun.pdf)
 - [MAME Midway Intel 8080 driver](https://github.com/mamedev/mame/blob/master/src/mame/midway/8080bw.cpp)
