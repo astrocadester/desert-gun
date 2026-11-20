@@ -105,7 +105,7 @@ At **`$11EA`**, the zero path calls `$12E5, $12B1, $129E, $1936, $1232, $1503, $
 
 ## 3. Source reconstruction and native code recovery
 
-### Disassembly recovery, now disassembled
+### Recovered native-code regions
 
 | Address | Native region | Reason it was missed |
 |---|---|---|
@@ -464,6 +464,5 @@ Both games retain a native 8080 handler vocabulary, pointer `$2000`, address-bea
 
 ### Method and definitions
 
-Distinguish **slot** (index addressable by dispatch), **handler** (native code with a reachable entry), **word** (defined machine-state effect and operand format), and **invoked word** (actually found in decoded game scripts). The attached catalogs use confidence labels: **H** = direct machine-state semantics and operand width identifiable; **M** = operation established but high-level game meaning incomplete; **L** = partial semantics only. “Handler exists” must not be counted as a fully understood source-language word. In particular, no speculative friendly label is treated as an original DNA name.
+Distinguish **slot** (index addressable by dispatch), **handler** (native code with a reachable entry), **word** (defined machine-state effect and operand format), and **invoked word** (actually found in decoded game scripts). The observed command catalog uses confidence labels: **H** = direct machine-state semantics and operand width identifiable; **M** = operation established but high-level game meaning incomplete; **L** = partial semantics only. “Handler exists” must not be counted as a fully understood source-language word. In particular, no speculative friendly label is treated as an original DNA name.
 
-Next RE checks: trace actual script packet boundaries from script roots, build per-word frequency and calls-to-native-services maps, distinguish game-local words from reusable runtime services, and cross-reference operand addresses with hardware documentation.
