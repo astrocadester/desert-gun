@@ -1486,6 +1486,8 @@ STORE_SHIFTED_INPUT_BYTE:
         OUT ($07),A
         RET
 ; Packed gun and target drawing records consumed by native renderers.
+; Original bitmap patterns and sprite shape records, spanning the ROM boundary
+; at $0800. Pixel data is not executable 8080 instruction code.
 GUN_GRAPHICS_AND_SHAPE_DATA:
         DB $F0,$E8,$E8,$E0,$E0,$E8,$E8,$F0,$02,$16,$01,$04
         DB $08,$1E,$3C,$0F,$F8,$4F,$FC,$07,$FE,$07,$7F,$0F
@@ -1514,6 +1516,7 @@ GUN_GRAPHICS_AND_SHAPE_DATA:
         DB $63,$00,$00,$00
 
         ORG $0800
+; Continuation of the packed graphic records in 9316.1h.
 ; ROM device 9316.1g, SHA1 8fb8e85844a8ec6c0722883013ecdd4eeaeb08c1
 
         DB $63,$00,$00,$00,$22,$00,$00,$00,$7F,$00,$00,$80
@@ -1675,46 +1678,58 @@ GUN_GRAPHICS_AND_SHAPE_DATA:
         DB $1F,$00,$E0,$1F,$00,$F6,$1F,$00,$FF,$0F,$00,$C6
         DB $07,$00,$E0,$FF,$00
 ; Indexed-command vector table. Twelve native handlers; $00 enters scheduler directly.
-ROM_GAME_WORD_00:
-        DW $0FAB
+; $00 FRAME_HANDOFF: Zero command branches to frame scheduler $11EA; table entry is bypassed.
+WORD_VECTOR_00_FRAME_HANDOFF:
+        DW WORD_RETURN_STUB
 
-ROM_GAME_WORD_01:
-        DW $0F94
+; $01 DRAW_MODE_A: Draw with $0132 continuation; consumes width/count byte.
+WORD_VECTOR_01_DRAW_MODE_A:
+        DW WORD_01_DRAW_MODE_A_ENTRY
 
-ROM_GAME_WORD_02:
-        DW $0FA2
+; $02 SET_RENDER_MODE: Read byte and store in RAM $2031.
+WORD_VECTOR_02_SET_RENDER_MODE:
+        DW WORD_02_SET_MODE_ENTRY
 
-ROM_GAME_WORD_03:
-        DW $0FAC
+; $03 SET_MODE_AND_POINTER: Read mode byte $2030 and 16-bit pointer $2019.
+WORD_VECTOR_03_SET_MODE_AND_POINTER:
+        DW WORD_03_SET_MODE_POINTER_ENTRY
 
-ROM_GAME_WORD_04:
-        DW $0FBE
+; $04 GOTO_SCRIPT: Read inline 16-bit destination into script PC $2000.
+WORD_VECTOR_04_GOTO_SCRIPT:
+        DW WORD_04_SCRIPT_GOTO_ENTRY
 
-ROM_GAME_WORD_05:
-        DW $0FC7
+; $05 STORE_IMMEDIATE: Write inline byte to inline 16-bit address.
+WORD_VECTOR_05_STORE_IMMEDIATE:
+        DW WORD_05_STORE_BYTE_ENTRY
 
-ROM_GAME_WORD_06:
-        DW $0FD3
+; $06 CLEAR_DISPLAY: Zero display RAM by stack pushes; resume via saved continuation.
+WORD_VECTOR_06_CLEAR_DISPLAY:
+        DW WORD_06_CLEAR_VIDEO_ENTRY
 
-ROM_GAME_WORD_07:
-        DW $100E
+; $07 INIT_DESCRIPTOR: Initialize fixed descriptor bytes at $2040–$204A.
+WORD_VECTOR_07_INIT_DESCRIPTOR:
+        DW WORD_07_INIT_DESCRIPTOR_ENTRY
 
-ROM_GAME_WORD_08:
-        DW $1047
+; $08 INIT_DRAW_BRANCH: Decode descriptor and read two 16-bit inline pointers.
+WORD_VECTOR_08_INIT_DRAW_BRANCH:
+        DW WORD_08_DRAW_BRANCH_ENTRY
 
-ROM_GAME_WORD_09:
-        DW $0F8E
+; $09 DRAW_MODE_B: Draw with alternate $0167 continuation.
+WORD_VECTOR_09_DRAW_MODE_B:
+        DW WORD_09_DRAW_MODE_B_ENTRY
 
-ROM_GAME_WORD_0A:
-        DW $106D
+; $0A CLEAR_FLAG_BIT3: Read address16 and clear its bit $08.
+WORD_VECTOR_0A_CLEAR_FLAG_BIT3:
+        DW WORD_0A_CLEAR_FLAG_ENTRY
 
-ROM_GAME_WORD_0B:
-        DW $107A
+; $0B RESET_ROUND: Reset round/game state and select script $1676.
+WORD_VECTOR_0B_RESET_ROUND:
+        DW WORD_0B_RESET_ROUND_ENTRY
 
-ROM_GAME_WORD_0C:
-        DW $0F7B
+; $0C DRAW_PACKET: Read byte and two address16 values; jump to renderer.
+WORD_VECTOR_0C_DRAW_PACKET:
+        DW WORD_0C_DRAW_PACKET_ENTRY
 
-NATIVE_WORD_0C_DRAW_PACKET:
 ; Word $0C: consume byte and two 16-bit pointers; transfer to drawing service.
 WORD_0C_DRAW_PACKET_ENTRY:
         EX DE,HL
@@ -1733,13 +1748,11 @@ WORD_0C_DRAW_PACKET_ENTRY:
         POP HL
         JP DRAW_ENCODED_GRAPHIC
 
-NATIVE_WORD_09_DRAW_MODE_B:
 ; Word $09: choose drawing continuation $0167.
 WORD_09_DRAW_MODE_B_ENTRY:
         LD HL,$0167
         JP WORD_DRAW_COMMON
 
-NATIVE_WORD_01_DRAW_MODE_A:
 ; Word $01: choose drawing continuation $0132.
 WORD_01_DRAW_MODE_A_ENTRY:
         LD HL,$0132
@@ -1753,7 +1766,6 @@ WORD_DRAW_COMMON:
         CALL RENDER_WORD_PACKET
         RET
 
-NATIVE_WORD_02_SET_RAM_2031:
 ; Word $02: write one byte to RAM $2031.
 WORD_02_SET_MODE_ENTRY:
         EX DE,HL
@@ -1765,7 +1777,6 @@ WORD_02_SET_MODE_ENTRY:
 WORD_RETURN_STUB:
         RET
 
-NATIVE_WORD_03_SET_MODE_AND_PTR:
 ; Word $03: store mode at $2030 and pointer at $2019.
 WORD_03_SET_MODE_POINTER_ENTRY:
         EX DE,HL
@@ -1781,7 +1792,6 @@ WORD_03_SET_MODE_POINTER_ENTRY:
         LD ($2019),HL
         RET
 
-NATIVE_WORD_04_BRANCH_SCRIPT:
 ; Word $04: load inline script destination into RAM $2000.
 WORD_04_SCRIPT_GOTO_ENTRY:
         EX DE,HL
@@ -1792,7 +1802,6 @@ WORD_04_SCRIPT_GOTO_ENTRY:
         LD ($2000),HL
         RET
 
-NATIVE_WORD_05_STORE_BYTE:
 ; Word $05: write immediate byte into inline 16-bit RAM address.
 WORD_05_STORE_BYTE_ENTRY:
         EX DE,HL
@@ -1806,7 +1815,6 @@ WORD_05_STORE_BYTE_ENTRY:
         LD (DE),A
         RET
 
-NATIVE_WORD_06_CLEAR_DISPLAY:
 ; Word $06: clear video RAM via stack writes; resume at saved native continuation.
 WORD_06_CLEAR_VIDEO_ENTRY:
         POP HL
@@ -1869,7 +1877,6 @@ COPY_SCREEN_ROW_BYTE:
         JP NZ,COPY_SCREEN_ROW_LOOP
         RET
 
-NATIVE_WORD_07_INIT_DESCRIPTOR:
 ; Word $07: initialize descriptor bytes in RAM $2040–$204A.
 WORD_07_INIT_DESCRIPTOR_ENTRY:
         LD HL,$204A
@@ -1915,7 +1922,6 @@ DECODE_DESCRIPTOR_NIBBLE:
         INC DE
         RET
 
-NATIVE_WORD_08_DRAW_AND_BRANCH:
 ; Word $08: configure rendering and branch to second inline pointer.
 WORD_08_DRAW_BRANCH_ENTRY:
         EX DE,HL
@@ -1943,7 +1949,6 @@ WORD_08_DRAW_BRANCH_ENTRY:
         LD A,$05
         JP DRAW_ENCODED_GRAPHIC
 
-NATIVE_WORD_0A_CLEAR_FLAG_BIT3:
 ; Word $0A: clear bit $08 in byte at inline address.
 WORD_0A_CLEAR_FLAG_ENTRY:
         EX DE,HL
@@ -1957,7 +1962,6 @@ WORD_0A_CLEAR_FLAG_ENTRY:
         LD (DE),A
         RET
 
-NATIVE_WORD_0B_RESET_ROUND:
 ; Word $0B: decrement round count and install script root $1676.
 WORD_0B_RESET_SCENE_ENTRY:
         LD HL,$2018
@@ -1986,8 +1990,11 @@ WORD_0B_RESET_SCENE_ENTRY:
         LD ($2012),HL
         RET
 
+; Object sequence data: selection/control header followed by event/count pairs.
+; High-bit control markers $84/$85 separate sequence groups; $00 terminates groups.
 OBJECT_SEQUENCE_TABLE:
-        DB $43,$53,$63,$73,$84,$01,$08,$01,$0D,$01,$11,$01
+        DB $43,$53,$63,$73,$84 ; sequence-selection header
+        DB $01,$08,$01,$0D,$01,$11,$01
         DB $08,$01,$0D,$01,$11,$01,$08,$01,$0D,$02,$11,$02
         DB $00,$01,$12,$01,$11,$01,$00,$01,$11,$01,$0F,$01
         DB $00,$01,$0F,$03,$0D,$00,$85,$01,$00,$01,$0C,$02
@@ -2631,9 +2638,12 @@ CHECK_OBJECT_UPDATE_LOCK:
         LD ($203A),A
         RET
 
+; Frame-animation selection indices, followed by pointer/parameter records.
+; The first 16 bytes enumerate eight frame states; $FE marks a transition.
 FRAME_PATTERN_TABLE:
         DB $00,$00,$00,$01,$01,$01,$02,$02,$03,$03,$04,$05
-        DB $06,$06,$07,$07,$FE,$0B,$23,$07,$C3,$0A,$95,$07
+        DB $06,$06,$07,$07 ; 16-entry frame-state lookup
+        DB $FE,$0B,$23,$07,$C3,$0A,$95,$07
         DB $52,$0D,$2C,$0E,$D1,$08,$F5,$09,$01,$01,$01,$01
         DB $01,$04,$02,$03,$66,$A4,$66,$A7,$66,$96,$66,$A0
         DB $66,$A8,$66,$97,$66,$A0,$66,$9E,$0C,$4A,$0C,$4D
@@ -2720,24 +2730,29 @@ ADVANCE_OBJECT_SCAN:
         JP P,SCAN_ACTIVE_GAME_OBJECTS
         RET
 
-OBJECT_NATIVE_POINTERS:
-        DW $15CE
-        DW $161F
-        DW $15B9
-        DW $160D
-        DW $1592
-        DW $15A4
-        DW $15E0
-        DW $15F5
-        DW $15DA
-        DW $162B
-        DW $15C5
-        DW $1619
-        DW $159E
-        DW $15B3
+; Object-state dispatch table: 14 direct Intel 8080 handler addresses.
+; The object walker selects one address by state and invokes the indicated routine.
+OBJECT_HANDLER_VECTORS:
+        DW $15CE ; handler 00
+        DW $161F ; handler 01
+        DW $15B9 ; handler 02
+        DW $160D ; handler 03
+        DW $1592 ; handler 04
+        DW $15A4 ; handler 05
+        DW $15E0 ; handler 06
+        DW $15F5 ; handler 07
+        DW $15DA ; handler 08
+        DW $162B ; handler 09
+        DW $15C5 ; handler 0A
+        DW $1619 ; handler 0B
+        DW $159E ; handler 0C
+        DW $15B3 ; handler 0D
 
+; Object animation/motion command stream. Byte selectors and little-endian
+; addresses select drawing patterns; $FF marks a control boundary.
 OBJECT_MOTION_DATA:
-        DB $EF,$15,$FE,$15,$04,$08,$08,$0C
+        DW $15EF,$15FE ; two native animation continuation addresses
+        DB $04,$08,$08,$0C ; initial animation control fields
         DB $14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19,$14,$1E
         DB $05,$52,$0D,$0A,$8C,$0D,$0F,$C6,$0D,$FF,$8C,$0D
         DB $05,$E4,$06,$FF,$29,$0D,$06,$2C,$0E,$0A,$9D,$0E
@@ -3805,6 +3820,7 @@ CLEAR_OBJECT_FIELD_AND_ADVANCE_COUNTER:
         INC (HL)
         RET
 
+; ROM fill uses $FF up to the final original device check byte.
 ROM_FF_PADDING:
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -3842,4 +3858,7 @@ ROM_FF_PADDING:
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+; Last original ROM byte at $1FFF. The preceding fill is $FF; this is
+; a distinct terminal device byte, retained exactly for checksum matching.
+ROM_DEVICE_FINAL_BYTE:
         DB $4E
