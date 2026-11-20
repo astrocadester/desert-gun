@@ -21,6 +21,7 @@ RESET_ENTRY:
         NOP
         LD SP,$2400
         JP BOOT_RAM_ROM_TEST
+
 ; Interrupt vector $08: preserve registers and dispatch periodic I/O services.
 IRQ_VECTOR_08:
         PUSH AF
@@ -31,6 +32,7 @@ IRQ_VECTOR_08:
 
 IRQ08_VECTOR_PAD:
         DB $00
+
 ; Interrupt vector $10: preserve registers and dispatch secondary I/O services.
 IRQ_VECTOR_10:
         PUSH AF
@@ -41,6 +43,7 @@ IRQ_VECTOR_10:
 
 IRQ10_VECTOR_PAD:
         DB $00
+
 ; Power-on RAM/ROM tests; operator inputs select the normal boot path.
 BOOT_RAM_ROM_TEST:
         IN A,($02)
@@ -190,6 +193,7 @@ RAM_ERROR_NEXT:
         DEC B
         JP NZ,RAM_SHOW_ERROR
         JP TEST_FAILURE_HALT
+
 ; ROM-bank checksum reference list begins at $0121.
 TEST_ROM_CHECKSUM:
         LD SP,$2400
@@ -244,6 +248,7 @@ TEST_FAILURE_HALT:
 ROM_CHECKSUM_REFERENCE:
         DB $00,$48,$D0,$47,$35,$46,$97,$45,$72,$44,$C2,$43
         DB $3E,$42,$58,$41,$88
+
 ; Draw compact encoded character/shape data to video memory.
 DRAW_ENCODED_GRAPHIC:
         PUSH AF
@@ -352,6 +357,7 @@ ALT_GLYPH_WRITE:
         DEC A
         JP NZ,DRAW_GRAPHIC_MODE_B
         RET
+
 ; Shift DE right three bits, then adjust display high byte.
 SHIFT_VIDEO_ADDRESS_THREE:
         LD B,$03
@@ -373,11 +379,13 @@ ADJUST_VIDEO_ADDRESS_LOOP:
 
 DISPLAY_TEST_MASKS:
         DB $00,$0F,$F0,$FF
+
 ; Stage the display diagnostic continuation in HL before clearing video memory.
 TEST_DISPLAY_ENTRY:
         LD HL,$01D0
         LD SP,$4000
         JP CLEAR_VIDEO_STACK_LOOP_START
+
 ; Native display test continuation reached via $01C7 -> $0FD7 -> JP (HL).
 ; Display diagnostic resumes from clear-video helper; exercises screen RAM and hardware input.
 DISP_AFTER_CLEAR:
@@ -492,6 +500,7 @@ DRAW_LOOKUP_REPEAT:
         JP NZ,DRAW_LOOKUP_REPEAT
         EX DE,HL
         RET
+
 ; 8x10 display font. One source byte per raster row; # = set pixel, . = clear.
 ; Ten digits, blank, twenty-six letters, and one additional symbol.
 
@@ -988,6 +997,7 @@ FONT_EXTRA_SYMBOL:
         DB $3E  ; ..#####.
         DB $7F  ; .#######
         DB $7F  ; .#######
+
 IRQ_08_SERVICE:
         CALL SERVICE_TIMER_207C
         CALL APPLY_RENDER_MODE_2031
@@ -1025,6 +1035,7 @@ IRQ08_UPDATE_OBJECT_STATE:
         AND A
         CALL M,IRQ_PROCESS_ACTIVE_OBJECT
         JP IRQ10_PROCESS_TIMER_STATE
+
 ; Save descriptor pointer and call native object update helpers.
 IRQ_PROCESS_ACTIVE_OBJECT:
         PUSH HL
@@ -1163,6 +1174,7 @@ AUDIO_NOTE_FREQUENCY_PAIRS:
         DB $17,$34,$3F,$34,$27,$35,$0D,$36,$31,$36,$11,$37
         DB $31,$37,$0F,$38,$2B,$38,$05,$39,$1D,$39,$35,$39
         DB $0B,$3A,$21,$3A
+
 ; Process object entry only when bit $40 is set; update activity flags.
 PROCESS_OBJECT_BIT6_FLAGS:
         LD A,(HL)
@@ -1315,6 +1327,7 @@ FILL_OBJECT_FIELD_BYTES:
         DEC B
         JP NZ,PREPARE_OBJECT_FIELD_FILL
         RET
+
 ; Guard on RAM $207C and update game service counters.
 SERVICE_TIMER_207C:
         LD A,($207C)
@@ -1344,6 +1357,7 @@ RELOAD_TIMER_207C:
         CALL DECREMENT_NONZERO_TIMER_BYTE
         LD ($207C),A
         RET
+
 ; Decrement pointed timer if positive and advance game state.
 DECREMENT_NONZERO_TIMER_BYTE:
         LD A,(HL)
@@ -1361,6 +1375,7 @@ ROTATE_OBJECT_FIELD_BITS:
         DEC C
         JP NZ,DECREMENT_NONZERO_TIMER_BYTE
         RET
+
 ; Check RAM $207D, then operate on render mode at $2031.
 APPLY_RENDER_MODE_2031:
         LD HL,$2031
@@ -1456,6 +1471,7 @@ CLEAR_PRIOR_OBJECT_FIELD:
         LD (HL),$00
         INC HL
         JP INCREMENT_OBJECT_FIELD_COUNTER
+
 ; Increment RAM $207F and update related state.
 ADVANCE_COUNTER_207F:
         LD HL,$207F
@@ -1489,6 +1505,7 @@ STORE_SHIFTED_INPUT_BYTE:
         LD (HL),A
         OUT ($07),A
         RET
+
 ; Packed gun and target drawing records consumed by native renderers.
 ; Original bitmap patterns and sprite shape records, spanning the ROM boundary
 ; at $0800. Pixel data is not executable 8080 instruction code.
@@ -2785,6 +2802,7 @@ MUSIC_SEQUENCE_BONUS:
         DB $85,$04,$0D,$03,$0C,$01,$0D,$02 ; high-bit duration/control prefix
         DB $0A,$03,$0D,$01,$00,$02,$0F,$02,$10,$02,$11,$02
         DB $12,$02,$13,$04,$14,$00
+
 RENDER_FRAME_DESCRIPTOR:
         LD DE,$2008
         LD BC,$2083
@@ -2858,11 +2876,13 @@ REPLACE_RENDER_CONTROL_CHARACTER:
         DEC C
         JP NZ,REPLACE_RENDER_CONTROL_CHARACTER
         RET
+
 ; Normal boot path stages $11C3 as continuation after video clear.
 BOOT_MAIN_ENTRY:
         LD HL,$11C3
         LD SP,$4000
         JP CLEAR_VIDEO_STACK_LOOP_START
+
 ; Boot continuation from $11BA -> $0FD7 -> JP (HL).
 ; Set script PC RAM $2000 to ROM $1633, push dispatcher return $11C9, enable IRQ and output port $04.
 BOOT_SCRIPT_AFTER_VIDEO_CLEAR:
@@ -2896,6 +2916,7 @@ BYTECODE_FETCH_DISPATCH:
         JP (HL)
 
 WORD_ZERO_FRAME_SCHEDULER:
+
 ; Run native frame services; conditional extra services depend on RAM $200D.
 ; Token $00 yields to the native frame scheduler at $11EA.
 BYTECODE_ZERO_FRAME_HANDOFF:
@@ -2936,6 +2957,7 @@ SCAN_NONZERO_OBJECT_FIELD:
         AND A
         JP NZ,SCAN_NONZERO_OBJECT_FIELD
         RET
+
 ; OR register B into RAM $2080.
 OR_GAME_FLAGS_2080:
         LD DE,$2080
@@ -2943,6 +2965,7 @@ OR_GAME_FLAGS_2080:
         OR B
         LD (DE),A
         RET
+
 ; Read game-state entry at RAM $201E and branch on flags.
 SERVICE_GAME_STATE_201E:
         PUSH HL
@@ -2967,6 +2990,7 @@ STORE_GAME_STATUS_BITS:
         LD (HL),A
         POP HL
         RET
+
 ; Process object pairs $2040/$204F and $205E/$206D.
 UPDATE_OBJECT_PAIRS:
         LD HL,$2040
@@ -2974,6 +2998,7 @@ UPDATE_OBJECT_PAIRS:
         CALL COMPARE_OBJECT_PAIR_FLAGS
         LD HL,$205E
         LD DE,$206D
+
 ; Test two linked object records before update.
 COMPARE_OBJECT_PAIR_FLAGS:
         LD A,(HL)
@@ -3005,6 +3030,7 @@ COMPARE_OBJECT_PAIR_FLAGS:
         AND $EF
         LD (HL),A
         RET
+
 ; Advance through object fields and test record state.
 SCAN_OBJECT_FIELD_FLAGS:
         INC HL
@@ -3181,6 +3207,7 @@ GAME_REC_SCAN:
         DEC A
         JP P,SCAN_REC_FLAGS
         RET
+
 ; Check enable RAM $200D and timer RAM $2032.
 UPDATE_GAME_TIMER_2032:
         LD A,($200D)
@@ -3218,6 +3245,7 @@ TOGGLE_GAME_STATUS_BIT4:
         LD A,$0C
         LD ($203B),A
         RET
+
 ; Mask object status low three bits and compare with five.
 CHECK_OBJECT_STATUS_LOW_BITS:
         INC HL
@@ -3291,6 +3319,7 @@ UPDATE_SECOND_OBJECT_WHEN_ENABLED:
         CALL SET_OBJECT_FROM_SHAPE_TABLE
         LD (HL),$DC
         RET
+
 ; Set timer RAM $2032 to $3C and prepare object state.
 INITIALIZE_OBJECT_TIMER_2032:
         LD DE,$000A
@@ -3329,6 +3358,7 @@ LOOKUP_OBJECT_TABLE_POINTER:
         LD A,($201E)
         AND $3F
         RET
+
 ; Write object byte, then lookup associated table values.
 OBJ_FIELD_LOOKUP:
         LD (HL),A
@@ -3363,6 +3393,7 @@ FETCH_GUN_SHAPE_TABLE_BYTE:
         EX DE,HL
         LD (HL),A
         DEC HL
+
 ; Read and compare RAM $2009 against three.
 BOUND_GAME_COUNTER_2009:
         LD A,($2009)
@@ -3383,6 +3414,7 @@ ADJUST_OBJECT_INDEX_BY_COUNTER:
 COMPLETE_OBJECT_INDEX_ADJUSTMENT:
         INC C
         RET
+
 ; Write flag $01 and update related object-field values.
 SET_OBJECT_FLAG_ACTIVE:
         CALL OBJ_FIELD_LOOKUP
@@ -3390,6 +3422,7 @@ SET_OBJECT_FLAG_ACTIVE:
         DEC HL
         CALL BOUND_GAME_COUNTER_2009
         JP STORE_OBJECT_LOOKUP_RESULT
+
 ; Use object shape lookup to update corresponding field.
 SET_OBJECT_FROM_SHAPE_TABLE:
         CALL OBJ_FIELD_LOOKUP
@@ -3738,62 +3771,79 @@ MOTION_TRAILING_GRAPHIC_POINTER:
 
 CMD_1633_CLEAR_DISPLAY:
         DB $06 ; CLEAR_DISPLAY
+
 CMD_1634_INIT_RENDER:
         DB $08 ; INIT_RENDER
         DW $2006 ; inline W
         DW $3EA0 ; inline W
+
 CMD_1639_RENDER_MODE_A:
         DB $01 ; RENDER_MODE_A
         DB $05 ; inline B
+
 CMD_163B_INIT_RENDER:
         DB $08 ; INIT_RENDER
         DW $200B ; inline W
         DW $2400 ; inline W
+
 CMD_1640_RENDER_MODE_A:
         DB $01 ; RENDER_MODE_A
         DB $06 ; inline B
+
 CMD_1642_RENDER_MODE_A:
         DB $01 ; RENDER_MODE_A
         DB $04 ; inline B
+
 CMD_1644_INIT_RENDER:
         DB $08 ; INIT_RENDER
         DW $201C ; inline W
         DW $241B ; inline W
+
 CMD_1649_INIT_DESCRIPTOR:
         DB $07 ; INIT_DESCRIPTOR
+
 CMD_164A_STORE_IMMEDIATE:
         DB $05 ; STORE_IMMEDIATE
         DB $01 ; inline B
         DW $2081 ; inline W
+
 CMD_164E_STORE_IMMEDIATE:
         DB $05 ; STORE_IMMEDIATE
         DB $01 ; inline B
         DW $20B1 ; inline W
+
 CMD_1652_SET_RENDER_POINTER:
         DB $03 ; SET_RENDER_POINTER
         DB $10 ; inline B
         DW $1633 ; inline W
+
 CMD_1656_STORE_IMMEDIATE:
         DB $05 ; STORE_IMMEDIATE
         DB $01 ; inline B
         DW $2035 ; inline W
+
 CMD_165A_STORE_IMMEDIATE:
         DB $05 ; STORE_IMMEDIATE
         DB $01 ; inline B
         DW $2038 ; inline W
+
 CMD_165E_RENDER_PACKET:
         DB $0C ; RENDER_PACKET
         DB $0B ; inline B
         DW $1A5E ; inline W
         DW $2F8A ; inline W
+
 CMD_1664_RESET_ROUND:
         DB $0B ; RESET_ROUND
+
 CMD_1665_RENDER_MODE_A:
         DB $01 ; RENDER_MODE_A
         DB $02 ; inline B
+
 CMD_1667_SET_MODE:
         DB $02 ; SET_MODE
         DB $3C ; inline B
+
 CMD_1669_FRAME_SCHEDULER:
         DB $00 ; FRAME_SCHEDULER
         DB $0C,$0C,$4B,$1A,$B4,$3E,$02,$1E,$00,$04,$64,$16
@@ -3801,8 +3851,10 @@ CMD_1669_FRAME_SCHEDULER:
 CMD_1676_SET_MODE:
         DB $02 ; SET_MODE
         DB $1E ; inline B
+
 CMD_1678_FRAME_SCHEDULER:
         DB $00 ; FRAME_SCHEDULER
+
 ; Decoded $1679 round-control script. Each command includes its inline operands.
 ; Word and operand widths are traced from the native interpreter handlers.
 CMD_1679_CLEAR_DISPLAY:
@@ -4263,6 +4315,7 @@ SET_TIMER_AND_GAME_FLAGS:
         LD ($2034),A
         LD B,$02
         JP OR_GAME_FLAGS_2080
+
 ; Increment RAM score at $200A with DAA decimal adjust.
 INCREMENT_PACKED_BCD_SCORE:
         LD HL,$200A
@@ -4275,6 +4328,7 @@ INCREMENT_PACKED_BCD_SCORE:
         DAA
         LD (HL),A
         RET
+
 ; Limit RAM $2014 to a maximum of three before continuing.
 CLAMP_GAME_STATE_TO_THREE:
         LD A,($2014)
@@ -4467,6 +4521,7 @@ INITIALIZE_GAME_SCORE_TRACKING:
         LD HL,$0000
         LD ($2009),HL
         RET
+
 ; Compare two-byte record at BC against HL.
 COMPARE_TWO_BYTE_RECORD:
         LD A,(BC)
@@ -4504,6 +4559,7 @@ RENDER_WORD_PACKET:
         LD H,(HL)
         LD L,A
         POP BC
+
 ; Read text stream until high-bit-terminated character; select indexed string.
 READ_HIGH_BIT_TERMINATED_TEXT:
         LD A,(HL)
@@ -4529,6 +4585,7 @@ MESSAGE_SCREEN_COORDINATE_POINTERS:
         DB $15,$24,$A6,$3E,$06,$24,$A7,$3E,$0B,$30,$0B,$30
         DB $40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40
         DB $40,$40,$40,$40,$40,$40,$40
+
 ; The game title starts here; its first two characters precede $1A60.
 ; Original 8-character title continues across the label at $1A60:
 ; 'DE' + 'SERT' + $40 + 'GUN' = 'DESERT GUN' in game encoding.
@@ -4933,6 +4990,7 @@ GAME_REC_RESET:
         DEC A
         JP P,SCAN_RESET_FLAGS
         RET
+
 ; Detect changes in input-port $02 bit $40 and update RAM $2016.
 SAMPLE_INPUT_BIT6_EDGE:
         LD HL,$2016
@@ -5019,6 +5077,7 @@ ROM_FF_PADDING:
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+        
 ; Checksum balancing byte for 9316.1e at ROM $1FFF.
 ; Device $1800–$1FFF additive sum = $68, including this $4E.
 ; The fourth-bank checksum seed $97 (ROM $0127) gives $68+$97=$FF,

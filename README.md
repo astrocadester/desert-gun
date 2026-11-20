@@ -1,8 +1,8 @@
 # Desert Gun
 
-![Desert Gun](images/desert-gun-02584-01.jpg)
-
 Desert Gun was developed by Dave Nutting Associates (DNA) and released by Midway in 1977. The game runs on Midway Intel 8080 arcade hardware. This project maintains its native 8080 disassembly, indexed-command game program, original ROM devices, graphics, and interpreter research.
+
+![Desert Gun](images/desert-gun.png)
 
 Desert Gun uses a DNA indexed-command engine. Its interpreter fetches program bytes through a RAM-resident script pointer and dispatches to native Intel 8080 handlers.
 
@@ -16,31 +16,31 @@ Desert Gun uses a DNA indexed-command engine. Its interpreter fetches program by
 ## Project layout
 
 `src/desertgun.asm`  
-The maintained native 8080 disassembly, including interpreter, native handlers, command sequences and graphics. The build assembles this source directly.
+8080 disassembly, including interpreter, native handlers, command sequences and graphics
 
 `tools/zmac`, `tools/zmac.exe`  
-Bundled zmac v1.3 assemblers. Neither build script generates source or runs Python.
+Bundled zmac v1.3 assemblers
 
 `build/`  
-Temporary assembled image `desertgu.bin`, listing `desertgu.lst` and split 2 KB ROM devices.
+assembled image `desertgu.bin`, listing `desertgu.lst` and split 2 KB ROM devices.
 
 `roms/original/desertgu.zip`  
-Preserved original four-device ROM archive and byte-verification reference.
+original four-device ROM set
 
 `roms/desertgu.zip`  
-Verified MAME-compatible ROM archive produced by the build.
+MAME-compatible ROM set produced by the build.
 
 `build.sh`, `build.bat`  
-Native assembly, device splitting, SHA-1 comparison and ZIP packaging.
+assembly, device splitting, SHA-1 comparison and ZIP packaging.
 
 `tools/`  
-Bundled zmac v1.3 assemblers for the Linux and Windows builds; the source is maintained directly in `src/desertgun.asm`.
+zmac v1.3 assemblers for the Linux and Windows builds
 
 `docs/`  
-Standalone technical reference, separate RE/engineering task tracker, original manual.
+technical reference, game manual.
 
 `images/`  
-Game imagery, the canonical Intel 8080 memory map and a transparent native SVG fox mascot.
+Game imagery, Intel 8080 memory map
 
 ## Build
 
@@ -79,6 +79,21 @@ Four 2 KB devices occupy the main program ROM space.
 
 The reset and interrupt vectors occupy the opening ROM bytes. Program ROM runs from `$0000` through `$1FFF`, followed by the RAM and video regions used by the 8080 game logic.
 
+## RAM and I/O
+
+| Address | Use |
+| --- | --- |
+| `$2000–$2001` | Current interpreted script pointer |
+| `$200E–$2011` | Sound duration, counters and event parameters |
+| `$2012–$2013` | Sound event stream pointer |
+| `$2019` | Rendering pointer |
+| `$2030–$2031` | Rendering mode and control state |
+| `$2032` | Game timer |
+| `$2040` onward | Descriptor and object working records |
+| `$2400–$3FFF` | Bitmapped display RAM |
+
+Native services handle periodic interrupts, input ports, object/game timers, drawing and display operations. The game uses the Intel 8080 stack for selected graphics and control transfers.
+
 ## Interpreted program architecture
 
 The native interpreter at `$11D0` fetches a command through the 16-bit script program counter at RAM `$2000`. The little-endian vector table at `$0F61` has 13 slots (`$00–$0C`). The zero command branches directly to the frame scheduler at `$11EA`; the remaining 12 commands dispatch to native 8080 handlers.
@@ -95,49 +110,26 @@ The native interpreter at `$11D0` fetches a command through the 16-bit script pr
 
 The command handlers cover drawing modes, mode/pointer state, branching, byte storage, video clear, descriptor initialization, flags, scene reset and drawing packet transfer. Their operand widths and effects are cataloged in technical reference. The table now names each of the 13 slots, and the round program at `$1679` is decoded into **39 command records with typed inline bytes and words**.
 
-The dispatch tail matches the ten-byte indexed-address/indirect-jump mechanism studied in DNA's Gun Fight, Boot Hill, Sea Wolf, Tornado Baseball, Double Play and Extra Inning. This is evidence for shared execution techniques rather than identity of every command number or word behavior.
-
-See the [technical reference](docs/DESERT-GUN-TECHNICAL-REFERENCE.md) for the annotated interpreter, command vocabulary and frame behavior.
-
 ## Graphics and text
 
-The ROM has 8x10 digit and alphabet bitmaps starting at `$0288`. The assembly separates the display font into individual glyph records, with original bytes and inline `#` / `.` raster illustrations. Other ROM regions hold packed gun, target, scene and object artwork, positioning tables and encoded text.
+The ROM has 8x10 digit and alphabet bitmaps starting at `$0288`. 
 
-The native drawing routines near `$0132` and `$0167` interpret encoded graphics and copy pixel data into video memory. The graphics pool at `$06DC–$0F60` has **47 source-referenced entry labels**, including 40 complete dimensioned bitmap records, two bitmaps crossing internal labels or the ROM boundary, and three lookup/word-table regions. Bitmap rows now contain inline `#` / `.` pixels. The animation frame table at `$14BB` has sixteen frame-state indices and eight little-endian graphic pointers at `$14CB`.
+Other ROM regions hold packed gun, target, scene and object artwork, positioning tables and encoded text.
+
+The native drawing routines near `$0132` and `$0167` interpret encoded graphics and copy pixel data into video memory. 
+
+The animation frame table at `$14BB` has sixteen frame-state indices and eight little-endian graphic pointers at `$14CB`.
 
 The object-motion controller selects between an eight-entry pointer table at `$1564` and a six-entry alternative at `$1574`. These select **16 labeled motion sequences** within `$1580–$1632`, with selector/graphic-address records and `$FF` sequence terminators.
 
-The text area contains the `DESERT GUN` title beginning at `$1A5E`, scoring and bonus prompts, and high-bit-delimited messages in **English, German, French and Danish**. Readable messages are assembled from quoted strings, with `$40` spacing and control bytes explicit. The language directory at `$1A2F` references four verified delimiter anchors.
+The text area contains the `DESERT GUN` title beginning at `$1A5E`, scoring and bonus prompts, and high-bit-delimited messages in **English, German, French and Danish**. 
 
 ## Sound
 
 The audio service reads the active stream pointer at RAM `$2012`, processes duration and note/event bytes, looks up two-byte sound-generator register values at ROM `$04FB`, and outputs the selected pair to ports `$05` and `$06`. Note durations, reloads and counters use `$200E–$2011` and `$201F`.
 
-Five source-addressed sound streams begin at `$10B2`, `$10D8`, `$10F2`, `$110C` and `$1128`. The maintained ASM names the audio service and each stream, replacing the former generic object-sequence interpretation.
-
-## RAM and I/O
-
-| Address | Use |
-| --- | --- |
-| `$2000–$2001` | Current interpreted script pointer |
-| `$200E–$2011` | Sound duration, counters and event parameters |
-| `$2012–$2013` | Sound event stream pointer |
-| `$2019` | Rendering pointer |
-| `$2030–$2031` | Rendering mode and control state |
-| `$2032` | Game timer |
-| `$2040` onward | Descriptor and object working records |
-| `$2400–$3FFF` | Bitmapped display RAM |
-
-Native services handle periodic interrupts, input ports, object/game timers, drawing and display operations. The game uses the Intel 8080 stack for selected graphics and control transfers.
-
-## Technical documentation
-
-The complete interpreter and software investigation is consolidated in [Desert Gun — Technical Reference](docs/DESERT-GUN-TECHNICAL-REFERENCE.md).
-
-All outstanding reverse-engineering work, progress, engineering debt and acceptance criteria are maintained separately in [RE Tasks](docs/RE-TASKS.md).
 
 ## References
 
-- [Technical reference](docs/DESERT-GUN-TECHNICAL-REFERENCE.md)
 - [Desert Gun reference manual](docs/DesertGun.pdf)
 - [MAME Midway Intel 8080 driver](https://github.com/mamedev/mame/blob/master/src/mame/midway/8080bw.cpp)
