@@ -98,6 +98,9 @@ Native services handle periodic interrupts, input ports, object/game timers, dra
 
 The native interpreter at `$11D0` fetches a command through the 16-bit script program counter at RAM `$2000`. The little-endian vector table at `$0F61` has 13 slots (`$00–$0C`). The zero command branches directly to the frame scheduler at `$11EA`; the remaining 12 commands dispatch to native 8080 handlers.
 
+![Desert Gun Interepter](images/interpreter-desert-gun.png)
+
+
 | Component | Address | Function |
 | --- | --- | --- |
 | `BYTECODE_FETCH_DISPATCH` | `$11D0` | Fetch and dispatch interpreted commands |
