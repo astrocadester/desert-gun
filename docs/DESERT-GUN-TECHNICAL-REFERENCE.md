@@ -397,9 +397,9 @@ INC HL
 
 **Font.** $0288–$0403 contains 380 bytes, organized into 38 individually labeled 8×10 glyphs with source-level pixel comments.
 
-**Packed graphics.** $06DC–$0F60 comprises 2,181 original bytes. Direct source references identify 47 graphic resource entry points. The resource records remain original byte sequences; source declarations retain their exact order, and the initial eight-pixel raster has inline `#`/`.` art. ROM boundaries do not delimit game-level records.
+**Packed graphics.** ROM $06DC–$0F60 comprises 2,181 bytes and 47 original source-reference entry points. Forty independent records have a verified two-byte header: bytes per row, followed by number of rows, with payload length exactly `width × height`. Each row is now represented by `DB` and an inline `#`/`.` bitmap. The resulting records range from 8 to 32 pixels wide and include 8×26, 24×13 and 32×14 patterns. Two further bitmaps span internal entry labels: a 32×22 shape beginning at $07EF crosses the $0800 ROM-device boundary, and another begins at $0849 with continuation at $086F. The other three addressable blocks are an eight-byte lookup at $06DC and sixteen-/three-entry little-endian word tables at $0D03 and $0D23. These are not independent bitmap headers. Graphic identity is tied to rendering call sites, not inferred from the binary shape alone.
 
-**Frame table.** The record at $14BB contains sixteen frame indices followed by eight graphic-resource pointers beginning at $14CB; associated control parameters and object-key/offset pairs follow. The native reader selects entries, not independent executable routines.
+**Frame/object tables.** $14BB holds sixteen frame indices; $14CB holds eight little-endian graphic resource pointers; $14DB holds eight control parameters. The two tables at $14E3 and $14F3 each hold eight packed 16-bit object-descriptor values, assembled as `DW`. Native code supplies a table base in DE, doubles the object index BC to read each low/high pair, and copies its bytes into consecutive RAM object fields. `OBJ_DESC_WORDS_A` is selected by the path adding $66 to the game-state value; `OBJ_DESC_WORDS_B` by the path adding $0C. The former generic labels “object key 0–7” and “draw offset 0–7” are replaced with the observed packed-descriptor roles.
 
 **Object motion.** Primary eight-entry pointer table at $1564 and alternate six-entry table at $1574 select records within $1580–$1632. The 16 labeled motion streams start with little-endian resource addresses, include byte-selector/16-bit graphic-address pairs, and use $FF stream terminators. These target addresses identify *data records*, not 8080 instruction entry points. The object reader obtains the pointer with table indexing and compares object fields before updating game state.
 
@@ -411,7 +411,7 @@ The interrupt service uses RAM $2012 as a pointer into timed sound-event streams
 
 ## 10. Display messages and language selection
 
-The text directory at $1A2F selects high-bit-delimited strings. The $1A5E title begins **DESERT GUN**, with two initial bytes immediately before $1A60. Readable game text and menu phrases are stored in English, German, French, and Danish. The directory selects message delimiters at $1AC3, $1B1B, $1B79, and $1BD9. The high bit marks a string boundary rather than an 8080 opcode.
+The text directory at $1A2F selects high-bit-delimited strings. The $1A5E title begins **DESERT GUN**, with two initial bytes immediately before $1A60. Readable game text and menu phrases are stored in English, German, French, and Danish. The directory selects message delimiters at $1AC3, $1B1B, $1B79, and $1BD9. The high bit marks a string boundary rather than an 8080 opcode. The source spells printable uppercase and numeric runs as zmac `DB 'TEXT'` strings, with `$40` used explicitly for spaces and high-bit bytes retained as hexadecimal constants. Quoted strings expand to the same original ROM bytes.
 
 ## 11. Native/data coverage and verification method
 
