@@ -34,6 +34,14 @@
 - **Correction:** separate `SOUND_SELECT_VALUES` at `$10AE`; place the five sound stream labels at `$10B2`, `$10D8`, `$10F2`, `$110C`, `$1128`. Source-level audit of 2,311 original instruction addresses, all 4,296 typed data bytes and 251 symbolic instruction targets now reports zero discrepancies.
 - **Acceptance verified, 2026-11-20:** Linux zmac v1.3 assembled the corrected source; `9316.1h`, `9316.1g`, `9316.1f`, and `desertgu.e` all matched the original SHA-1 values. The build produced `roms/desertgu.zip` and Desert Gun ran in MAME (reported average speed 100.05%).
 
+## Latest validated source revision — 2026-11-20
+
+- **Revision:** `f5e6c9d` — frame descriptor tables converted to `DW`, bitmap headers and inline pixel rows decoded, readable multilingual `DB` strings, and obsolete Python recovery utility deleted.
+- **Linux build:** `git pull --ff-only && ./build.sh` completed, packaging `roms/desertgu.zip`.
+- **ROM comparison:** `9316.1h`, `9316.1g`, `9316.1f`, and `desertgu.e` all passed exact SHA-1 checks against the original chips.
+- **MAME:** `mame desertgu -rompath roms -window -skip_gameinfo` ran successfully; reported average speed **100.04%**.
+- **Result:** RE-001 byte-exact Linux/MAME acceptance remains COMPLETE for the latest source. Windows build and clean-working-tree acceptance under ENG-007 remain open.
+
 ## Completed evidence checkpoints
 
 | Topic | Established result |
