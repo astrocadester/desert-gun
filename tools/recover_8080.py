@@ -216,7 +216,7 @@ def main():
             "cross_bank_instruction":{"address":0x17FF,"bytes":"C3 32 01","native_target":0x0132},
             "revision":"v20261031-0001"}
     report.update({"script_pointer_ram":0x2000,"dispatcher":4560,"vector_table":3937,"vector_count":13,"vectors":vectors,"initial_script":5683,"decoded_script_sites":word_scan["distinct_packet_count"]})
-    (ROOT/"docs"/"recovery.json").write_text(json.dumps(report,indent=2)+"\n")
+    (review_dir/"recovery.json").write_text(json.dumps(report,indent=2)+"\n")
     print(game,"native 8080 instructions",len(code),"code bytes",len(owned),
           "indexed dispatches",signatures)
 if __name__=="__main__":main()
