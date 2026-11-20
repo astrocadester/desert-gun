@@ -2181,27 +2181,35 @@ MUSIC_SEQUENCE_MAIN:
         DB $00,$01,$12,$01,$11,$01,$00,$01,$11,$01,$0F,$01
         DB $00,$01
 
-; Sound-event stream $10D8: timed note and duration codes.
+        DB $0F,$03,$0D,$00 ; trailing note/duration pairs of preceding stream
+
+; Sound-event stream $10D8: high-bit control marker and timed note events.
 MUSIC_SEQUENCE_GAME_OVER:
-        DB $0F,$03,$0D,$00,$85,$01,$00,$01,$0C,$02,$0F,$01 ; high-bit value = duration/control prefix
+        DB $85,$01,$00,$01,$0C,$02,$0F,$01 ; high-bit duration/control prefix
         DB $0C,$01,$0D,$02,$0F,$01,$00,$01,$0C,$02,$0F,$01
         DB $0C,$01
 
-; Sound-event stream $10F2: timed note and duration codes.
+        DB $0D,$03,$0F,$00 ; trailing note/duration pairs of preceding stream
+
+; Sound-event stream $10F2: high-bit control marker and timed note events.
 MUSIC_SEQUENCE_HIGH_SCORE:
-        DB $0D,$03,$0F,$00,$85,$02,$08,$02,$0D,$02,$0F,$02 ; high-bit value = duration/control prefix
+        DB $85,$02,$08,$02,$0D,$02,$0F,$02 ; high-bit duration/control prefix
         DB $12,$08,$11,$02,$08,$02,$0D,$02,$0F,$01,$12,$01
         DB $11,$01
 
-; Sound-event stream $110C: timed note and duration codes.
+        DB $0F,$07,$11,$00 ; trailing note/duration pairs of preceding stream
+
+; Sound-event stream $110C: high-bit control marker and timed note events.
 MUSIC_SEQUENCE_ROUND_END:
-        DB $0F,$07,$11,$00,$85,$02,$0A,$01,$0A,$02,$0A,$01 ; high-bit value = duration/control prefix
+        DB $85,$02,$0A,$01,$0A,$02,$0A,$01 ; high-bit duration/control prefix
         DB $0A,$02,$0A,$01,$0A,$02,$11,$01,$0E,$02,$11,$01
         DB $0E,$02,$11,$01
 
-; Sound-event stream $1128: timed note and duration codes.
+        DB $0E,$03,$0A,$00 ; trailing note/duration pairs of preceding stream
+
+; Sound-event stream $1128: high-bit control marker and timed note events.
 MUSIC_SEQUENCE_BONUS:
-        DB $0E,$03,$0A,$00,$85,$04,$0D,$03,$0C,$01,$0D,$02 ; high-bit value = duration/control prefix
+        DB $85,$04,$0D,$03,$0C,$01,$0D,$02 ; high-bit duration/control prefix
         DB $0A,$03,$0D,$01,$00,$02,$0F,$02,$10,$02,$11,$02
         DB $12,$02,$13,$04,$14,$00
 RENDER_FRAME_DESCRIPTOR:
