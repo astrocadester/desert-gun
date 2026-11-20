@@ -6,7 +6,7 @@
 
 | ID | Priority | Status | Work and required acceptance evidence |
 | --- | --- | --- | --- |
-| RE-001 | P0 | IN PROGRESS | **Byte-exact build:** zmac v1.3 assembly of current `src/desertgun.asm`; all four SHA-1s match original ROM devices; MAME executes; Windows build reproduces them. A suspected cause of the third-ROM mismatch is the set of long symbolic names with overlapping leading prefixes. Source now uses unique short label names; source-level address/data comparisons PASS. **Latest zmac/ROM SHA-1 and MAME run still require confirmation.** |
+| RE-001 | P0 | IN PROGRESS | **Byte-exact build:** zmac v1.3 assembly of current `src/desertgun.asm`; all four SHA-1s match original ROM devices; MAME executes; Windows build reproduces them. The third-ROM byte mismatch was caused by a sound-stream pointer placed four bytes before the actual stream start. Source now uses unique short label names; source-level address/data comparisons PASS. **Latest zmac/ROM SHA-1 and MAME run still require confirmation.** |
 | RE-002 | P0 | OPEN | **Complete interpreter frame lifecycle:** trace zero-command frame handoffs, resumption, and real reachability of 39 linearly parsed post-$1678 commands; record script-PC changes and reachable command counts. |
 | RE-003 | P0 | OPEN | **Motion record consumer:** trace $1564/$1574 pointer lookup, sixteen object-motion streams, selector behavior, address field semantics, $FF processing, object flags, and transitions. |
 | RE-004 | P1 | OPEN | **Graphic record encoding:** resolve the formats, dimensions and rendering semantics of 47 source-referenced packed graphic records; add representative inline bitmaps with byte-address confirmation. |
@@ -30,9 +30,9 @@
 ## Build issue and resolution record
 
 - **Reported failure:** bank `9316.1f` returned SHA-1 `5214eea1685abc191a8df12b86817d0faf191156` while the first two banks passed.
-- **Potential assembler ambiguity addressed:** overlapping long symbol prefixes, notably `GRAPHIC_RESOURCE_*` and `MOTION_SEQUENCE_*`, were replaced with short unique symbolic names throughout the ASM. All current labels have distinct first 16 characters; branch instructions and pointer tables continue to use meaningful symbolic operands.
-- **Static validation:** 2,311 native instruction addresses unchanged; all 4,296 typed data bytes match their original 8 KB positions; 251 symbolic instruction targets match the original encoded addresses.
-- **Outstanding acceptance test:** assemble the latest commit locally using bundled `tools/zmac`, check all four SHA-1s, and run MAME. An unexecuted code change is not recorded as a passing build.
+- **Actual cause identified:** the four-byte sound selection table at `$10AE` was mistakenly included in the `$10B2` stream, shifting its symbolic address back four bytes. Its effect appeared at ROM `$10A8` as assembled `$AE` instead of original `$B2`. The next four stream labels were also four bytes early.
+- **Correction:** separate `SOUND_SELECT_VALUES` at `$10AE`; place the five sound stream labels at `$10B2`, `$10D8`, `$10F2`, `$110C`, `$1128`. Source-level audit of 2,311 original instruction addresses, all 4,296 typed data bytes and 251 symbolic instruction targets now reports zero discrepancies.
+- **Outstanding acceptance test:** assemble the latest source with `./build.sh`; verify all four SHA-1s and run MAME. The corrected symbolic addresses are established, but the updated build has not yet been executed in this environment.
 
 ## Completed evidence checkpoints
 
