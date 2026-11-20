@@ -332,7 +332,6 @@ TEST_DISPLAY_ENTRY:
         LD HL,$01D0  ; ROM $01C7: 21 D0 01
         LD SP,$4000  ; ROM $01CA: 31 00 40
         JP CLEAR_VIDEO_STACK_LOOP_START  ; ROM $01CD: C3 D7 0F
-; Native display test continuation reached via $01C7 -> $0FD7 -> JP (HL).
 ; Display diagnostic resumes from clear-video helper; exercises screen RAM and hardware input.
 TEST_DISPLAY_AFTER_RAM_CLEAR:
         EI  ; ROM $01D0: FB
@@ -382,6 +381,7 @@ TEST_DISPLAY_IO_POLL:
         JP NC,TEST_DISPLAY_ENTRY  ; ROM $022C: D2 C7 01
         OUT ($04),A  ; ROM $022F: D3 04
         JP TEST_DISPLAY_IO_POLL  ; ROM $0231: C3 26 02
+FLOW_0234:
         LD A,($2014)  ; ROM $0234: 3A 14 20
         LD E,A  ; ROM $0237: 5F
         AND $07  ; ROM $0238: E6 07
@@ -1148,8 +1148,8 @@ ROM_GAME_WORD_0B:
         DW $107A ; GAME_WORD pointer from ROM $0F77
 ROM_GAME_WORD_0C:
         DW $0F7B ; GAME_WORD pointer from ROM $0F79
-NATIVE_WORD_0C_DRAW_PACKET:
 ; Word $0C: consume byte and two 16-bit pointers; transfer to drawing service.
+NATIVE_WORD_0C_DRAW_PACKET:
 WORD_0C_DRAW_PACKET_ENTRY:
         EX DE,HL  ; ROM $0F7B: EB
         LD A,(HL)  ; ROM $0F7C: 7E
@@ -1166,13 +1166,13 @@ WORD_0C_DRAW_PACKET_ENTRY:
         LD ($2000),HL  ; ROM $0F87: 22 00 20
         POP HL  ; ROM $0F8A: E1
         JP DRAW_ENCODED_GRAPHIC  ; ROM $0F8B: C3 32 01
-NATIVE_WORD_09_DRAW_MODE_B:
 ; Word $09: choose drawing continuation $0167.
+NATIVE_WORD_09_DRAW_MODE_B:
 WORD_09_DRAW_MODE_B_ENTRY:
         LD HL,$0167  ; ROM $0F8E: 21 67 01
         JP WORD_DRAW_COMMON  ; ROM $0F91: C3 97 0F
-NATIVE_WORD_01_DRAW_MODE_A:
 ; Word $01: choose drawing continuation $0132.
+NATIVE_WORD_01_DRAW_MODE_A:
 WORD_01_DRAW_MODE_A_ENTRY:
         LD HL,$0132  ; ROM $0F94: 21 32 01
 WORD_DRAW_COMMON:
@@ -1183,8 +1183,8 @@ WORD_DRAW_COMMON:
         LD ($2000),HL  ; ROM $0F9B: 22 00 20
         CALL RENDER_WORD_PACKET  ; ROM $0F9E: CD 06 1A
         RET  ; ROM $0FA1: C9
-NATIVE_WORD_02_SET_RAM_2031:
 ; Word $02: write one byte to RAM $2031.
+NATIVE_WORD_02_SET_RAM_2031:
 WORD_02_SET_MODE_ENTRY:
         EX DE,HL  ; ROM $0FA2: EB
         LD A,(HL)  ; ROM $0FA3: 7E
@@ -1193,8 +1193,8 @@ WORD_02_SET_MODE_ENTRY:
         LD ($2000),HL  ; ROM $0FA8: 22 00 20
 WORD_RETURN_STUB:
         RET  ; ROM $0FAB: C9
-NATIVE_WORD_03_SET_MODE_AND_PTR:
 ; Word $03: store mode at $2030 and pointer at $2019.
+NATIVE_WORD_03_SET_MODE_AND_PTR:
 WORD_03_SET_MODE_POINTER_ENTRY:
         EX DE,HL  ; ROM $0FAC: EB
         LD A,(HL)  ; ROM $0FAD: 7E
@@ -1208,8 +1208,8 @@ WORD_03_SET_MODE_POINTER_ENTRY:
         EX DE,HL  ; ROM $0FB9: EB
         LD ($2019),HL  ; ROM $0FBA: 22 19 20
         RET  ; ROM $0FBD: C9
-NATIVE_WORD_04_BRANCH_SCRIPT:
 ; Word $04: load inline script destination into RAM $2000.
+NATIVE_WORD_04_BRANCH_SCRIPT:
 WORD_04_SCRIPT_GOTO_ENTRY:
         EX DE,HL  ; ROM $0FBE: EB
         LD E,(HL)  ; ROM $0FBF: 5E
@@ -1218,8 +1218,8 @@ WORD_04_SCRIPT_GOTO_ENTRY:
         EX DE,HL  ; ROM $0FC2: EB
         LD ($2000),HL  ; ROM $0FC3: 22 00 20
         RET  ; ROM $0FC6: C9
-NATIVE_WORD_05_STORE_BYTE:
 ; Word $05: write immediate byte into inline 16-bit RAM address.
+NATIVE_WORD_05_STORE_BYTE:
 WORD_05_STORE_BYTE_ENTRY:
         EX DE,HL  ; ROM $0FC7: EB
         LD A,(HL)  ; ROM $0FC8: 7E
@@ -1231,8 +1231,8 @@ WORD_05_STORE_BYTE_ENTRY:
         LD ($2000),HL  ; ROM $0FCE: 22 00 20
         LD (DE),A  ; ROM $0FD1: 12
         RET  ; ROM $0FD2: C9
-NATIVE_WORD_06_CLEAR_DISPLAY:
 ; Word $06: clear video RAM via stack writes; resume at saved native continuation.
+NATIVE_WORD_06_CLEAR_DISPLAY:
 WORD_06_CLEAR_VIDEO_ENTRY:
         POP HL  ; ROM $0FD3: E1
         LD SP,$4030  ; ROM $0FD4: 31 30 40
@@ -1289,8 +1289,8 @@ FLOW_TABLE_0FFB:
         DEC B  ; ROM $1009: 05
         JP NZ,COPY_SCREEN_ROW_LOOP  ; ROM $100A: C2 F9 0F
         RET  ; ROM $100D: C9
-NATIVE_WORD_07_INIT_DESCRIPTOR:
 ; Word $07: initialize descriptor bytes in RAM $2040–$204A.
+NATIVE_WORD_07_INIT_DESCRIPTOR:
 WORD_07_INIT_DESCRIPTOR_ENTRY:
         LD HL,$204A  ; ROM $100E: 21 4A 20
         LD BC,$0BFE  ; ROM $1011: 01 FE 0B
@@ -1334,8 +1334,8 @@ DECODE_DESCRIPTOR_NIBBLE:
         INC BC  ; ROM $1044: 03
         INC DE  ; ROM $1045: 13
         RET  ; ROM $1046: C9
-NATIVE_WORD_08_DRAW_AND_BRANCH:
 ; Word $08: configure rendering and branch to second inline pointer.
+NATIVE_WORD_08_DRAW_AND_BRANCH:
 WORD_08_DRAW_BRANCH_ENTRY:
         EX DE,HL  ; ROM $1047: EB
         LD E,(HL)  ; ROM $1048: 5E
@@ -1361,8 +1361,8 @@ WORD_08_DRAW_BRANCH_ENTRY:
         POP HL  ; ROM $1067: E1
         LD A,$05  ; ROM $1068: 3E 05
         JP DRAW_ENCODED_GRAPHIC  ; ROM $106A: C3 32 01
-NATIVE_WORD_0A_CLEAR_FLAG_BIT3:
 ; Word $0A: clear bit $08 in byte at inline address.
+NATIVE_WORD_0A_CLEAR_FLAG_BIT3:
 WORD_0A_CLEAR_FLAG_ENTRY:
         EX DE,HL  ; ROM $106D: EB
         LD E,(HL)  ; ROM $106E: 5E
@@ -1374,8 +1374,8 @@ WORD_0A_CLEAR_FLAG_ENTRY:
         AND $F7  ; ROM $1076: E6 F7
         LD (DE),A  ; ROM $1078: 12
         RET  ; ROM $1079: C9
-NATIVE_WORD_0B_RESET_ROUND:
 ; Word $0B: decrement round count and install script root $1676.
+NATIVE_WORD_0B_RESET_ROUND:
 WORD_0B_RESET_SCENE_ENTRY:
         LD HL,$2018  ; ROM $107A: 21 18 20
         LD A,(HL)  ; ROM $107D: 7E
@@ -1489,12 +1489,10 @@ BOOT_MAIN_ENTRY:
         LD HL,$11C3  ; ROM $11BA: 21 C3 11
         LD SP,$4000  ; ROM $11BD: 31 00 40
         JP CLEAR_VIDEO_STACK_LOOP_START  ; ROM $11C0: C3 D7 0F
-; Boot continuation from $11BA -> $0FD7 -> JP (HL).
 ; Set script PC RAM $2000 to ROM $1633, push dispatcher return $11C9, enable IRQ and output port $04.
 BOOT_SCRIPT_AFTER_VIDEO_CLEAR:
         LD HL,$1633  ; ROM $11C3: 21 33 16
         LD ($2000),HL  ; ROM $11C6: 22 00 20
-BOOT_PUSH_INTERPRETER_RETURN:
         LD HL,$11C9  ; ROM $11C9: 21 C9 11
         PUSH HL  ; ROM $11CC: E5
         EI  ; ROM $11CD: FB
@@ -1518,8 +1516,8 @@ BYTECODE_FETCH_DISPATCH:
         LD H,(HL)  ; ROM $11E7: 66
         LD L,A  ; ROM $11E8: 6F
         JP (HL)  ; ROM $11E9: E9
-WORD_ZERO_FRAME_SCHEDULER:
 ; Run native frame services; conditional extra services depend on RAM $200D.
+WORD_ZERO_FRAME_SCHEDULER:
 BYTECODE_ZERO_FRAME_HANDOFF:
         CALL FRAME_SERVICE_12E5  ; ROM $11EA: CD E5 12
         CALL FRAME_SERVICE_12B1  ; ROM $11ED: CD B1 12
@@ -2109,22 +2107,21 @@ OBJECT_NATIVE_POINTERS:
         DW $159E ; ROM $157C object routine pointers
         DW $15B3 ; ROM $157E object routine pointers
 OBJECT_MOTION_DATA:
-        DB $EF,$15,$FE,$15,$04,$08,$08,$0C ; ROM $1580 object, motion and sprite command data
-        DB $14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19,$14,$1E ; ROM $1588 object, motion and sprite command data
-        DB $05,$52,$0D,$0A,$8C,$0D,$0F,$C6,$0D,$FF,$8C,$0D ; ROM $1594 object, motion and sprite command data
-        DB $05,$E4,$06,$FF,$29,$0D,$06,$2C,$0E,$0A,$9D,$0E ; ROM $15A0 object, motion and sprite command data
-        DB $0F,$02,$0F,$13,$9D,$0E,$FF,$2C,$0E,$05,$E4,$06 ; ROM $15AC object, motion and sprite command data
-        DB $FF,$00,$0E,$02,$C3,$0A,$04,$FB,$0A,$06,$33,$0B ; ROM $15B8 object, motion and sprite command data
-        DB $FF,$6B,$0B,$05,$E4,$06,$0F,$A3,$0B,$FF,$C3,$0B ; ROM $15C4 object, motion and sprite command data
-        DB $01,$FE,$0B,$02,$24,$0C,$03,$4A,$0C,$FF,$70,$0C ; ROM $15D0 object, motion and sprite command data
-        DB $05,$E4,$06,$FF,$E6,$0B,$05,$65,$09,$19,$9D,$09 ; ROM $15DC object, motion and sprite command data
-        DB $1E,$D1,$08,$37,$15,$09,$FF,$65,$09,$05,$E4,$06 ; ROM $15E8 object, motion and sprite command data
-        DB $FF,$DE,$09,$0E,$27,$0A,$19,$F5,$09,$FF,$27,$0A ; ROM $15F4 object, motion and sprite command data
-        DB $05,$E4,$06,$0F,$F5,$09,$14,$65,$0A,$19,$91,$0A ; ROM $1600 object, motion and sprite command data
-        DB $FF,$AF,$0A,$03,$95,$07,$06,$EF,$07,$09,$49,$08 ; ROM $160C object, motion and sprite command data
-        DB $FF,$EF,$07,$05,$E4,$06,$FF,$A3,$08,$02,$49,$07 ; ROM $1618 object, motion and sprite command data
-        DB $04,$6F,$07,$06,$49,$07,$FF,$23,$07,$05,$E4,$06 ; ROM $1624 object, motion and sprite command data
-        DB $FF,$12,$07 ; ROM $1630 object, motion and sprite command data
+        DB $EF,$15,$FE,$15,$04,$08,$08,$0C,$14,$17,$3A,$25 ; ROM $1580 object, motion and sprite command data
+        DB $14,$14,$0F,$14,$19,$19,$14,$1E,$05,$52,$0D,$0A ; ROM $158C object, motion and sprite command data
+        DB $8C,$0D,$0F,$C6,$0D,$FF,$8C,$0D,$05,$E4,$06,$FF ; ROM $1598 object, motion and sprite command data
+        DB $29,$0D,$06,$2C,$0E,$0A,$9D,$0E,$0F,$02,$0F,$13 ; ROM $15A4 object, motion and sprite command data
+        DB $9D,$0E,$FF,$2C,$0E,$05,$E4,$06,$FF,$00,$0E,$02 ; ROM $15B0 object, motion and sprite command data
+        DB $C3,$0A,$04,$FB,$0A,$06,$33,$0B,$FF,$6B,$0B,$05 ; ROM $15BC object, motion and sprite command data
+        DB $E4,$06,$0F,$A3,$0B,$FF,$C3,$0B,$01,$FE,$0B,$02 ; ROM $15C8 object, motion and sprite command data
+        DB $24,$0C,$03,$4A,$0C,$FF,$70,$0C,$05,$E4,$06,$FF ; ROM $15D4 object, motion and sprite command data
+        DB $E6,$0B,$05,$65,$09,$19,$9D,$09,$1E,$D1,$08,$37 ; ROM $15E0 object, motion and sprite command data
+        DB $15,$09,$FF,$65,$09,$05,$E4,$06,$FF,$DE,$09,$0E ; ROM $15EC object, motion and sprite command data
+        DB $27,$0A,$19,$F5,$09,$FF,$27,$0A,$05,$E4,$06,$0F ; ROM $15F8 object, motion and sprite command data
+        DB $F5,$09,$14,$65,$0A,$19,$91,$0A,$FF,$AF,$0A,$03 ; ROM $1604 object, motion and sprite command data
+        DB $95,$07,$06,$EF,$07,$09,$49,$08,$FF,$EF,$07,$05 ; ROM $1610 object, motion and sprite command data
+        DB $E4,$06,$FF,$A3,$08,$02,$49,$07,$04,$6F,$07,$06 ; ROM $161C object, motion and sprite command data
+        DB $49,$07,$FF,$23,$07,$05,$E4,$06,$FF,$12,$07 ; ROM $1628 object, motion and sprite command data
 CMD_1633_CLEAR_DISPLAY:
         DB $06 ; CLEAR_DISPLAY
 CMD_1634_INIT_RENDER:
@@ -2353,7 +2350,7 @@ FLOW_GAME_17EC:
         INC A  ; ROM $17FE: 3C
 FLOW_GAME_17FF:
         JP DRAW_ENCODED_GRAPHIC  ; ROM $17FF: C3 32 01
-; JP instruction above spans 9316.1f $17FF and desertgu.e $1800-$1801.
+
         ORG $1802
 ; Device desertgu.e, SHA1 202433dfb174901bd3b91e843d9d697a8333ef9e
 FLOW_GAME_1802:
@@ -2450,7 +2447,7 @@ FLOW_GAME_1858:
         OR $02  ; ROM $1888: F6 02
         LD (HL),A  ; ROM $188A: 77
         RET  ; ROM $188B: C9
-; Inspect pointed object's sign and bit $02.
+; Inspect pointed objects sign and bit $02.
 TEST_OBJECT_FLAG_BIT1:
         LD A,(HL)  ; ROM $188C: 7E
         AND A  ; ROM $188D: A7
@@ -2720,44 +2717,44 @@ MESSAGE_SCREEN_COORDINATE_POINTERS:
         DB $40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40,$40 ; ROM $1A4B screen coordinate and text offsets
         DB $40,$40,$40,$40,$40,$40,$40,$44,$45 ; ROM $1A57 screen coordinate and text offsets
 SCREEN_MESSAGE_TEXT:
-        DB $53,$45,$52,$54,$40,$47,$55,$4E,$00,$40,$40 ; ROM $1A60 high-bit-terminated screen message and token data
-        DB $40,$40,$40,$32,$30,$30,$40,$42,$4F,$4E,$55,$53 ; ROM $1A6B high-bit-terminated screen message and token data
-        DB $40,$40,$40,$40,$40,$31,$30,$30,$40,$55,$47,$48 ; ROM $1A77 high-bit-terminated screen message and token data
-        DB $4A,$42,$55,$46,$4A,$41,$52,$47,$4A,$50,$4F,$57 ; ROM $1A83 high-bit-terminated screen message and token data
-        DB $4A,$5A,$4F,$57,$4A,$42,$4F,$50,$4A,$57,$41,$4D ; ROM $1A8F high-bit-terminated screen message and token data
-        DB $4A,$42,$41,$4D,$4A,$4D,$49,$53,$53,$45,$44,$40 ; ROM $1A9B high-bit-terminated screen message and token data
-        DB $41,$47,$41,$49,$4E,$40,$44,$55,$4D,$4D,$59,$54 ; ROM $1AA7 high-bit-terminated screen message and token data
-        DB $55,$52,$4B,$45,$59,$52,$45,$4C,$4F,$41,$44,$43 ; ROM $1AB3 high-bit-terminated screen message and token data
-        DB $59,$43,$4C,$45,$84,$47,$41,$4D,$45,$84,$4F,$56 ; ROM $1ABF high-bit-terminated screen message and token data
-        DB $45,$52,$8B,$49,$4E,$53,$45,$52,$54,$40,$43,$4F ; ROM $1ACB high-bit-terminated screen message and token data
-        DB $49,$4E,$84,$54,$49,$4D,$45,$85,$53,$43,$4F,$52 ; ROM $1AD7 high-bit-terminated screen message and token data
-        DB $45,$8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45 ; ROM $1AE3 high-bit-terminated screen message and token data
-        DB $89,$4C,$41,$53,$54,$40,$47,$41,$4D,$45,$8D,$45 ; ROM $1AEF high-bit-terminated screen message and token data
-        DB $58,$54,$45,$4E,$44,$45,$44,$40,$54,$49,$4D,$45 ; ROM $1AFB high-bit-terminated screen message and token data
-        DB $89,$47,$45,$54,$40,$52,$45,$41,$44,$59,$89,$40 ; ROM $1B07 high-bit-terminated screen message and token data
-        DB $40,$53,$48,$4F,$4F,$54,$40,$40,$84,$47,$41,$4D ; ROM $1B13 high-bit-terminated screen message and token data
-        DB $45,$84,$4F,$56,$45,$52,$89,$45,$49,$4E,$57,$45 ; ROM $1B1F high-bit-terminated screen message and token data
-        DB $52,$46,$45,$4E,$84,$5A,$45,$49,$54,$86,$50,$55 ; ROM $1B2B high-bit-terminated screen message and token data
-        DB $4E,$4B,$54,$45,$86,$52,$45,$4B,$4F,$52,$44,$88 ; ROM $1B37 high-bit-terminated screen message and token data
-        DB $45,$4E,$44,$53,$50,$49,$45,$4C,$91,$5A,$45,$49 ; ROM $1B43 high-bit-terminated screen message and token data
-        DB $54,$56,$45,$52,$4C,$41,$45,$4E,$47,$45,$52,$55 ; ROM $1B4F high-bit-terminated screen message and token data
-        DB $4E,$47,$8D,$46,$45,$52,$54,$49,$47,$40,$4D,$41 ; ROM $1B5B high-bit-terminated screen message and token data
-        DB $43,$48,$45,$4E,$8D,$40,$40,$53,$43,$48,$49,$45 ; ROM $1B67 high-bit-terminated screen message and token data
-        DB $53,$53,$45,$4E,$40,$40,$83,$46,$49,$4E,$81,$40 ; ROM $1B73 high-bit-terminated screen message and token data
-        DB $8C,$4D,$45,$54,$54,$45,$5A,$40,$50,$49,$45,$43 ; ROM $1B7F high-bit-terminated screen message and token data
-        DB $45,$85,$54,$45,$4D,$50,$53,$85,$53,$43,$4F,$52 ; ROM $1B8B high-bit-terminated screen message and token data
-        DB $45,$8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45 ; ROM $1B97 high-bit-terminated screen message and token data
-        DB $8C,$44,$45,$52,$4E,$49,$45,$52,$40,$43,$4F,$55 ; ROM $1BA3 high-bit-terminated screen message and token data
-        DB $50,$8C,$50,$52,$4F,$4C,$4F,$4E,$47,$41,$54,$49 ; ROM $1BAF high-bit-terminated screen message and token data
-        DB $4F,$4E,$8D,$50,$52,$45,$50,$41,$52,$45,$5A,$40 ; ROM $1BBB high-bit-terminated screen message and token data
-        DB $56,$4F,$55,$53,$8D,$40,$40,$40,$40,$53,$48,$4F ; ROM $1BC7 high-bit-terminated screen message and token data
-        DB $4F,$54,$40,$40,$40,$40,$84,$53,$50,$49,$4C,$84 ; ROM $1BD3 high-bit-terminated screen message and token data
-        DB $53,$4C,$55,$54,$87,$49,$4E,$44,$4B,$41,$53,$54 ; ROM $1BDF high-bit-terminated screen message and token data
-        DB $83,$54,$49,$44,$85,$50,$4F,$49,$4E,$54,$89,$54 ; ROM $1BEB high-bit-terminated screen message and token data
-        DB $4F,$50,$40,$50,$4F,$49,$4E,$54,$8B,$53,$49,$44 ; ROM $1BF7 high-bit-terminated screen message and token data
-        DB $53,$54,$45,$40,$53,$50,$49,$4C,$8A,$45,$4B,$53 ; ROM $1C03 high-bit-terminated screen message and token data
-        DB $54,$52,$41,$40,$54,$49,$44,$85,$50,$41,$52,$41 ; ROM $1C0F high-bit-terminated screen message and token data
-        DB $54,$85,$40,$53,$4B,$59,$44 ; ROM $1C1B high-bit-terminated screen message and token data
+        DB $53,$45,$52,$54,$40,$47,$55,$4E,$00,$40,$40,$40 ; ROM $1A60 high-bit-terminated screen message and token data
+        DB $40,$40,$32,$30,$30,$40,$42,$4F,$4E,$55,$53,$40 ; ROM $1A6C high-bit-terminated screen message and token data
+        DB $40,$40,$40,$40,$31,$30,$30,$40,$55,$47,$48,$4A ; ROM $1A78 high-bit-terminated screen message and token data
+        DB $42,$55,$46,$4A,$41,$52,$47,$4A,$50,$4F,$57,$4A ; ROM $1A84 high-bit-terminated screen message and token data
+        DB $5A,$4F,$57,$4A,$42,$4F,$50,$4A,$57,$41,$4D,$4A ; ROM $1A90 high-bit-terminated screen message and token data
+        DB $42,$41,$4D,$4A,$4D,$49,$53,$53,$45,$44,$40,$41 ; ROM $1A9C high-bit-terminated screen message and token data
+        DB $47,$41,$49,$4E,$40,$44,$55,$4D,$4D,$59,$54,$55 ; ROM $1AA8 high-bit-terminated screen message and token data
+        DB $52,$4B,$45,$59,$52,$45,$4C,$4F,$41,$44,$43,$59 ; ROM $1AB4 high-bit-terminated screen message and token data
+        DB $43,$4C,$45,$84,$47,$41,$4D,$45,$84,$4F,$56,$45 ; ROM $1AC0 high-bit-terminated screen message and token data
+        DB $52,$8B,$49,$4E,$53,$45,$52,$54,$40,$43,$4F,$49 ; ROM $1ACC high-bit-terminated screen message and token data
+        DB $4E,$84,$54,$49,$4D,$45,$85,$53,$43,$4F,$52,$45 ; ROM $1AD8 high-bit-terminated screen message and token data
+        DB $8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45,$89 ; ROM $1AE4 high-bit-terminated screen message and token data
+        DB $4C,$41,$53,$54,$40,$47,$41,$4D,$45,$8D,$45,$58 ; ROM $1AF0 high-bit-terminated screen message and token data
+        DB $54,$45,$4E,$44,$45,$44,$40,$54,$49,$4D,$45,$89 ; ROM $1AFC high-bit-terminated screen message and token data
+        DB $47,$45,$54,$40,$52,$45,$41,$44,$59,$89,$40,$40 ; ROM $1B08 high-bit-terminated screen message and token data
+        DB $53,$48,$4F,$4F,$54,$40,$40,$84,$47,$41,$4D,$45 ; ROM $1B14 high-bit-terminated screen message and token data
+        DB $84,$4F,$56,$45,$52,$89,$45,$49,$4E,$57,$45,$52 ; ROM $1B20 high-bit-terminated screen message and token data
+        DB $46,$45,$4E,$84,$5A,$45,$49,$54,$86,$50,$55,$4E ; ROM $1B2C high-bit-terminated screen message and token data
+        DB $4B,$54,$45,$86,$52,$45,$4B,$4F,$52,$44,$88,$45 ; ROM $1B38 high-bit-terminated screen message and token data
+        DB $4E,$44,$53,$50,$49,$45,$4C,$91,$5A,$45,$49,$54 ; ROM $1B44 high-bit-terminated screen message and token data
+        DB $56,$45,$52,$4C,$41,$45,$4E,$47,$45,$52,$55,$4E ; ROM $1B50 high-bit-terminated screen message and token data
+        DB $47,$8D,$46,$45,$52,$54,$49,$47,$40,$4D,$41,$43 ; ROM $1B5C high-bit-terminated screen message and token data
+        DB $48,$45,$4E,$8D,$40,$40,$53,$43,$48,$49,$45,$53 ; ROM $1B68 high-bit-terminated screen message and token data
+        DB $53,$45,$4E,$40,$40,$83,$46,$49,$4E,$81,$40,$8C ; ROM $1B74 high-bit-terminated screen message and token data
+        DB $4D,$45,$54,$54,$45,$5A,$40,$50,$49,$45,$43,$45 ; ROM $1B80 high-bit-terminated screen message and token data
+        DB $85,$54,$45,$4D,$50,$53,$85,$53,$43,$4F,$52,$45 ; ROM $1B8C high-bit-terminated screen message and token data
+        DB $8A,$48,$49,$47,$48,$40,$53,$43,$4F,$52,$45,$8C ; ROM $1B98 high-bit-terminated screen message and token data
+        DB $44,$45,$52,$4E,$49,$45,$52,$40,$43,$4F,$55,$50 ; ROM $1BA4 high-bit-terminated screen message and token data
+        DB $8C,$50,$52,$4F,$4C,$4F,$4E,$47,$41,$54,$49,$4F ; ROM $1BB0 high-bit-terminated screen message and token data
+        DB $4E,$8D,$50,$52,$45,$50,$41,$52,$45,$5A,$40,$56 ; ROM $1BBC high-bit-terminated screen message and token data
+        DB $4F,$55,$53,$8D,$40,$40,$40,$40,$53,$48,$4F,$4F ; ROM $1BC8 high-bit-terminated screen message and token data
+        DB $54,$40,$40,$40,$40,$84,$53,$50,$49,$4C,$84,$53 ; ROM $1BD4 high-bit-terminated screen message and token data
+        DB $4C,$55,$54,$87,$49,$4E,$44,$4B,$41,$53,$54,$83 ; ROM $1BE0 high-bit-terminated screen message and token data
+        DB $54,$49,$44,$85,$50,$4F,$49,$4E,$54,$89,$54,$4F ; ROM $1BEC high-bit-terminated screen message and token data
+        DB $50,$40,$50,$4F,$49,$4E,$54,$8B,$53,$49,$44,$53 ; ROM $1BF8 high-bit-terminated screen message and token data
+        DB $54,$45,$40,$53,$50,$49,$4C,$8A,$45,$4B,$53,$54 ; ROM $1C04 high-bit-terminated screen message and token data
+        DB $52,$41,$40,$54,$49,$44,$85,$50,$41,$52,$41,$54 ; ROM $1C10 high-bit-terminated screen message and token data
+        DB $85,$40,$53,$4B,$59,$44 ; ROM $1C1C high-bit-terminated screen message and token data
 FLOW_GAME_1C22:
         XOR A  ; ROM $1C22: AF
         LD ($2031),A  ; ROM $1C23: 32 31 20
