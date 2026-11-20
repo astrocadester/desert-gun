@@ -34,7 +34,7 @@ Verified MAME-compatible ROM archive produced by the build.
 Native assembly, device splitting, SHA-1 comparison and ZIP packaging.
 
 `tools/`  
-Bundled zmac assemblers and separate, optional ROM RE tooling; Python is never invoked by the build.
+Bundled zmac v1.3 assemblers for the Linux and Windows builds; the source is maintained directly in `src/desertgun.asm`.
 
 `docs/`  
 Standalone technical reference, separate RE/engineering task tracker, original manual.
@@ -103,11 +103,11 @@ See the [technical reference](docs/DESERT-GUN-TECHNICAL-REFERENCE.md) for the an
 
 The ROM has 8x10 digit and alphabet bitmaps starting at `$0288`. The assembly separates the display font into individual glyph records, with original bytes and inline `#` / `.` raster illustrations. Other ROM regions hold packed gun, target, scene and object artwork, positioning tables and encoded text.
 
-The native drawing routines near `$0132` and `$0167` interpret encoded graphics and copy pixel data into video memory. The graphics pool at `$06DC–$0F60` is divided into **47 directly referenced graphic resources**. Its opening eight-pixel pattern is annotated row by row. The animation frame table at `$14BB` has sixteen frame-state indices and eight little-endian graphic pointers at `$14CB`.
+The native drawing routines near `$0132` and `$0167` interpret encoded graphics and copy pixel data into video memory. The graphics pool at `$06DC–$0F60` has **47 source-referenced entry labels**, including 40 complete dimensioned bitmap records, two bitmaps crossing internal labels or the ROM boundary, and three lookup/word-table regions. Bitmap rows now contain inline `#` / `.` pixels. The animation frame table at `$14BB` has sixteen frame-state indices and eight little-endian graphic pointers at `$14CB`.
 
 The object-motion controller selects between an eight-entry pointer table at `$1564` and a six-entry alternative at `$1574`. These select **16 labeled motion sequences** within `$1580–$1632`, with selector/graphic-address records and `$FF` sequence terminators.
 
-The text area contains the `DESERT GUN` title beginning at `$1A5E`, scoring and bonus prompts, and high-bit-delimited messages in **English, German, French and Danish**. The language directory at `$1A2F` references four verified delimiter anchors.
+The text area contains the `DESERT GUN` title beginning at `$1A5E`, scoring and bonus prompts, and high-bit-delimited messages in **English, German, French and Danish**. Readable messages are assembled from quoted strings, with `$40` spacing and control bytes explicit. The language directory at `$1A2F` references four verified delimiter anchors.
 
 ## Sound
 
