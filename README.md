@@ -93,11 +93,11 @@ The native interpreter at `$11D0` fetches a command through the 16-bit script pr
 | Initial interpreted script | `$1633` | Starting program |
 | Round reset script | `$1676` | Alternate game script root |
 
-The command handlers cover drawing modes, mode/pointer state, branching, byte storage, video clear, descriptor initialization, flags, scene reset and drawing packet transfer. Their operand widths and effects are cataloged in [8080 word semantics](docs/8080-WORD-SEMANTICS.md). The table now names each of the 13 slots, and the round program at `$1679` is decoded into **39 command records with typed inline bytes and words**.
+The command handlers cover drawing modes, mode/pointer state, branching, byte storage, video clear, descriptor initialization, flags, scene reset and drawing packet transfer. Their operand widths and effects are cataloged in technical reference. The table now names each of the 13 slots, and the round program at `$1679` is decoded into **39 command records with typed inline bytes and words**.
 
 The dispatch tail matches the ten-byte indexed-address/indirect-jump mechanism studied in DNA's Gun Fight, Boot Hill, Sea Wolf, Tornado Baseball, Double Play and Extra Inning. This is evidence for shared execution techniques rather than identity of every command number or word behavior.
 
-See [interpreter and vectors](docs/interpreter.md) and the [hard RE investigation](docs/hard-re-interpreter-lineage.md).
+See the [technical reference](docs/DESERT-GUN-TECHNICAL-REFERENCE.md) for the annotated interpreter, command vocabulary and frame behavior.
 
 ## Graphics and text
 
