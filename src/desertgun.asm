@@ -64,12 +64,12 @@ TEST_RAM_FORWARD_SCAN:
         LD A,L
         AND $01
         LD A,C
-        JP NZ,RAM_TEST_RECORD_ODD_MISMATCH
+        JP NZ,RAM_ERR_ODD
         OR D
         LD D,A
         JP RAM_TEST_ADVANCE_FORWARD
 
-RAM_TEST_RECORD_ODD_MISMATCH:
+RAM_ERR_ODD:
         OR E
         LD E,A
 
@@ -92,12 +92,12 @@ TEST_RAM_REVERSE_SCAN:
         LD A,L
         AND $01
         LD A,C
-        JP NZ,RAM_TEST_RECORD_REVERSE_MISMATCH
+        JP NZ,RAM_ERR_REV
         OR D
         LD D,A
         JP RAM_TEST_WRITE_COMPLEMENT
 
-RAM_TEST_RECORD_REVERSE_MISMATCH:
+RAM_ERR_REV:
         OR E
         LD E,A
 
@@ -111,12 +111,12 @@ RAM_TEST_WRITE_COMPLEMENT:
         LD A,L
         AND $01
         LD A,C
-        JP NZ,RAM_TEST_RECORD_COMPLEMENT_MISMATCH
+        JP NZ,RAM_ERR_COMP
         OR D
         LD D,A
         JP RAM_TEST_RESUME_REVERSE
 
-RAM_TEST_RECORD_COMPLEMENT_MISMATCH:
+RAM_ERR_COMP:
         OR E
         LD E,A
 
@@ -137,12 +137,12 @@ TEST_RAM_FINAL_SCAN:
         LD A,L
         AND $01
         LD A,C
-        JP NZ,RAM_TEST_RECORD_CLEAR_MISMATCH
+        JP NZ,RAM_ERR_CLEAR
         OR D
         LD D,A
         JP RAM_TEST_CLEAR_NEXT_BYTE
 
-RAM_TEST_RECORD_CLEAR_MISMATCH:
+RAM_ERR_CLEAR:
         OR E
         LD E,A
 
@@ -168,7 +168,7 @@ TEST_RAM_RESULT:
         LD DE,$2000
         LD B,$00
 
-RAM_TEST_ERROR_DISPLAY_BIT:
+RAM_SHOW_ERROR:
         LD HL,$0000
         ADD HL,SP
         LD C,$10
@@ -176,10 +176,10 @@ RAM_TEST_ERROR_DISPLAY_BIT:
 RAM_TEST_OUTPUT_ERROR_PIXEL:
         XOR A
         ADD HL,HL
-        JP C,RAM_TEST_ERROR_DISPLAY_ADVANCE
+        JP C,RAM_ERROR_NEXT
         CPL
 
-RAM_TEST_ERROR_DISPLAY_ADVANCE:
+RAM_ERROR_NEXT:
         LD (DE),A
         INC DE
         LD A,$18
@@ -188,7 +188,7 @@ RAM_TEST_ERROR_DISPLAY_ADVANCE:
         DEC C
         JP NZ,RAM_TEST_OUTPUT_ERROR_PIXEL
         DEC B
-        JP NZ,RAM_TEST_ERROR_DISPLAY_BIT
+        JP NZ,RAM_SHOW_ERROR
         JP TEST_FAILURE_HALT
 ; ROM-bank checksum reference list begins at $0121.
 TEST_ROM_CHECKSUM:
@@ -301,7 +301,7 @@ DRAW_GRAPHIC_MODE_B:
         CALL DRAW_LOOKUP_GLYPH
         LD A,$0A
 
-DRAW_ALTERNATE_GLYPH_ROW:
+ALT_GLYPH_ROW:
         PUSH AF
         LD BC,$0020
         LD A,(DE)
@@ -310,16 +310,16 @@ DRAW_ALTERNATE_GLYPH_ROW:
         LD D,A
         LD E,$04
 
-DRAW_ALTERNATE_GLYPH_PIXELS:
+ALT_GLYPH_PIXEL:
         PUSH DE
         LD A,D
         AND $03
         LD DE,$01C2
 
-DRAW_ALTERNATE_GLYPH_WRITE:
+ALT_GLYPH_WRITE:
         INC DE
         DEC A
-        JP P,DRAW_ALTERNATE_GLYPH_WRITE
+        JP P,ALT_GLYPH_WRITE
         LD A,(DE)
         PUSH HL
         LD (HL),A
@@ -337,13 +337,13 @@ DRAW_ALTERNATE_GLYPH_WRITE:
         RRCA
         LD D,A
         DEC E
-        JP NZ,DRAW_ALTERNATE_GLYPH_PIXELS
+        JP NZ,ALT_GLYPH_PIXEL
         LD C,$7C
         ADD HL,BC
         POP DE
         POP AF
         DEC A
-        JP NZ,DRAW_ALTERNATE_GLYPH_ROW
+        JP NZ,ALT_GLYPH_ROW
         LD BC,$FB04
         ADD HL,BC
         EX DE,HL
@@ -380,7 +380,7 @@ TEST_DISPLAY_ENTRY:
         JP CLEAR_VIDEO_STACK_LOOP_START
 ; Native display test continuation reached via $01C7 -> $0FD7 -> JP (HL).
 ; Display diagnostic resumes from clear-video helper; exercises screen RAM and hardware input.
-TEST_DISPLAY_AFTER_RAM_CLEAR:
+DISP_AFTER_CLEAR:
         EI
         LD HL,$2400
         CALL TEST_DISPLAY_PREPARE_RAM
@@ -392,7 +392,7 @@ TEST_DISPLAY_PIXEL_LOOP:
         JP NZ,TEST_DISPLAY_WRITE_PATTERN
         LD A,L
         CP $C0
-        JP Z,TEST_DISPLAY_AFTER_FILL
+        JP Z,DISP_AFTER_FILL
 
 TEST_DISPLAY_WRITE_PATTERN:
         OUT ($04),A
@@ -406,7 +406,7 @@ TEST_DISPLAY_WRITE_PATTERN:
         LD (HL),$00
         JP TEST_DISPLAY_PIXEL_LOOP
 
-TEST_DISPLAY_AFTER_FILL:
+DISP_AFTER_FILL:
         CALL TEST_DISPLAY_PREPARE_RAM
         LD HL,$026F
         LD DE,$240F
@@ -1220,7 +1220,7 @@ SHIFT_OUTPUT_AND_READ_OBJECT_DESCRIPTOR:
         AND $10
         JP NZ,ADVANCE_INPUT_RECORD_OFFSET
 
-PREPARE_INPUT_PORT3_RECORD:
+PREP_PORT3_DATA:
         PUSH DE
         PUSH HL
 
@@ -1242,7 +1242,7 @@ COPY_INPUT_PORT3_RECORD_BYTE:
         ADD HL,DE
         POP DE
         DEC D
-        JP NZ,PREPARE_INPUT_PORT3_RECORD
+        JP NZ,PREP_PORT3_DATA
         RET
 
 ADVANCE_INPUT_RECORD_OFFSET:
@@ -1250,7 +1250,7 @@ ADVANCE_INPUT_RECORD_OFFSET:
         ADD A,L
         LD L,A
 
-PREPARE_INPUT_PORT0_RECORD:
+PREP_PORT0_DATA:
         PUSH DE
         PUSH HL
 
@@ -1272,7 +1272,7 @@ COPY_INPUT_PORT0_RECORD_BYTE:
         ADD HL,DE
         POP DE
         DEC D
-        JP NZ,PREPARE_INPUT_PORT0_RECORD
+        JP NZ,PREP_PORT0_DATA
         RET
 ; Inspect and clear object flag bit $20 when active.
 CLEAR_OBJECT_PENDING_BIT5:
@@ -1402,7 +1402,7 @@ TEST_RENDER_FLAG_BIT2:
 
 COMPARE_GUN_SHAPE_TABLE_BYTE:
         PUSH HL
-        LD HL,GRAPHIC_RESOURCE_06DC
+        LD HL,GFX_06DC
         ADD HL,BC
         CP (HL)
         POP HL
@@ -1427,11 +1427,11 @@ READ_OBJECT_POINTER_BYTES:
         ADD A,(HL)
         LD (HL),A
         CP D
-        JP C,STORE_OBJECT_FIELD_AND_TEST_BIT1
+        JP C,OBJ_FIELD_TEST_B1
         CP E
         JP C,INCREMENT_OBJECT_FIELD_COUNTER
 
-STORE_OBJECT_FIELD_AND_TEST_BIT1:
+OBJ_FIELD_TEST_B1:
         LD (HL),B
         EX (SP),HL
         LD A,(HL)
@@ -1498,7 +1498,7 @@ STORE_SHIFTED_INPUT_BYTE:
 
 ; Graphic resource $06DC (8 bytes).
 GUN_GRAPHICS_AND_SHAPE_DATA:
-GRAPHIC_RESOURCE_06DC:
+GFX_06DC:
 ; Eight-pixel-wide source pattern; # = set bit, . = clear bit.
         DB $F0 ; ####....
         DB $E8 ; ###.#...
@@ -1510,40 +1510,40 @@ GRAPHIC_RESOURCE_06DC:
         DB $F0 ; ####....
 
 ; Graphic resource $06E4 (46 bytes).
-GRAPHIC_RESOURCE_06E4:
+GFX_06E4:
         DB $02,$16,$01,$04,$08,$1E,$3C,$0F,$F8,$4F,$FC,$07
         DB $FE,$07,$7F,$0F,$FE,$3F,$FC,$7F,$F0,$3F,$F9,$39
         DB $F8,$7F,$D0,$3F,$FC,$0F,$FC,$47,$FE,$07,$FF,$0D
         DB $E4,$1F,$C2,$3F,$C9,$77,$80,$03,$80,$21
 
 ; Graphic resource $0712 (17 bytes).
-GRAPHIC_RESOURCE_0712:
+GFX_0712:
         DB $01,$0F,$20,$20,$10,$10,$09,$09,$0D,$0F,$0F,$1E
         DB $16,$1C,$08,$08,$08
 
 ; Graphic resource $0723 (38 bytes).
-GRAPHIC_RESOURCE_0723:
+GFX_0723:
         DB $03,$0C,$00,$1C,$00,$00,$2A,$00,$00,$1C,$00,$E0
         DB $FF,$03,$10,$7F,$04,$08,$7F,$08,$04,$6B,$10,$04
         DB $3E,$10,$04,$1C,$10,$04,$08,$10,$04,$08,$10,$00
         DB $08,$00
 
 ; Graphic resource $0749 (38 bytes).
-GRAPHIC_RESOURCE_0749:
+GFX_0749:
         DB $03,$0C,$00,$1C,$00,$00,$2A,$00,$7F,$1C,$7F,$C0
         DB $FF,$01,$00,$7F,$00,$00,$7F,$00,$00,$6B,$00,$00
         DB $3E,$00,$00,$1C,$00,$00,$08,$00,$00,$08,$00,$00
         DB $08,$00
 
 ; Graphic resource $076F (38 bytes).
-GRAPHIC_RESOURCE_076F:
+GFX_076F:
         DB $03,$0C,$3F,$1C,$7E,$60,$2A,$03,$C0,$9C,$01,$80
         DB $FF,$00,$00,$7F,$00,$00,$7F,$00,$00,$6B,$00,$00
         DB $3E,$00,$00,$1C,$00,$00,$08,$00,$00,$08,$00,$00
         DB $08,$00
 
 ; Graphic resource $0795 (90 bytes).
-GRAPHIC_RESOURCE_0795:
+GFX_0795:
         DB $04,$16,$00,$00,$00,$61,$00,$00,$00,$63,$00,$00
         DB $00,$63,$00,$00,$00,$63,$00,$00,$00,$22,$00,$00
         DB $00,$7F,$00,$00,$80,$FF,$00,$00,$80,$EB,$00,$00
@@ -1554,7 +1554,7 @@ GRAPHIC_RESOURCE_0795:
         DB $08,$00,$00,$04,$04,$00
 
 ; Graphic resource $07EF (17 bytes).
-GRAPHIC_RESOURCE_07EF:
+GFX_07EF:
         DB $04,$16,$00,$00,$00,$61,$00,$00,$00,$63,$00,$00
         DB $00,$63,$00,$00,$00
 
@@ -1562,7 +1562,7 @@ GRAPHIC_RESOURCE_07EF:
 ; ROM device 9316.1g (second 2 KB device); packed artwork continues.
 
 ; Graphic resource $0800 (73 bytes).
-GRAPHIC_RESOURCE_0800:
+GFX_0800:
         DB $63,$00,$00,$00,$22,$00,$00,$00,$7F,$00,$00,$80
         DB $FF,$00,$00,$80,$FF,$00,$00,$80,$EB,$00,$00,$00
         DB $7F,$00,$F0,$80,$3E,$00,$F8,$C3,$1D,$01,$FC,$FF
@@ -1572,14 +1572,14 @@ GRAPHIC_RESOURCE_0800:
         DB $00
 
 ; Graphic resource $0849 (38 bytes).
-GRAPHIC_RESOURCE_0849:
+GFX_0849:
         DB $04,$16,$00,$00,$00,$61,$00,$00,$00,$63,$00,$00
         DB $00,$63,$00,$00,$00,$63,$00,$00,$00,$22,$00,$00
         DB $00,$7F,$00,$00,$80,$FF,$00,$00,$80,$EB,$00,$00
         DB $80,$EB
 
 ; Graphic resource $086F (52 bytes).
-GRAPHIC_RESOURCE_086F:
+GFX_086F:
         DB $00,$00,$00,$7F,$00,$F0,$80,$3E,$00,$F8,$C3,$1D
         DB $01,$FC,$FF,$09,$0E,$FF,$FF,$08,$F8,$F3,$FF,$00
         DB $E0,$70,$FE,$00,$00,$F0,$F0,$00,$00,$E8,$C1,$01
@@ -1587,14 +1587,14 @@ GRAPHIC_RESOURCE_086F:
         DB $00,$00,$01,$01
 
 ; Graphic resource $08A3 (46 bytes).
-GRAPHIC_RESOURCE_08A3:
+GFX_08A3:
         DB $04,$0B,$00,$00,$F8,$F8,$00,$00,$88,$88,$00,$00
         DB $C8,$9F,$00,$C0,$E1,$3F,$C0,$41,$63,$32,$00,$07
         DB $66,$32,$0C,$06,$CE,$1F,$04,$0E,$BF,$0F,$0C,$CE
         DB $7F,$07,$38,$FF,$3F,$02,$F0,$FF,$1F,$02
 
 ; Graphic resource $08D1 (68 bytes).
-GRAPHIC_RESOURCE_08D1:
+GFX_08D1:
         DB $03,$16,$00,$80,$00,$00,$00,$01,$00,$00,$02,$00
         DB $00,$0C,$00,$00,$F6,$00,$00,$7E,$00,$00,$07,$00
         DB $00,$03,$F0,$8F,$03,$F8,$FF,$01,$FD,$FF,$01,$FE
@@ -1603,7 +1603,7 @@ GRAPHIC_RESOURCE_08D1:
         DB $08,$00,$40,$08,$00,$40,$04,$00
 
 ; Graphic resource $0915 (80 bytes).
-GRAPHIC_RESOURCE_0915:
+GFX_0915:
         DB $03,$1A,$00,$20,$00,$00,$40,$00,$00,$80,$00,$00
         DB $00,$03,$00,$80,$3D,$00,$80,$1F,$00,$80,$03,$00
         DB $80,$03,$00,$80,$03,$00,$80,$03,$00,$F8,$01,$80
@@ -1613,7 +1613,7 @@ GRAPHIC_RESOURCE_0915:
         DB $00,$00,$02,$00,$00,$02,$00,$00
 
 ; Graphic resource $0965 (56 bytes).
-GRAPHIC_RESOURCE_0965:
+GFX_0965:
         DB $03,$12,$00,$80,$00,$00,$00,$01,$00,$00,$02,$00
         DB $00,$0C,$00,$00,$F6,$00,$00,$7E,$00,$00,$07,$00
         DB $80,$03,$F0,$FF,$03,$FC,$FF,$01,$FF,$FF,$01,$FE
@@ -1621,7 +1621,7 @@ GRAPHIC_RESOURCE_0965:
         DB $80,$01,$30,$00,$03,$3F,$F0,$01
 
 ; Graphic resource $099D (65 bytes).
-GRAPHIC_RESOURCE_099D:
+GFX_099D:
         DB $03,$15,$00,$80,$00,$00,$00,$01,$00,$00,$02,$00
         DB $00,$0C,$70,$00,$F6,$FD,$01,$7E,$FE,$07,$07,$FC
         DB $FF,$03,$FC,$FF,$01,$F8,$FF,$00,$F8,$7F,$00,$1F
@@ -1630,12 +1630,12 @@ GRAPHIC_RESOURCE_099D:
         DB $08,$00,$00,$08,$00
 
 ; Graphic resource $09DE (23 bytes).
-GRAPHIC_RESOURCE_09DE:
+GFX_09DE:
         DB $03,$07,$00,$40,$00,$D0,$80,$00,$E0,$01,$01,$E0
         DB $07,$06,$F0,$0F,$7B,$E0,$FF,$3F,$FF,$F8,$07
 
 ; Graphic resource $09F5 (50 bytes).
-GRAPHIC_RESOURCE_09F5:
+GFX_09F5:
         DB $02,$18,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F
         DB $F8,$3F,$FC,$3F,$CC,$33,$CC,$33,$CE,$33,$FE,$7F
         DB $CE,$73,$FF,$7F,$F6,$7E,$F7,$DE,$F7,$DF,$F3,$DF
@@ -1643,7 +1643,7 @@ GRAPHIC_RESOURCE_09F5:
         DB $78,$3E
 
 ; Graphic resource $0A27 (62 bytes).
-GRAPHIC_RESOURCE_0A27:
+GFX_0A27:
         DB $02,$1E,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F
         DB $F8,$3F,$FC,$3F,$CC,$33,$FC,$3F,$CE,$33,$CE,$73
         DB $CE,$73,$FE,$7F,$F6,$7E,$F7,$DE,$F7,$DF,$F3,$DF
@@ -1652,25 +1652,25 @@ GRAPHIC_RESOURCE_0A27:
         DB $78,$3E
 
 ; Graphic resource $0A65 (44 bytes).
-GRAPHIC_RESOURCE_0A65:
+GFX_0A65:
         DB $02,$15,$80,$03,$C0,$07,$E0,$0F,$F0,$1F,$F8,$1F
         DB $F8,$3F,$FC,$3F,$CC,$33,$CC,$33,$CE,$33,$CE,$73
         DB $CE,$73,$FE,$7F,$FE,$7E,$F7,$DE,$F7,$DF,$F3,$BF
         DB $F3,$CF,$61,$86,$41,$82,$79,$DE
 
 ; Graphic resource $0A91 (30 bytes).
-GRAPHIC_RESOURCE_0A91:
+GFX_0A91:
         DB $02,$0E,$E0,$07,$F0,$1F,$F8,$1F,$F8,$3F,$FC,$3F
         DB $CC,$33,$CC,$33,$CE,$33,$CE,$F3,$CE,$F3,$FE,$FF
         DB $6E,$9E,$42,$82,$7A,$BE
 
 ; Graphic resource $0AAF (20 bytes).
-GRAPHIC_RESOURCE_0AAF:
+GFX_0AAF:
         DB $02,$09,$E0,$07,$F0,$1F,$F8,$1F,$F8,$3F,$CC,$33
         DB $CE,$F3,$7E,$9E,$42,$82,$7A,$BE
 
 ; Graphic resource $0AC3 (56 bytes).
-GRAPHIC_RESOURCE_0AC3:
+GFX_0AC3:
         DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
         DB $FF,$00,$38,$C6,$01,$BC,$D6,$03,$BE,$D6,$07,$3F
         DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
@@ -1678,7 +1678,7 @@ GRAPHIC_RESOURCE_0AC3:
         DB $04,$00,$00,$04,$00,$00,$1C,$00
 
 ; Graphic resource $0AFB (56 bytes).
-GRAPHIC_RESOURCE_0AFB:
+GFX_0AFB:
         DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
         DB $FF,$00,$38,$C6,$01,$3C,$C6,$03,$BE,$D6,$07,$3F
         DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
@@ -1686,7 +1686,7 @@ GRAPHIC_RESOURCE_0AFB:
         DB $21,$00,$00,$21,$00,$00,$E7,$00
 
 ; Graphic resource $0B33 (56 bytes).
-GRAPHIC_RESOURCE_0B33:
+GFX_0B33:
         DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
         DB $FF,$00,$38,$C6,$01,$3C,$C6,$03,$3E,$C6,$07,$3F
         DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
@@ -1694,7 +1694,7 @@ GRAPHIC_RESOURCE_0B33:
         DB $40,$00,$20,$80,$00,$E0,$80,$03
 
 ; Graphic resource $0B6B (56 bytes).
-GRAPHIC_RESOURCE_0B6B:
+GFX_0B6B:
         DB $03,$12,$00,$0F,$00,$C0,$3F,$00,$E0,$7F,$00,$F0
         DB $FF,$00,$38,$C6,$01,$3C,$C6,$03,$BE,$D6,$07,$3F
         DB $C6,$0F,$FE,$FF,$07,$F8,$FF,$01,$80,$1F,$00,$00
@@ -1702,92 +1702,92 @@ GRAPHIC_RESOURCE_0B6B:
         DB $10,$00,$20,$10,$00,$E0,$70,$00
 
 ; Graphic resource $0BA3 (32 bytes).
-GRAPHIC_RESOURCE_0BA3:
+GFX_0BA3:
         DB $02,$0F,$00,$20,$00,$38,$00,$3E,$00,$3F,$80,$3B
         DB $C0,$31,$E0,$20,$F0,$31,$B8,$3B,$1C,$3F,$0C,$3E
         DB $1C,$1F,$BC,$0F,$FE,$07,$FF,$03
 
 ; Graphic resource $0BC3 (35 bytes).
-GRAPHIC_RESOURCE_0BC3:
+GFX_0BC3:
         DB $03,$0B,$80,$1F,$00,$F8,$FF,$01,$FE,$FF,$07,$3F
         DB $C6,$0F,$7E,$EF,$07,$BC,$D6,$03,$78,$EF,$01,$F0
         DB $FF,$00,$E0,$7F,$00,$C0,$3F,$00,$00,$0F,$00
 
 ; Graphic resource $0BE6 (24 bytes).
-GRAPHIC_RESOURCE_0BE6:
+GFX_0BE6:
         DB $02,$0B,$C0,$01,$00,$01,$00,$01,$00,$01,$04,$01
         DB $04,$01,$04,$01,$87,$07,$FD,$0F,$FF,$1F,$00,$07
 
 ; Graphic resource $0BFE (38 bytes).
-GRAPHIC_RESOURCE_0BFE:
+GFX_0BFE:
         DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
         DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
         DB $80,$00,$80,$00,$80,$00,$80,$00,$80,$00,$80,$00
         DB $80,$03
 
 ; Graphic resource $0C24 (38 bytes).
-GRAPHIC_RESOURCE_0C24:
+GFX_0C24:
         DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
         DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
         DB $80,$00,$40,$01,$20,$02,$10,$02,$08,$02,$04,$02
         DB $1C,$0E
 
 ; Graphic resource $0C4A (38 bytes).
-GRAPHIC_RESOURCE_0C4A:
+GFX_0C4A:
         DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
         DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
         DB $80,$00,$40,$01,$20,$02,$10,$04,$08,$08,$04,$10
         DB $1C,$70
 
 ; Graphic resource $0C70 (38 bytes).
-GRAPHIC_RESOURCE_0C70:
+GFX_0C70:
         DB $02,$12,$00,$0E,$00,$0A,$00,$7E,$00,$06,$01,$06
         DB $0E,$06,$3C,$06,$F8,$07,$F8,$07,$F0,$03,$E0,$01
         DB $80,$00,$80,$01,$40,$03,$20,$06,$20,$04,$20,$04
         DB $E0,$1C
 
 ; Graphic resource $0C96 (29 bytes).
-GRAPHIC_RESOURCE_0C96:
+GFX_0C96:
         DB $01,$1B,$18,$18,$18,$3C,$3C,$7E,$7E,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$7E
         DB $3C,$3C,$7E,$7E,$FF
 
 ; Graphic resource $0CB3 (34 bytes).
-GRAPHIC_RESOURCE_0CB3:
+GFX_0CB3:
         DB $02,$10,$E0,$07,$C0,$03,$C0,$03,$F8,$1F,$FF,$FF
         DB $FF,$FF,$FF,$FF,$1F,$F0,$8F,$F4,$2F,$F1,$4F,$F4
         DB $0F,$F0,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
 ; Graphic resource $0CD5 (28 bytes).
-GRAPHIC_RESOURCE_0CD5:
+GFX_0CD5:
         DB $01,$1A,$18,$18,$18,$18,$3C,$7E,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF
 
 ; Graphic resource $0CF1 (18 bytes).
-GRAPHIC_RESOURCE_0CF1:
+GFX_0CF1:
         DB $01,$10,$3C,$3C,$18,$18,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF
 
 ; Graphic resource $0D03 (32 bytes).
-GRAPHIC_RESOURCE_0D03:
+GFX_0D03:
         DB $80,$00,$02,$00,$48,$00,$28,$00,$18,$00,$9B,$00
         DB $1E,$00,$3C,$00,$79,$00,$DC,$00,$1E,$00,$3F,$00
         DB $4C,$00,$40,$00,$C4,$00,$D2,$00
 
 ; Graphic resource $0D23 (6 bytes).
-GRAPHIC_RESOURCE_0D23:
+GFX_0D23:
         DB $30,$00,$6C,$00,$FA,$00
 
 ; Graphic resource $0D29 (41 bytes).
-GRAPHIC_RESOURCE_0D29:
+GFX_0D29:
         DB $03,$0D,$00,$70,$00,$00,$F8,$01,$00,$FC,$03,$00
         DB $3C,$0F,$00,$1E,$1E,$08,$1E,$BE,$18,$3F,$FF,$3C
         DB $3F,$EF,$BC,$FF,$C3,$FE,$FF,$80,$3F,$63,$00,$1E
         DB $42,$00,$0F,$C6,$00
 
 ; Graphic resource $0D52 (58 bytes).
-GRAPHIC_RESOURCE_0D52:
+GFX_0D52:
         DB $04,$0E,$00,$00,$7C,$00,$00,$80,$FF,$01,$02,$F0
         DB $FF,$03,$04,$FF,$3F,$8F,$E8,$FF,$1F,$FE,$F2,$FF
         DB $9F,$FE,$E8,$FF,$3F,$FF,$04,$FF,$FF,$8F,$02,$FC
@@ -1795,7 +1795,7 @@ GRAPHIC_RESOURCE_0D52:
         DB $C1,$00,$00,$10,$81,$00,$00,$30,$83,$01
 
 ; Graphic resource $0D8C (58 bytes).
-GRAPHIC_RESOURCE_0D8C:
+GFX_0D8C:
         DB $04,$0E,$00,$00,$7C,$00,$00,$80,$FF,$01,$02,$F0
         DB $FF,$03,$04,$FF,$3F,$0F,$E8,$FF,$1F,$BE,$F2,$FF
         DB $5F,$FE,$E8,$FF,$3F,$FF,$04,$FF,$FF,$CF,$02,$FC
@@ -1803,7 +1803,7 @@ GRAPHIC_RESOURCE_0D8C:
         DB $21,$00,$00,$84,$20,$00,$00,$8C,$61,$00
 
 ; Graphic resource $0DC6 (58 bytes).
-GRAPHIC_RESOURCE_0DC6:
+GFX_0DC6:
         DB $04,$0E,$00,$00,$7C,$00,$00,$80,$FF,$01,$02,$F0
         DB $FF,$03,$04,$FF,$3F,$8F,$E8,$FF,$9F,$FE,$F2,$FF
         DB $1F,$FE,$E8,$FF,$3F,$FF,$04,$FF,$FF,$8F,$02,$FC
@@ -1811,14 +1811,14 @@ GRAPHIC_RESOURCE_0DC6:
         DB $33,$00,$00,$02,$12,$00,$00,$06,$36,$00
 
 ; Graphic resource $0E00 (44 bytes).
-GRAPHIC_RESOURCE_0E00:
+GFX_0E00:
         DB $03,$0E,$80,$3F,$3F,$80,$F0,$23,$80,$F8,$23,$80
         DB $FE,$23,$00,$DE,$22,$80,$F3,$23,$E0,$C1,$01,$F0
         DB $C3,$00,$F8,$CF,$00,$F8,$0F,$00,$FA,$0F,$00,$FF
         DB $07,$00,$E3,$03,$00,$F2,$7F,$00
 
 ; Graphic resource $0E2C (113 bytes).
-GRAPHIC_RESOURCE_0E2C:
+GFX_0E2C:
         DB $03,$25,$00,$18,$00,$00,$38,$00,$00,$38,$38,$00
         DB $38,$38,$00,$70,$08,$00,$70,$0C,$00,$70,$0C,$00
         DB $60,$0C,$00,$60,$06,$00,$E0,$07,$00,$E0,$07,$00
@@ -1831,7 +1831,7 @@ GRAPHIC_RESOURCE_0E2C:
         DB $00,$00,$E0,$0F,$00
 
 ; Graphic resource $0E9D (101 bytes).
-GRAPHIC_RESOURCE_0E9D:
+GFX_0E9D:
         DB $03,$21,$00,$18,$00,$00,$38,$00,$00,$38,$78,$00
         DB $38,$78,$00,$70,$48,$00,$70,$0C,$00,$70,$0C,$00
         DB $60,$0C,$00,$60,$06,$00,$E0,$07,$00,$E0,$07,$00
@@ -1843,7 +1843,7 @@ GRAPHIC_RESOURCE_0E9D:
         DB $03,$00,$80,$3F,$00
 
 ; Graphic resource $0F02 (95 bytes).
-GRAPHIC_RESOURCE_0F02:
+GFX_0F02:
         DB $03,$1F,$00,$18,$00,$00,$38,$00,$00,$38,$38,$00
         DB $38,$38,$00,$70,$08,$00,$70,$0C,$00,$70,$0C,$00
         DB $60,$0C,$00,$60,$06,$00,$E0,$07,$00,$E0,$07,$00
@@ -2022,18 +2022,18 @@ CLEAR_VIDEO_PUSH_LOOP:
         LD SP,$2400
         JP (HL)
 ; Read width/height bytes from HL and set up source/destination.
-COPY_SCREEN_ROW_DESCRIPTOR:
+COPY_ROW_DESC:
         LD C,(HL)
         INC HL
         LD B,(HL)
         INC HL
         EX DE,HL
 ; Copy C bytes per row, advance destination by $20 per row.
-COPY_SCREEN_ROW_LOOP:
+COPY_ROW_LOOP:
         PUSH BC
         PUSH HL
 
-COPY_SCREEN_ROW_BYTE:
+COPY_ROW_BYTE:
         LD A,(DE)
         INC DE
         LD (HL),A
@@ -2043,13 +2043,13 @@ COPY_SCREEN_ROW_BYTE:
         ORG $1000
 ; ROM device 9316.1f, SHA1 1cc4e9b0aa7e9546c133bd40d40ede6f2fbe93ba
 
-        JP NZ,$0FFB ; COPY_SCREEN_ROW_BYTE
+        JP NZ,COPY_ROW_BYTE
         POP HL
         LD BC,$0020
         ADD HL,BC
         POP BC
         DEC B
-        JP NZ,$0FF9 ; COPY_SCREEN_ROW_LOOP
+        JP NZ,COPY_ROW_LOOP
         RET
 
 ; Word $07: initialize descriptor bytes in RAM $2040–$204A.
@@ -2108,12 +2108,12 @@ WORD_08_DRAW_BRANCH_ENTRY:
         PUSH BC
         PUSH HL
         PUSH BC
-        CALL $1033 ; DECODE_DESCRIPTOR_NIBBLE
-        CALL $1033 ; DECODE_DESCRIPTOR_NIBBLE
+        CALL DECODE_DESCRIPTOR_NIBBLE
+        CALL DECODE_DESCRIPTOR_NIBBLE
         LD A,$30
         LD (BC),A
         POP HL
-        CALL $11AC ; NORMALIZE_RENDER_DESCRIPTOR
+        CALL NORMALIZE_RENDER_DESCRIPTOR
         POP HL
         LD E,(HL)
         INC HL
@@ -2122,7 +2122,7 @@ WORD_08_DRAW_BRANCH_ENTRY:
         LD ($2000),HL
         POP HL
         LD A,$05
-        JP $0132 ; DRAW_ENCODED_GRAPHIC
+        JP DRAW_ENCODED_GRAPHIC
 
 ; Word $0A: clear bit $08 in byte at inline address.
 WORD_0A_CLEAR_FLAG_ENTRY:
@@ -2161,7 +2161,7 @@ WORD_0B_RESET_SCENE_ENTRY:
         LD A,$08
         OUT ($03),A
         LD ($201F),A
-        LD HL,$10B2 ; MUSIC_SEQUENCE_MAIN
+        LD HL,MUSIC_SEQUENCE_MAIN
         LD ($2012),HL
         RET
 
@@ -2209,55 +2209,55 @@ RENDER_FRAME_DESCRIPTOR:
         PUSH BC
         PUSH BC
         PUSH BC
-        CALL $1033 ; DECODE_DESCRIPTOR_NIBBLE
+        CALL DECODE_DESCRIPTOR_NIBBLE
         POP HL
-        CALL $11AC ; NORMALIZE_RENDER_DESCRIPTOR
+        CALL NORMALIZE_RENDER_DESCRIPTOR
         POP HL
         LD A,$02
         LD DE,$2400
-        CALL $0132 ; DRAW_ENCODED_GRAPHIC
+        CALL DRAW_ENCODED_GRAPHIC
         LD C,$03
-        CALL $1A06 ; RENDER_WORD_PACKET
-        CALL $0132 ; DRAW_ENCODED_GRAPHIC
+        CALL RENDER_WORD_PACKET
+        CALL DRAW_ENCODED_GRAPHIC
         POP HL
         LD BC,$4006
 
-FILL_RENDER_DESCRIPTOR_BYTES:
+FILL_REND_BYTES:
         LD (HL),B
         INC HL
         DEC C
-        JP NZ,$116C ; FILL_RENDER_DESCRIPTOR_BYTES
+        JP NZ,FILL_REND_BYTES
         POP HL
         LD A,($20B9)
         AND A
-        JP Z,$1181 ; DRAW_INITIAL_RENDER_SCENE
+        JP Z,DRAW_INITIAL_RENDER_SCENE
 
-FILL_RENDER_DESCRIPTOR_5B:
+FILL_REND_5B:
         LD (HL),$5B
         INC HL
         DEC A
-        JP NZ,$117A ; FILL_RENDER_DESCRIPTOR_5B
+        JP NZ,FILL_REND_5B
 
 DRAW_INITIAL_RENDER_SCENE:
         POP HL
         LD A,$06
         LD DE,$240C
-        CALL $0132 ; DRAW_ENCODED_GRAPHIC
+        CALL DRAW_ENCODED_GRAPHIC
         LD C,$04
-        CALL $1A06 ; RENDER_WORD_PACKET
-        CALL $0132 ; DRAW_ENCODED_GRAPHIC
+        CALL RENDER_WORD_PACKET
+        CALL DRAW_ENCODED_GRAPHIC
         LD DE,$2009
         POP BC
-        CALL $1033 ; DECODE_DESCRIPTOR_NIBBLE
-        CALL $1033 ; DECODE_DESCRIPTOR_NIBBLE
+        CALL DECODE_DESCRIPTOR_NIBBLE
+        CALL DECODE_DESCRIPTOR_NIBBLE
         LD A,$30
         LD (BC),A
         POP HL
-        CALL $11AC ; NORMALIZE_RENDER_DESCRIPTOR
+        CALL NORMALIZE_RENDER_DESCRIPTOR
         POP HL
         LD A,$05
         LD DE,$241B
-        JP $0132 ; DRAW_ENCODED_GRAPHIC
+        JP DRAW_ENCODED_GRAPHIC
 
 NORMALIZE_RENDER_DESCRIPTOR:
         LD C,$04
@@ -2269,13 +2269,13 @@ REPLACE_RENDER_CONTROL_CHARACTER:
         LD (HL),$40
         INC HL
         DEC C
-        JP NZ,$11AE ; REPLACE_RENDER_CONTROL_CHARACTER
+        JP NZ,REPLACE_RENDER_CONTROL_CHARACTER
         RET
 ; Normal boot path stages $11C3 as continuation after video clear.
 BOOT_MAIN_ENTRY:
         LD HL,$11C3
         LD SP,$4000
-        JP $0FD7 ; CLEAR_VIDEO_STACK_LOOP_START
+        JP CLEAR_VIDEO_STACK_LOOP_START
 ; Boot continuation from $11BA -> $0FD7 -> JP (HL).
 ; Set script PC RAM $2000 to ROM $1633, push dispatcher return $11C9, enable IRQ and output port $04.
 BOOT_SCRIPT_AFTER_VIDEO_CLEAR:
@@ -2293,7 +2293,7 @@ BYTECODE_FETCH_DISPATCH:
         LD HL,($2000)
         LD A,(HL)
         AND A
-        JP Z,$11EA ; BYTECODE_ZERO_FRAME_HANDOFF
+        JP Z,BYTECODE_ZERO_FRAME_HANDOFF
         INC HL
         LD ($2000),HL
         EX DE,HL
@@ -2312,29 +2312,29 @@ WORD_ZERO_FRAME_SCHEDULER:
 ; Run native frame services; conditional extra services depend on RAM $200D.
 ; Token $00 yields to the native frame scheduler at $11EA.
 BYTECODE_ZERO_FRAME_HANDOFF:
-        CALL $12E5 ; FRAME_SERVICE_12E5
-        CALL $12B1 ; FRAME_SERVICE_12B1
-        CALL $129E ; FRAME_SERVICE_129E
-        CALL $1936 ; FRAME_SERVICE_1936
-        CALL $1232 ; SERVICE_GAME_STATE_201E
-        CALL $1503 ; FRAME_REBUILD_OBJECTS
-        CALL $124E ; UPDATE_OBJECT_PAIRS
+        CALL FRM_SVC_12E5
+        CALL FRM_SVC_12B1
+        CALL FRM_SVC_129E
+        CALL FRAME_SERVICE_1936
+        CALL SERVICE_GAME_STATE_201E
+        CALL FRAME_REBUILD_OBJECTS
+        CALL UPDATE_OBJECT_PAIRS
         LD A,($200D)
         AND A
         RET Z
-        CALL $1318 ; FRAME_SERVICE_1318
-        CALL $1142 ; RENDER_FRAME_DESCRIPTOR
-        CALL $16F0 ; CHECK_START_INPUT_EDGE
+        CALL FRAME_SERVICE_1318
+        CALL RENDER_FRAME_DESCRIPTOR
+        CALL CHECK_START_INPUT_EDGE
         RET
 
 SELECT_GAME_RECORD:
         LD HL,$2031
         LD DE,$000F
 
-ADVANCE_GAME_RECORD_OFFSET:
+GAME_REC_OFFSET:
         ADD HL,DE
         DEC A
-        JP P,$1214 ; ADVANCE_GAME_RECORD_OFFSET
+        JP P,GAME_REC_OFFSET
         RET
 ; Visit object field at RAM $2085 with game-state parameters.
 UPDATE_OBJECT_FIELDS_2085:
@@ -2347,7 +2347,7 @@ SCAN_NONZERO_OBJECT_FIELD:
         ADD HL,BC
         LD A,(HL)
         AND A
-        JP NZ,$1223 ; SCAN_NONZERO_OBJECT_FIELD
+        JP NZ,SCAN_NONZERO_OBJECT_FIELD
         RET
 ; OR register B into RAM $2080.
 OR_GAME_FLAGS_2080:
@@ -2363,13 +2363,13 @@ SERVICE_GAME_STATE_201E:
         LD C,$00
         LD A,(HL)
         AND A
-        JP NZ,$123E ; ENCODE_GAME_STATUS_BITS
+        JP NZ,ENCODE_GAME_STATUS_BITS
         DEC A
 
 ENCODE_GAME_STATUS_BITS:
         LD B,A
         AND $1D
-        JP PE,$1246 ; STORE_GAME_STATUS_BITS
+        JP PE,STORE_GAME_STATUS_BITS
         LD C,$80
 
 STORE_GAME_STATUS_BITS:
@@ -2384,7 +2384,7 @@ STORE_GAME_STATUS_BITS:
 UPDATE_OBJECT_PAIRS:
         LD HL,$2040
         LD DE,$204F
-        CALL $125D ; COMPARE_OBJECT_PAIR_FLAGS
+        CALL COMPARE_OBJECT_PAIR_FLAGS
         LD HL,$205E
         LD DE,$206D
 ; Test two linked object records before update.
@@ -2396,7 +2396,7 @@ COMPARE_OBJECT_PAIR_FLAGS:
         AND A
         RET P
         PUSH DE
-        CALL $127E ; SCAN_OBJECT_FIELD_FLAGS
+        CALL SCAN_OBJECT_FIELD_FLAGS
         POP HL
         INC HL
         INC HL
@@ -2429,7 +2429,7 @@ SCAN_OBJECT_FIELD_FLAGS:
         LD B,$00
         INC HL
         EX DE,HL
-        LD HL,$06DC ; GRAPHIC_RESOURCE_06DC
+        LD HL,GFX_06DC
         ADD HL,BC
         LD A,(HL)
         SUB $80
@@ -2448,7 +2448,7 @@ SCAN_OBJECT_FIELD_FLAGS:
         LD (HL),A
         RET
 
-FRAME_SERVICE_129E:
+FRM_SVC_129E:
         LD HL,$207C
         LD A,(HL)
         AND A
@@ -2456,13 +2456,13 @@ FRAME_SERVICE_129E:
         LD (HL),$00
         RRA
         PUSH AF
-        CALL C,$1C22 ; RESTORE_SCRIPT_POINTER_FROM_RENDER_STATE
+        CALL C,RESTORE_SCRIPT_POINTER_FROM_RENDER_STATE
         POP AF
         RRA
-        CALL C,$1977 ; INCREMENT_GAME_SEQUENCE_COUNTER
+        CALL C,INCREMENT_GAME_SEQUENCE_COUNTER
         RET
 
-FRAME_SERVICE_12B1:
+FRM_SVC_12B1:
         LD HL,$207D
         LD A,(HL)
         AND A
@@ -2470,36 +2470,36 @@ FRAME_SERVICE_12B1:
         LD (HL),$00
         RRA
         PUSH AF
-        CALL C,$13F2 ; UPDATE_SECOND_OBJECT_WHEN_ENABLED
+        CALL C,UPDATE_SECOND_OBJECT_WHEN_ENABLED
         POP AF
         RRA
         PUSH AF
-        CALL C,$13C1 ; UPDATE_FIRST_OBJECT_WHEN_ENABLED
+        CALL C,UPDATE_FIRST_OBJECT_WHEN_ENABLED
         POP AF
         RRA
         PUSH AF
-        CALL C,$1C43 ; ENABLE_GAME_AND_UPDATE_OBJECT_FLAGS
+        CALL C,ENABLE_GAME_AND_UPDATE_OBJECT_FLAGS
         POP AF
         RRA
         PUSH AF
-        CALL C,$1345 ; WRITE_GAME_STATUS_2035
+        CALL C,WRITE_STATUS_2035
         POP AF
         RRA
         PUSH AF
-        CALL C,$1C35 ; WRITE_SOUND_PORT_AND_TEST_GAME_FLAGS
+        CALL C,WRITE_SOUND_PORT_AND_TEST_GAME_FLAGS
         POP AF
         RRA
         PUSH AF
-        CALL C,$1D77 ; ADVANCE_GAME_ANIMATION_COUNTER
+        CALL C,ADVANCE_GAME_ANIMATION_COUNTER
         POP AF
         RRA
         RRA
         PUSH AF
-        CALL C,$1C2D ; ADVANCE_INTERPRETED_SCRIPT_POINTER
+        CALL C,ADVANCE_INTERPRETED_SCRIPT_POINTER
         POP AF
         RET
 
-FRAME_SERVICE_12E5:
+FRM_SVC_12E5:
         LD HL,$207E
         LD A,(HL)
         AND A
@@ -2507,31 +2507,31 @@ FRAME_SERVICE_12E5:
         LD (HL),$00
         RRA
         PUSH AF
-        CALL C,$1CE4 ; SELECT_OBJECT_TIMER_20A5
+        CALL C,OBJ_TIMER_20A5
         POP AF
         RRA
         PUSH AF
-        CALL C,$1CDB ; SELECT_OBJECT_TIMER_209D
+        CALL C,OBJ_TIMER_209D
         POP AF
         RRA
         PUSH AF
-        CALL C,$1CD2 ; SELECT_OBJECT_TIMER_2095
+        CALL C,OBJ_TIMER_2095
         POP AF
         RRA
         PUSH AF
-        CALL C,$1CC9 ; SELECT_OBJECT_TIMER_208D
+        CALL C,OBJ_TIMER_208D
         POP AF
         RRA
         PUSH AF
-        CALL C,$1DEA ; TEST_SCENE_STATE_FOR_RESET
+        CALL C,TEST_SCENE_STATE_FOR_RESET
         POP AF
         RRA
         PUSH AF
-        CALL C,$1D4B ; DECREMENT_GAME_FLAG_TIMER
+        CALL C,DECREMENT_GAME_FLAG_TIMER
         POP AF
         RRA
         PUSH AF
-        CALL C,$1D36 ; READ_SCORE_RENDER_ADDRESS
+        CALL C,READ_SCORE_RENDER_ADDRESS
         POP AF
         RET
 
@@ -2539,13 +2539,13 @@ FRAME_SERVICE_1318:
         LD HL,$2037
         LD A,(HL)
         AND A
-        JP NZ,$132E ; TEST_OBJECT_FIELD_FOR_UPDATE
+        JP NZ,TEST_OBJECT_FIELD_FOR_UPDATE
         LD A,($2040)
         AND A
-        JP M,$132E ; TEST_OBJECT_FIELD_FOR_UPDATE
+        JP M,TEST_OBJECT_FIELD_FOR_UPDATE
         LD A,($204F)
         AND A
-        CALL P,$133C ; WRITE_GAME_STATUS_OBJECT_FIELD
+        CALL P,WRITE_STATUS_OBJ
 
 TEST_OBJECT_FIELD_FOR_UPDATE:
         INC HL
@@ -2559,15 +2559,15 @@ TEST_OBJECT_FIELD_FOR_UPDATE:
         AND A
         RET M
 
-WRITE_GAME_STATUS_OBJECT_FIELD:
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+WRITE_STATUS_OBJ:
+        CALL SERVICE_GAME_STATE_201E
         AND $3F
         OR $20
         LD (HL),A
         RET
 
-WRITE_GAME_STATUS_2035:
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+WRITE_STATUS_2035:
+        CALL SERVICE_GAME_STATE_201E
         AND $3F
         OR $20
         LD ($2035),A
@@ -2576,23 +2576,23 @@ WRITE_GAME_STATUS_2035:
         RET NZ
         LD A,$03
 
-SCAN_GAME_RECORD_FLAGS:
+SCAN_REC_FLAGS:
         PUSH AF
-        CALL $120E ; SELECT_GAME_RECORD
+        CALL SELECT_GAME_RECORD
         LD A,(HL)
         AND A
-        JP P,$136C ; ADVANCE_GAME_RECORD_SCAN
+        JP P,GAME_REC_SCAN
         AND $02
-        JP NZ,$136C ; ADVANCE_GAME_RECORD_SCAN
+        JP NZ,GAME_REC_SCAN
         PUSH HL
-        CALL $13A6 ; CHECK_OBJECT_STATUS_LOW_BITS
+        CALL CHECK_OBJECT_STATUS_LOW_BITS
         POP HL
-        CALL $1372 ; UPDATE_GAME_TIMER_2032
+        CALL UPDATE_GAME_TIMER_2032
 
-ADVANCE_GAME_RECORD_SCAN:
+GAME_REC_SCAN:
         POP AF
         DEC A
-        JP P,$1356 ; SCAN_GAME_RECORD_FLAGS
+        JP P,SCAN_REC_FLAGS
         RET
 ; Check enable RAM $200D and timer RAM $2032.
 UPDATE_GAME_TIMER_2032:
@@ -2606,13 +2606,13 @@ UPDATE_GAME_TIMER_2032:
         LD A,(HL)
         DEC HL
         AND $07
-        JP Z,$138A ; TOGGLE_GAME_STATUS_BIT4
+        JP Z,TOGGLE_GAME_STATUS_BIT4
         LD A,($2009)
         CP $02
         RET M
 
 TOGGLE_GAME_STATUS_BIT4:
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+        CALL SERVICE_GAME_STATE_201E
         RLA
         RET C
         LD A,(HL)
@@ -2622,7 +2622,7 @@ TOGGLE_GAME_STATUS_BIT4:
         INC HL
         LD A,(HL)
         AND A
-        CALL Z,$14AE ; CHECK_OBJECT_UPDATE_LOCK
+        CALL Z,CHECK_OBJECT_UPDATE_LOCK
         INC HL
         LD A,(HL)
         CPL
@@ -2640,10 +2640,10 @@ CHECK_OBJECT_STATUS_LOW_BITS:
         RET P
         LD DE,$0005
         ADD HL,DE
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+        CALL SERVICE_GAME_STATE_201E
         AND $03
         LD (HL),A
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+        CALL SERVICE_GAME_STATE_201E
         RRA
         RET C
         LD A,(HL)
@@ -2660,22 +2660,22 @@ UPDATE_FIRST_OBJECT_WHEN_ENABLED:
         LD A,(HL)
         AND A
         RET M
-        CALL $1422 ; INITIALIZE_OBJECT_TIMER_2032
+        CALL INITIALIZE_OBJECT_TIMER_2032
         ADD A,$0C
         LD DE,$14F3
-        CALL $1494 ; SET_OBJECT_FLAG_ACTIVE
+        CALL SET_OBJECT_FLAG_ACTIVE
         LD (HL),$CC
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+        CALL SERVICE_GAME_STATE_201E
         RRA
         RET C
         LD HL,$204F
         LD A,(HL)
         AND A
         RET M
-        CALL $1422 ; INITIALIZE_OBJECT_TIMER_2032
+        CALL INITIALIZE_OBJECT_TIMER_2032
         ADD A,$0C
         LD DE,$14F3
-        CALL $14A0 ; SET_OBJECT_FROM_SHAPE_TABLE
+        CALL SET_OBJECT_FROM_SHAPE_TABLE
         LD (HL),$DC
         RET
 
@@ -2687,21 +2687,21 @@ UPDATE_SECOND_OBJECT_WHEN_ENABLED:
         LD A,(HL)
         AND A
         RET M
-        CALL $1422 ; INITIALIZE_OBJECT_TIMER_2032
+        CALL INITIALIZE_OBJECT_TIMER_2032
         ADD A,$66
         LD DE,$14E3
-        CALL $1494 ; SET_OBJECT_FLAG_ACTIVE
+        CALL SET_OBJECT_FLAG_ACTIVE
         LD (HL),$CC
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+        CALL SERVICE_GAME_STATE_201E
         RET C
         LD HL,$206D
         LD A,(HL)
         AND A
         RET M
-        CALL $1422 ; INITIALIZE_OBJECT_TIMER_2032
+        CALL INITIALIZE_OBJECT_TIMER_2032
         ADD A,$66
         LD DE,$14E3
-        CALL $14A0 ; SET_OBJECT_FROM_SHAPE_TABLE
+        CALL SET_OBJECT_FROM_SHAPE_TABLE
         LD (HL),$DC
         RET
 ; Set timer RAM $2032 to $3C and prepare object state.
@@ -2711,7 +2711,7 @@ INITIALIZE_OBJECT_TIMER_2032:
         PUSH HL
         LD A,$3C
         LD ($2032),A
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+        CALL SERVICE_GAME_STATE_201E
         AND $0F
         LD C,A
         LD B,$00
@@ -2720,11 +2720,11 @@ INITIALIZE_OBJECT_TIMER_2032:
         LD A,(HL)
         LD C,A
         CP $07
-        JP NZ,$1442 ; LOOKUP_OBJECT_TABLE_POINTER
+        JP NZ,LOOKUP_OBJECT_TABLE_POINTER
         LD ($2081),A
 
 LOOKUP_OBJECT_TABLE_POINTER:
-        LD HL,$14CB ; FRAME_GRAPHIC_RESOURCE_POINTERS
+        LD HL,FRAME_GRAPHIC_RESOURCE_POINTERS
         ADD HL,BC
         ADD HL,BC
         LD E,(HL)
@@ -2743,7 +2743,7 @@ LOOKUP_OBJECT_TABLE_POINTER:
         AND $3F
         RET
 ; Write object byte, then lookup associated table values.
-STORE_OBJECT_FIELD_AND_LOOKUP:
+OBJ_FIELD_LOOKUP:
         LD (HL),A
         DEC HL
         PUSH HL
@@ -2769,7 +2769,7 @@ STORE_OBJECT_FIELD_AND_LOOKUP:
 ; Index graphics data from ROM $06DC.
 FETCH_GUN_SHAPE_TABLE_BYTE:
         EX DE,HL
-        LD HL,$06DC ; GRAPHIC_RESOURCE_06DC
+        LD HL,GFX_06DC
         ADD HL,BC
         LD A,(HL)
         DEC A
@@ -2780,17 +2780,17 @@ FETCH_GUN_SHAPE_TABLE_BYTE:
 BOUND_GAME_COUNTER_2009:
         LD A,($2009)
         CP $03
-        JP NC,$1485 ; CLAMP_OBJECT_INDEX_TO_SIX
+        JP NC,CLAMP_OBJECT_INDEX_TO_SIX
         INC A
 
 CLAMP_OBJECT_INDEX_TO_SIX:
         CP $07
-        JP C,$148C ; ADJUST_OBJECT_INDEX_BY_COUNTER
+        JP C,ADJUST_OBJECT_INDEX_BY_COUNTER
         LD A,$06
 
 ADJUST_OBJECT_INDEX_BY_COUNTER:
         DEC C
-        JP P,$1492 ; COMPLETE_OBJECT_INDEX_ADJUSTMENT
+        JP P,COMPLETE_OBJECT_INDEX_ADJUSTMENT
         ADD A,$03
 
 COMPLETE_OBJECT_INDEX_ADJUSTMENT:
@@ -2798,15 +2798,15 @@ COMPLETE_OBJECT_INDEX_ADJUSTMENT:
         RET
 ; Write flag $01 and update related object-field values.
 SET_OBJECT_FLAG_ACTIVE:
-        CALL $145A ; STORE_OBJECT_FIELD_AND_LOOKUP
+        CALL OBJ_FIELD_LOOKUP
         LD (HL),$01
         DEC HL
-        CALL $147C ; BOUND_GAME_COUNTER_2009
-        JP $14A8 ; STORE_OBJECT_LOOKUP_RESULT
+        CALL BOUND_GAME_COUNTER_2009
+        JP STORE_OBJECT_LOOKUP_RESULT
 ; Use object shape lookup to update corresponding field.
 SET_OBJECT_FROM_SHAPE_TABLE:
-        CALL $145A ; STORE_OBJECT_FIELD_AND_LOOKUP
-        CALL $1472 ; FETCH_GUN_SHAPE_TABLE_BYTE
+        CALL OBJ_FIELD_LOOKUP
+        CALL FETCH_GUN_SHAPE_TABLE_BYTE
         CPL
         INC A
 
@@ -2835,14 +2835,14 @@ FRAME_PATTERN_TABLE:
         DB $06,$06,$07,$07 ; sixteen frame-state indices
 
 FRAME_GRAPHIC_RESOURCE_POINTERS:
-        DW $0BFE ; GRAPHIC_RESOURCE_0BFE; frame graphic 0
-        DW $0723 ; GRAPHIC_RESOURCE_0723; frame graphic 1
-        DW $0AC3 ; GRAPHIC_RESOURCE_0AC3; frame graphic 2
-        DW $0795 ; GRAPHIC_RESOURCE_0795; frame graphic 3
-        DW $0D52 ; GRAPHIC_RESOURCE_0D52; frame graphic 4
-        DW $0E2C ; GRAPHIC_RESOURCE_0E2C; frame graphic 5
-        DW $08D1 ; GRAPHIC_RESOURCE_08D1; frame graphic 6
-        DW $09F5 ; GRAPHIC_RESOURCE_09F5; frame graphic 7
+        DW GFX_0BFE ; frame graphic 0
+        DW GFX_0723 ; frame graphic 1
+        DW GFX_0AC3 ; frame graphic 2
+        DW GFX_0795 ; frame graphic 3
+        DW GFX_0D52 ; frame graphic 4
+        DW GFX_0E2C ; frame graphic 5
+        DW GFX_08D1 ; frame graphic 6
+        DW GFX_09F5 ; frame graphic 7
 
 FRAME_CONTROL_PARAMETERS:
         DB $01,$01,$01,$01,$01,$04,$02,$03 ; eight frame-control bytes
@@ -2872,10 +2872,10 @@ FRAME_REBUILD_OBJECTS:
 
 SCAN_ACTIVE_GAME_OBJECTS:
         PUSH AF
-        CALL $120E ; SELECT_GAME_RECORD
+        CALL SELECT_GAME_RECORD
         LD A,(HL)
         AND A
-        JP P,$155E ; ADVANCE_OBJECT_SCAN
+        JP P,ADVANCE_OBJECT_SCAN
         PUSH HL
         LD D,A
         INC HL
@@ -2884,22 +2884,22 @@ SCAN_ACTIVE_GAME_OBJECTS:
         ADD HL,BC
         LD C,E
         PUSH HL
-        LD HL,$1584 ; OBJECT_MOTION_THRESHOLDS_PRIMARY
+        LD HL,OBJ_MOT_THR_PRI
         AND $02
-        JP Z,$1523 ; COMPARE_OBJECT_FIELD_PAIR
-        LD HL,$158C ; OBJECT_MOTION_THRESHOLDS_ALTERNATE
+        JP Z,COMPARE_OBJECT_FIELD_PAIR
+        LD HL,OBJ_MOT_THR_ALT
 
 COMPARE_OBJECT_FIELD_PAIR:
         ADD HL,BC
         LD A,(HL)
         POP HL
         CP (HL)
-        JP NC,$1538 ; SELECT_OBJECT_MOTION_POINTER_TABLE
+        JP NC,SELECT_OBJECT_MOTION_POINTER_TABLE
         LD (HL),$00
         EX (SP),HL
         LD A,(HL)
         AND $02
-        JP Z,$1537 ; RESTORE_OBJECT_POINTER_FROM_STACK
+        JP Z,RESTORE_OBJECT_POINTER_FROM_STACK
         LD A,(HL)
         AND $F7
         LD (HL),A
@@ -2910,10 +2910,10 @@ RESTORE_OBJECT_POINTER_FROM_STACK:
 SELECT_OBJECT_MOTION_POINTER_TABLE:
         EX DE,HL
         LD A,H
-        LD HL,$1564 ; OBJECT_MOTION_SCRIPT_POINTERS
+        LD HL,OBJECT_MOTION_SCRIPT_POINTERS
         AND $02
-        JP Z,$1545 ; FETCH_OBJECT_MOTION_DATA_POINTER
-        LD HL,$1574 ; OBJECT_MOTION_ALT_POINTERS
+        JP Z,FETCH_OBJECT_MOTION_DATA_POINTER
+        LD HL,OBJECT_MOTION_ALT_POINTERS
 
 FETCH_OBJECT_MOTION_DATA_POINTER:
         ADD HL,BC
@@ -2929,7 +2929,7 @@ SCAN_OBJECT_PRIORITY_FIELDS:
         INC HL
         CP (HL)
         INC HL
-        JP NC,$154C ; SCAN_OBJECT_PRIORITY_FIELDS
+        JP NC,SCAN_OBJECT_PRIORITY_FIELDS
         LD C,(HL)
         INC HL
         LD B,(HL)
@@ -2945,202 +2945,202 @@ SCAN_OBJECT_PRIORITY_FIELDS:
 ADVANCE_OBJECT_SCAN:
         POP AF
         DEC A
-        JP P,$1505 ; SCAN_ACTIVE_GAME_OBJECTS
+        JP P,SCAN_ACTIVE_GAME_OBJECTS
         RET
 
 ; Fourteen object-state selectors address motion records in ROM $1580–$1632.
 ; Entries are DATA pointers, not native Intel 8080 routine addresses.
 ; Primary object-state animation pointer table: eight 16-bit entries at $1564.
 OBJECT_MOTION_SCRIPT_POINTERS:
-        DW $15CE ; MOTION_SEQUENCE_15CE; state $00
-        DW $161F ; MOTION_SEQUENCE_161F; state $01
-        DW $15B9 ; MOTION_SEQUENCE_15B9; state $02
-        DW $160D ; MOTION_SEQUENCE_160D; state $03
-        DW $1592 ; MOTION_SEQUENCE_1592; state $04
-        DW $15A4 ; MOTION_SEQUENCE_15A4; state $05
-        DW $15E0 ; MOTION_SEQUENCE_15E0; state $06
-        DW $15F5 ; MOTION_SEQUENCE_15F5; state $07
+        DW MOT_15CE ; state $00
+        DW MOT_161F ; state $01
+        DW MOT_15B9 ; state $02
+        DW MOT_160D ; state $03
+        DW MOT_1592 ; state $04
+        DW MOT_15A4 ; state $05
+        DW MOT_15E0 ; state $06
+        DW MOT_15F5 ; state $07
 
 ; Alternate object-state table selected by game object flag bit $02 ($1574).
 OBJECT_MOTION_ALT_POINTERS:
-        DW $15DA ; MOTION_SEQUENCE_15DA; state $08
-        DW $162B ; MOTION_SEQUENCE_162B; state $09
-        DW $15C5 ; MOTION_SEQUENCE_15C5; state $0A
-        DW $1619 ; MOTION_SEQUENCE_1619; state $0B
-        DW $159E ; MOTION_SEQUENCE_159E; state $0C
-        DW $15B3 ; MOTION_SEQUENCE_15B3; state $0D
+        DW MOT_15DA ; state $08
+        DW MOT_162B ; state $09
+        DW MOT_15C5 ; state $0A
+        DW MOT_1619 ; state $0B
+        DW MOT_159E ; state $0C
+        DW MOT_15B3 ; state $0D
 
 ; Motion-sequence directory targets are ROM data records, not 8080 handlers.
 ; Each sequence begins with a 16-bit resource address. Following event records
 ; contain a byte selector and a little-endian 16-bit graphic pointer.
 ; $FF ends a sequence; native object code processes the byte stream.
 OBJECT_MOTION_DATA:
-        DW $15EF,$15FE ; MOTION_SEQUENCE_15EF,MOTION_SEQUENCE_15FE; initial animation references
+        DW MOT_15EF,MOT_15FE ; initial animation references
 
 ; Eight object motion comparison thresholds (index from BC).
-OBJECT_MOTION_THRESHOLDS_PRIMARY:
+OBJ_MOT_THR_PRI:
         DB $04,$08,$08,$0C,$14,$17,$3A,$25
 
 ; Six alternate comparison thresholds, selected by object bit $02.
-OBJECT_MOTION_THRESHOLDS_ALTERNATE:
+OBJ_MOT_THR_ALT:
         DB $14,$14,$0F,$14,$19,$19
 
 ; ROM $1592: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_1592:
+MOT_1592:
         DW $1E14 ; initial resource address
         DB $05 ; selector
-        DW $0D52 ; GRAPHIC_RESOURCE_0D52; graphic address
+        DW GFX_0D52 ; graphic address
         DB $0A ; selector
-        DW $0D8C ; GRAPHIC_RESOURCE_0D8C; graphic address
+        DW GFX_0D8C ; graphic address
         DB $0F ; selector
-        DW $0DC6 ; GRAPHIC_RESOURCE_0DC6; graphic address
+        DW GFX_0DC6 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $159E: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_159E:
-        DW $0D8C ; GRAPHIC_RESOURCE_0D8C; initial resource address
+MOT_159E:
+        DW GFX_0D8C ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15A4: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15A4:
-        DW $0D29 ; GRAPHIC_RESOURCE_0D29; initial resource address
+MOT_15A4:
+        DW GFX_0D29 ; initial resource address
         DB $06 ; selector
-        DW $0E2C ; GRAPHIC_RESOURCE_0E2C; graphic address
+        DW GFX_0E2C ; graphic address
         DB $0A ; selector
-        DW $0E9D ; GRAPHIC_RESOURCE_0E9D; graphic address
+        DW GFX_0E9D ; graphic address
         DB $0F ; selector
-        DW $0F02 ; GRAPHIC_RESOURCE_0F02; graphic address
+        DW GFX_0F02 ; graphic address
         DB $13 ; selector
-        DW $0E9D ; GRAPHIC_RESOURCE_0E9D; graphic address
+        DW GFX_0E9D ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15B3: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15B3:
-        DW $0E2C ; GRAPHIC_RESOURCE_0E2C; initial resource address
+MOT_15B3:
+        DW GFX_0E2C ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15B9: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15B9:
-        DW $0E00 ; GRAPHIC_RESOURCE_0E00; initial resource address
+MOT_15B9:
+        DW GFX_0E00 ; initial resource address
         DB $02 ; selector
-        DW $0AC3 ; GRAPHIC_RESOURCE_0AC3; graphic address
+        DW GFX_0AC3 ; graphic address
         DB $04 ; selector
-        DW $0AFB ; GRAPHIC_RESOURCE_0AFB; graphic address
+        DW GFX_0AFB ; graphic address
         DB $06 ; selector
-        DW $0B33 ; GRAPHIC_RESOURCE_0B33; graphic address
+        DW GFX_0B33 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15C5: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15C5:
-        DW $0B6B ; GRAPHIC_RESOURCE_0B6B; initial resource address
+MOT_15C5:
+        DW GFX_0B6B ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $0F ; selector
-        DW $0BA3 ; GRAPHIC_RESOURCE_0BA3; graphic address
+        DW GFX_0BA3 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15CE: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15CE:
-        DW $0BC3 ; GRAPHIC_RESOURCE_0BC3; initial resource address
+MOT_15CE:
+        DW GFX_0BC3 ; initial resource address
         DB $01 ; selector
-        DW $0BFE ; GRAPHIC_RESOURCE_0BFE; graphic address
+        DW GFX_0BFE ; graphic address
         DB $02 ; selector
-        DW $0C24 ; GRAPHIC_RESOURCE_0C24; graphic address
+        DW GFX_0C24 ; graphic address
         DB $03 ; selector
-        DW $0C4A ; GRAPHIC_RESOURCE_0C4A; graphic address
+        DW GFX_0C4A ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15DA: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15DA:
-        DW $0C70 ; GRAPHIC_RESOURCE_0C70; initial resource address
+MOT_15DA:
+        DW GFX_0C70 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15E0: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15E0:
-        DW $0BE6 ; GRAPHIC_RESOURCE_0BE6; initial resource address
+MOT_15E0:
+        DW GFX_0BE6 ; initial resource address
         DB $05 ; selector
-        DW $0965 ; GRAPHIC_RESOURCE_0965; graphic address
+        DW GFX_0965 ; graphic address
         DB $19 ; selector
-        DW $099D ; GRAPHIC_RESOURCE_099D; graphic address
+        DW GFX_099D ; graphic address
         DB $1E ; selector
-        DW $08D1 ; GRAPHIC_RESOURCE_08D1; graphic address
+        DW GFX_08D1 ; graphic address
         DB $37 ; selector
-        DW $0915 ; GRAPHIC_RESOURCE_0915; graphic address
+        DW GFX_0915 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15EF: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15EF:
-        DW $0965 ; GRAPHIC_RESOURCE_0965; initial resource address
+MOT_15EF:
+        DW GFX_0965 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15F5: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15F5:
-        DW $09DE ; GRAPHIC_RESOURCE_09DE; initial resource address
+MOT_15F5:
+        DW GFX_09DE ; initial resource address
         DB $0E ; selector
-        DW $0A27 ; GRAPHIC_RESOURCE_0A27; graphic address
+        DW GFX_0A27 ; graphic address
         DB $19 ; selector
-        DW $09F5 ; GRAPHIC_RESOURCE_09F5; graphic address
+        DW GFX_09F5 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $15FE: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_15FE:
-        DW $0A27 ; GRAPHIC_RESOURCE_0A27; initial resource address
+MOT_15FE:
+        DW GFX_0A27 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $0F ; selector
-        DW $09F5 ; GRAPHIC_RESOURCE_09F5; graphic address
+        DW GFX_09F5 ; graphic address
         DB $14 ; selector
-        DW $0A65 ; GRAPHIC_RESOURCE_0A65; graphic address
+        DW GFX_0A65 ; graphic address
         DB $19 ; selector
-        DW $0A91 ; GRAPHIC_RESOURCE_0A91; graphic address
+        DW GFX_0A91 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $160D: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_160D:
-        DW $0AAF ; GRAPHIC_RESOURCE_0AAF; initial resource address
+MOT_160D:
+        DW GFX_0AAF ; initial resource address
         DB $03 ; selector
-        DW $0795 ; GRAPHIC_RESOURCE_0795; graphic address
+        DW GFX_0795 ; graphic address
         DB $06 ; selector
-        DW $07EF ; GRAPHIC_RESOURCE_07EF; graphic address
+        DW GFX_07EF ; graphic address
         DB $09 ; selector
-        DW $0849 ; GRAPHIC_RESOURCE_0849; graphic address
+        DW GFX_0849 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $1619: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_1619:
-        DW $07EF ; GRAPHIC_RESOURCE_07EF; initial resource address
+MOT_1619:
+        DW GFX_07EF ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $161F: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_161F:
-        DW $08A3 ; GRAPHIC_RESOURCE_08A3; initial resource address
+MOT_161F:
+        DW GFX_08A3 ; initial resource address
         DB $02 ; selector
-        DW $0749 ; GRAPHIC_RESOURCE_0749; graphic address
+        DW GFX_0749 ; graphic address
         DB $04 ; selector
-        DW $076F ; GRAPHIC_RESOURCE_076F; graphic address
+        DW GFX_076F ; graphic address
         DB $06 ; selector
-        DW $0749 ; GRAPHIC_RESOURCE_0749; graphic address
+        DW GFX_0749 ; graphic address
         DB $FF ; sequence terminator
 
 ; ROM $162B: resource address + animation event/bitmap pairs.
-MOTION_SEQUENCE_162B:
-        DW $0723 ; GRAPHIC_RESOURCE_0723; initial resource address
+MOT_162B:
+        DW GFX_0723 ; initial resource address
         DB $05 ; selector
-        DW $06E4 ; GRAPHIC_RESOURCE_06E4; graphic address
+        DW GFX_06E4 ; graphic address
         DB $FF ; sequence terminator
 ; Additional original graphic reference following the final $FF.
 MOTION_TRAILING_GRAPHIC_POINTER:
-        DW $0712 ; GRAPHIC_RESOURCE_0712
+        DW GFX_0712
 
 CMD_1633_CLEAR_DISPLAY:
         DB $06 ; CLEAR_DISPLAY
@@ -3398,16 +3398,16 @@ CHECK_START_INPUT_EDGE:
         LD HL,$20B9
         LD A,(HL)
         AND A
-        JP Z,$189F ; SET_TIMER_AND_GAME_FLAGS
+        JP Z,SET_TIMER_AND_GAME_FLAGS
         DEC (HL)
-        JP NZ,$1718 ; SET_GAME_FLAGS_AND_SOUND_PORT
+        JP NZ,SET_GAME_FLAGS_AND_SOUND_PORT
         LD ($20BA),A
         LD A,$04
         LD ($2036),A
 
 SET_GAME_FLAGS_AND_SOUND_PORT:
         LD B,$04
-        CALL $122B ; OR_GAME_FLAGS_2080
+        CALL OR_GAME_FLAGS_2080
         LD A,$18
         OUT ($03),A
         LD A,$02
@@ -3415,36 +3415,36 @@ SET_GAME_FLAGS_AND_SOUND_PORT:
         LD HL,$1A4B
         LD DE,$2F86
         LD A,$13
-        CALL $0132 ; DRAW_ENCODED_GRAPHIC
+        CALL DRAW_ENCODED_GRAPHIC
         LD A,($2015)
         CP $0F
-        JP C,$17D6 ; RESET_GAME_STATE_AND_INCREMENT_COUNTER
+        JP C,RESET_GAME_STATE_AND_INCREMENT_COUNTER
         CP $59
-        JP C,$1748 ; TEST_GAME_PLAYER_COUNT
+        JP C,TEST_GAME_PLAYER_COUNT
         CP $69
-        JP C,$17D6 ; RESET_GAME_STATE_AND_INCREMENT_COUNTER
+        JP C,RESET_GAME_STATE_AND_INCREMENT_COUNTER
         CP $D1
-        JP NC,$17D6 ; RESET_GAME_STATE_AND_INCREMENT_COUNTER
+        JP NC,RESET_GAME_STATE_AND_INCREMENT_COUNTER
 
 TEST_GAME_PLAYER_COUNT:
         SUB $03
         LD D,A
         LD A,($2014)
         CP $03
-        JP C,$17D6 ; RESET_GAME_STATE_AND_INCREMENT_COUNTER
+        JP C,RESET_GAME_STATE_AND_INCREMENT_COUNTER
         CP $FC
-        JP NC,$17D6 ; RESET_GAME_STATE_AND_INCREMENT_COUNTER
+        JP NC,RESET_GAME_STATE_AND_INCREMENT_COUNTER
         SUB $03
         LD E,A
         PUSH DE
         PUSH AF
-        CALL $01B1 ; SHIFT_VIDEO_ADDRESS_THREE
+        CALL SHIFT_VIDEO_ADDRESS_THREE
         EX DE,HL
         LD A,$07
         LD DE,$0000
         LD BC,$001F
 
-ACCUMULATE_OBJECT_FIELD_HIGH_BITS:
+ACC_OBJ_HI_BITS:
         PUSH AF
         LD A,(HL)
         OR D
@@ -3453,18 +3453,18 @@ ACCUMULATE_OBJECT_FIELD_HIGH_BITS:
         INC HL
         AND $1F
         LD A,B
-        JP Z,$1776 ; ACCUMULATE_OBJECT_FIELD_LOW_BITS
+        JP Z,ACC_OBJ_LO_BITS
         LD A,(HL)
 
-ACCUMULATE_OBJECT_FIELD_LOW_BITS:
+ACC_OBJ_LO_BITS:
         OR E
         LD E,A
         ADD HL,BC
         POP AF
         DEC A
-        JP NZ,$1769 ; ACCUMULATE_OBJECT_FIELD_HIGH_BITS
+        JP NZ,ACC_OBJ_HI_BITS
         PUSH DE
-        CALL $18B6 ; CLAMP_GAME_STATE_TO_THREE
+        CALL CLAMP_GAME_STATE_TO_THREE
         POP HL
         POP AF
         AND $07
@@ -3473,18 +3473,18 @@ ACCUMULATE_OBJECT_FIELD_LOW_BITS:
 SHIFT_OBJECT_POSITION_TO_SCALE:
         ADD HL,HL
         DEC A
-        JP NZ,$1787 ; SHIFT_OBJECT_POSITION_TO_SCALE
+        JP NZ,SHIFT_OBJECT_POSITION_TO_SCALE
         LD A,H
         AND $7F
         POP DE
         LD HL,$20B3
-        JP Z,$17DC ; ADVANCE_SCENE_COUNTER_AND_DRAW
+        JP Z,ADVANCE_SCENE_COUNTER_AND_DRAW
         LD (HL),$00
         LD A,D
         CP $59
-        JP C,$1802 ; CHECK_FIRST_OBJECT_ACTIVE_FLAGS
+        JP C,CHECK_FIRST_OBJECT_ACTIVE_FLAGS
         CP $B3
-        JP C,$1815 ; CHECK_REMAINING_OBJECT_ACTIVE_FLAGS
+        JP C,CHECK_REMAINING_OBJECT_ACTIVE_FLAGS
         LD BC,$FFFF
         LD A,B
 
@@ -3492,7 +3492,7 @@ ADVANCE_OBJECT_BOUNDARY_COUNTER:
         ADD A,$40
         CP E
         INC BC
-        JP C,$17A7 ; ADVANCE_OBJECT_BOUNDARY_COUNTER
+        JP C,ADVANCE_OBJECT_BOUNDARY_COUNTER
         LD HL,$20AD
         ADD HL,BC
         LD A,(HL)
@@ -3501,7 +3501,7 @@ ADVANCE_OBJECT_BOUNDARY_COUNTER:
         LD ($20B7),A
         LD A,$10
         LD (HL),A
-        CALL $18A9 ; INCREMENT_PACKED_BCD_SCORE
+        CALL INCREMENT_PACKED_BCD_SCORE
         LD A,$04
         LD ($2033),A
         LD HL,$1922
@@ -3512,12 +3512,12 @@ ADVANCE_OBJECT_BOUNDARY_COUNTER:
         INC HL
         LD D,(HL)
         EX DE,HL
-        LD DE,$0D03 ; GRAPHIC_RESOURCE_0D03
+        LD DE,GFX_0D03
         LD BC,$1002
-        JP $0FF9 ; COPY_SCREEN_ROW_LOOP
+        JP COPY_ROW_LOOP
 
 RESET_GAME_STATE_AND_INCREMENT_COUNTER:
-        CALL $18B6 ; CLAMP_GAME_STATE_TO_THREE
+        CALL CLAMP_GAME_STATE_TO_THREE
         LD HL,$20B3
 
 ADVANCE_SCENE_COUNTER_AND_DRAW:
@@ -3527,21 +3527,21 @@ ADVANCE_SCENE_COUNTER_AND_DRAW:
         LD DE,$2F86
         AND A
         LD A,$07
-        JP Z,$17EC ; DRAW_NEXT_GAME_SCENE
+        JP Z,DRAW_NEXT_GAME_SCENE
         LD A,$0D
 
 DRAW_NEXT_GAME_SCENE:
-        CALL $0132 ; DRAW_ENCODED_GRAPHIC
-        CALL $1232 ; SERVICE_GAME_STATE_201E
+        CALL DRAW_ENCODED_GRAPHIC
+        CALL SERVICE_GAME_STATE_201E
         RRA
         LD HL,$1AAD
         LD A,$05
-        JP C,$17FF ; ENTER_GRAPHIC_RENDERER_ACROSS_ROM_BANK
+        JP C,ENTER_GRAPHIC_RENDERER_ACROSS_ROM_BANK
         LD HL,$1AB2
         INC A
 
 ENTER_GRAPHIC_RENDERER_ACROSS_ROM_BANK:
-        JP $0132 ; DRAW_ENCODED_GRAPHIC
+        JP DRAW_ENCODED_GRAPHIC
 ; JP instruction above spans 9316.1f $17FF and desertgu.e $1800-$1801.
 
         ORG $1802
@@ -3797,18 +3797,18 @@ READ_SCENE_POINTER_ENTRY:
         LD D,(HL)
         INC HL
         EX (SP),HL
-        CALL COPY_SCREEN_ROW_DESCRIPTOR
+        CALL COPY_ROW_DESC
         POP HL
         JP READ_SCENE_POINTER_ENTRY
 
 SPRITE_COPY_POINTER_PAIRS:
-        DW GRAPHIC_RESOURCE_0C96
+        DW GFX_0C96
         DW $3B24
-        DW GRAPHIC_RESOURCE_0CB3
+        DW GFX_0CB3
         DW $3C8C
-        DW GRAPHIC_RESOURCE_0CD5
+        DW GFX_0CD5
         DW $3B54
-        DW GRAPHIC_RESOURCE_0CF1
+        DW GFX_0CF1
         DW $3C9C
         DW $0000
 
@@ -4118,22 +4118,22 @@ SET_GAME_RECORD_CONTROL_BITS:
         LD ($2003),A
         RET
 
-SELECT_OBJECT_TIMER_208D:
+OBJ_TIMER_208D:
         LD HL,$208D
         LD BC,$203C
         JP DECREMENT_SELECTED_OBJECT_TIMER
 
-SELECT_OBJECT_TIMER_2095:
+OBJ_TIMER_2095:
         LD HL,$2095
         LD BC,$203D
         JP DECREMENT_SELECTED_OBJECT_TIMER
 
-SELECT_OBJECT_TIMER_209D:
+OBJ_TIMER_209D:
         LD HL,$209D
         LD BC,$203E
         JP DECREMENT_SELECTED_OBJECT_TIMER
 
-SELECT_OBJECT_TIMER_20A5:
+OBJ_TIMER_20A5:
         LD HL,$20A5
         LD BC,$203F
 
@@ -4141,7 +4141,7 @@ DECREMENT_SELECTED_OBJECT_TIMER:
         LD A,(HL)
         DEC (HL)
         DEC A
-        JP NZ,RELOAD_OBJECT_TIMER_ON_ZERO
+        JP NZ,RELOAD_TIMER_ZERO
         INC HL
         INC HL
         LD E,(HL)
@@ -4151,9 +4151,9 @@ DECREMENT_SELECTED_OBJECT_TIMER:
         LD A,$04
         JP DRAW_ENCODED_GRAPHIC
 
-RELOAD_OBJECT_TIMER_ON_ZERO:
+RELOAD_TIMER_ZERO:
         DEC A
-        JP NZ,RELOAD_OBJECT_TIMER_DEFAULT
+        JP NZ,RELOAD_TIMER_DEF
         LD A,$3C
         LD (BC),A
         INC HL
@@ -4165,7 +4165,7 @@ RELOAD_OBJECT_TIMER_ON_ZERO:
         LD A,$04
         JP DRAW_ENCODED_GRAPHIC
 
-RELOAD_OBJECT_TIMER_DEFAULT:
+RELOAD_TIMER_DEF:
         LD A,$14
         LD (BC),A
         INC HL
@@ -4279,10 +4279,10 @@ PROCESS_GAME_ANIMATION_BYTE:
         LD DE,$2310
         AND A
         JP Z,ADVANCE_ANIMATION_RECORD
-        CALL COPY_SCREEN_ROW_LOOP
-        LD DE,GRAPHIC_RESOURCE_0D23
+        CALL COPY_ROW_LOOP
+        LD DE,GFX_0D23
         LD B,$03
-        CALL COPY_SCREEN_ROW_LOOP
+        CALL COPY_ROW_LOOP
 
 ADVANCE_ANIMATION_RECORD:
         POP HL
@@ -4329,22 +4329,22 @@ TEST_SCENE_STATE_FOR_RESET:
 BEGIN_GAME_RECORD_RESET:
         LD A,$03
 
-SCAN_GAME_RECORD_RESET_FLAGS:
+SCAN_RESET_FLAGS:
         PUSH AF
         CALL SELECT_GAME_RECORD
         LD A,(HL)
         AND A
-        JP P,ADVANCE_GAME_RECORD_RESET
+        JP P,GAME_REC_RESET
         AND $04
-        JP NZ,ADVANCE_GAME_RECORD_RESET
+        JP NZ,GAME_REC_RESET
         LD A,(HL)
         OR $04
         LD (HL),A
 
-ADVANCE_GAME_RECORD_RESET:
+GAME_REC_RESET:
         POP AF
         DEC A
-        JP P,SCAN_GAME_RECORD_RESET_FLAGS
+        JP P,SCAN_RESET_FLAGS
         RET
 ; Detect changes in input-port $02 bit $40 and update RAM $2016.
 SAMPLE_INPUT_BIT6_EDGE:
