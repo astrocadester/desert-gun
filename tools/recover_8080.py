@@ -203,7 +203,10 @@ def main():
                           data_role(pc))
                 asm.append("        DB "+",".join(f"${b:02X}" for b in raw)+f" ; ROM ${pc:04X} {category}"+(glyph_pixels(raw) if 0x0288 <= pc < 0x0404 else ""))
                 pc=stop
-    (ROOT/"src"/(game+".asm")).write_text("\n".join(asm)+"\n")
+    # Generated recovery drafts never overwrite the maintained hand-edited ASM.
+    review_dir = ROOT / "build" / "recovery"
+    review_dir.mkdir(parents=True, exist_ok=True)
+    (review_dir / (game + ".asm")).write_text("\n".join(asm) + "\n")
     report={"game":game,"cpu":"Intel 8080","rom_size":len(mem),"sha256":digest,
             "devices":[{"name":n,"base":i*size,"size":size,"sha1":hashlib.sha1(p).hexdigest()}
                        for i,(n,p) in enumerate(zip(names,parts))],
