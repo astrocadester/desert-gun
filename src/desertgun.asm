@@ -199,6 +199,8 @@ TEST_ROM_CHECKSUM:
         LD DE,$0121
 
 TEST_ROM_BANK_LOOP:
+; Each device uses a seed from ROM_CHECKSUM_REFERENCE: $00,$D0,$35,$97.
+; The sum of 2 KB of ROM data plus its seed must be $FF; INC A then gives zero.
         LD BC,$0800
         LD A,(DE)
         INC DE
@@ -4413,7 +4415,10 @@ ROM_FF_PADDING:
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
         DB $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-; Last original ROM byte at $1FFF. The preceding fill is $FF; this is
-; a distinct terminal device byte, retained exactly for checksum matching.
+; Checksum balancing byte for 9316.1e at ROM $1FFF.
+; Device $1800–$1FFF additive sum = $68, including this $4E.
+; The fourth-bank checksum seed $97 (ROM $0127) gives $68+$97=$FF,
+; allowing INC A in TEST_ROM_BANK_LOOP to produce zero (PASS).
+; All earlier trailing fill bytes are $FF; this last value is deliberate.
 ROM_DEVICE_FINAL_BYTE:
         DB $4E
