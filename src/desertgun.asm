@@ -2730,44 +2730,186 @@ ADVANCE_OBJECT_SCAN:
         JP P,SCAN_ACTIVE_GAME_OBJECTS
         RET
 
-; Object-state dispatch table: 14 direct Intel 8080 handler addresses.
-; The object walker selects one address by state and invokes the indicated routine.
-OBJECT_HANDLER_VECTORS:
-        DW $15CE ; handler 00
-        DW $161F ; handler 01
-        DW $15B9 ; handler 02
-        DW $160D ; handler 03
-        DW $1592 ; handler 04
-        DW $15A4 ; handler 05
-        DW $15E0 ; handler 06
-        DW $15F5 ; handler 07
-        DW $15DA ; handler 08
-        DW $162B ; handler 09
-        DW $15C5 ; handler 0A
-        DW $1619 ; handler 0B
-        DW $159E ; handler 0C
-        DW $15B3 ; handler 0D
+; Fourteen object-state selectors address motion records in ROM $1580–$1632.
+; Entries are DATA pointers, not native Intel 8080 routine addresses.
+OBJECT_MOTION_SCRIPT_POINTERS:
+        DW MOTION_SEQUENCE_15CE ; state $00
+        DW MOTION_SEQUENCE_161F ; state $01
+        DW MOTION_SEQUENCE_15B9 ; state $02
+        DW MOTION_SEQUENCE_160D ; state $03
+        DW MOTION_SEQUENCE_1592 ; state $04
+        DW MOTION_SEQUENCE_15A4 ; state $05
+        DW MOTION_SEQUENCE_15E0 ; state $06
+        DW MOTION_SEQUENCE_15F5 ; state $07
+        DW MOTION_SEQUENCE_15DA ; state $08
+        DW MOTION_SEQUENCE_162B ; state $09
+        DW MOTION_SEQUENCE_15C5 ; state $0A
+        DW MOTION_SEQUENCE_1619 ; state $0B
+        DW MOTION_SEQUENCE_159E ; state $0C
+        DW MOTION_SEQUENCE_15B3 ; state $0D
 
-; Object animation/motion command stream. Byte selectors and little-endian
-; addresses select drawing patterns; $FF marks a control boundary.
+; Motion-sequence directory targets are ROM data records, not 8080 handlers.
+; Each sequence begins with a 16-bit resource address. Following event records
+; contain a byte selector and a little-endian 16-bit graphic pointer.
+; $FF ends a sequence; native object code processes the byte stream.
 OBJECT_MOTION_DATA:
-        DW $15EF,$15FE ; two native animation continuation addresses
-        DB $04,$08,$08,$0C ; initial animation control fields
-        DB $14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19,$14,$1E
-        DB $05,$52,$0D,$0A,$8C,$0D,$0F,$C6,$0D,$FF,$8C,$0D
-        DB $05,$E4,$06,$FF,$29,$0D,$06,$2C,$0E,$0A,$9D,$0E
-        DB $0F,$02,$0F,$13,$9D,$0E,$FF,$2C,$0E,$05,$E4,$06
-        DB $FF,$00,$0E,$02,$C3,$0A,$04,$FB,$0A,$06,$33,$0B
-        DB $FF,$6B,$0B,$05,$E4,$06,$0F,$A3,$0B,$FF,$C3,$0B
-        DB $01,$FE,$0B,$02,$24,$0C,$03,$4A,$0C,$FF,$70,$0C
-        DB $05,$E4,$06,$FF,$E6,$0B,$05,$65,$09,$19,$9D,$09
-        DB $1E,$D1,$08,$37,$15,$09,$FF,$65,$09,$05,$E4,$06
-        DB $FF,$DE,$09,$0E,$27,$0A,$19,$F5,$09,$FF,$27,$0A
-        DB $05,$E4,$06,$0F,$F5,$09,$14,$65,$0A,$19,$91,$0A
-        DB $FF,$AF,$0A,$03,$95,$07,$06,$EF,$07,$09,$49,$08
-        DB $FF,$EF,$07,$05,$E4,$06,$FF,$A3,$08,$02,$49,$07
-        DB $04,$6F,$07,$06,$49,$07,$FF,$23,$07,$05,$E4,$06
-        DB $FF,$12,$07
+        DW MOTION_SEQUENCE_15EF,MOTION_SEQUENCE_15FE ; two animation-sequence references
+        DB $04,$08,$08,$0C,$14,$17,$3A,$25,$14,$14,$0F,$14,$19,$19 ; compact animation index/control bytes
+
+; ROM $1592: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_1592:
+        DW $1E14 ; initial resource address
+        DB $05 ; selector
+        DW $0D52 ; graphic address
+        DB $0A ; selector
+        DW $0D8C ; graphic address
+        DB $0F ; selector
+        DW $0DC6 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $159E: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_159E:
+        DW $0D8C ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15A4: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15A4:
+        DW $0D29 ; initial resource address
+        DB $06 ; selector
+        DW $0E2C ; graphic address
+        DB $0A ; selector
+        DW $0E9D ; graphic address
+        DB $0F ; selector
+        DW $0F02 ; graphic address
+        DB $13 ; selector
+        DW $0E9D ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15B3: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15B3:
+        DW $0E2C ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15B9: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15B9:
+        DW $0E00 ; initial resource address
+        DB $02 ; selector
+        DW $0AC3 ; graphic address
+        DB $04 ; selector
+        DW $0AFB ; graphic address
+        DB $06 ; selector
+        DW $0B33 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15C5: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15C5:
+        DW $0B6B ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $0F ; selector
+        DW $0BA3 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15CE: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15CE:
+        DW $0BC3 ; initial resource address
+        DB $01 ; selector
+        DW $0BFE ; graphic address
+        DB $02 ; selector
+        DW $0C24 ; graphic address
+        DB $03 ; selector
+        DW $0C4A ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15DA: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15DA:
+        DW $0C70 ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15E0: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15E0:
+        DW $0BE6 ; initial resource address
+        DB $05 ; selector
+        DW $0965 ; graphic address
+        DB $19 ; selector
+        DW $099D ; graphic address
+        DB $1E ; selector
+        DW $08D1 ; graphic address
+        DB $37 ; selector
+        DW $0915 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15EF: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15EF:
+        DW $0965 ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15F5: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15F5:
+        DW $09DE ; initial resource address
+        DB $0E ; selector
+        DW $0A27 ; graphic address
+        DB $19 ; selector
+        DW $09F5 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $15FE: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_15FE:
+        DW $0A27 ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $0F ; selector
+        DW $09F5 ; graphic address
+        DB $14 ; selector
+        DW $0A65 ; graphic address
+        DB $19 ; selector
+        DW $0A91 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $160D: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_160D:
+        DW $0AAF ; initial resource address
+        DB $03 ; selector
+        DW $0795 ; graphic address
+        DB $06 ; selector
+        DW $07EF ; graphic address
+        DB $09 ; selector
+        DW $0849 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $1619: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_1619:
+        DW $07EF ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $161F: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_161F:
+        DW $08A3 ; initial resource address
+        DB $02 ; selector
+        DW $0749 ; graphic address
+        DB $04 ; selector
+        DW $076F ; graphic address
+        DB $06 ; selector
+        DW $0749 ; graphic address
+        DB $FF ; sequence terminator
+
+; ROM $162B: resource address + animation event/bitmap pairs.
+MOTION_SEQUENCE_162B:
+        DW $0723 ; initial resource address
+        DB $05 ; selector
+        DW $06E4 ; graphic address
+        DB $FF ; sequence terminator
+        DB $12,$07 ; additional trailing record bytes
 
 CMD_1633_CLEAR_DISPLAY:
         DB $06 ; CLEAR_DISPLAY
